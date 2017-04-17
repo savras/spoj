@@ -13,44 +13,65 @@ using std::list;
 void buildPrimes(vector<int>& primes) {
 	// Init
 	int size = primes.size();
+	primes[0] = 0;
+	primes[1] = 0; // 0 & 1 are not primes
+
 	for (size_t i = 2; i < size; i++) {
 		if (!primes[i]) {
 			continue;
 		}
 
+		// i * i is because we start from the square of i (see Khan Academy video)
 		for (size_t p = i * i; p < size; p += i) {
 			primes[p] = false;
 		}
 	}
 }
 
+int getStartIndex(const int& p, const int& m) {
+	int result;
+	if (m > p) {
+		int firstDivisibleNumber = (m / p) * p;		
+
+		if (firstDivisibleNumber == m) {
+			result = firstDivisibleNumber - m;
+		}
+		else {
+			result = firstDivisibleNumber + p - m;	// -m to map start of value, m, to index 0 of sieve array				
+		}
+	}	
+	else {
+		result = (p * 2) - m;	// start from the next p index after p
+	}
+
+	return result;	
+}
+
 // Eratosthenes segmentation.
-void getPrimes(const vector<int>& primes, const int& m, const int& n) {
-	int start = m / 2 * 2;
-	int size = n - start + 1;
-	vector<int> sieve(size, true);
-	vector<int> sieveMap;
+void getPrimesForRange(const vector<int>& primes, const int& m, const int& n) {	
+	int size = n - m + 1;
+	vector<int> sieve(size, true);		
 
-	//// push smallest value before m that is di]visible by 2 to n
-	//for (size_t i = start; i < size; i++) {
-	//	sieveMap.push_back(i);
-	//}
+	if (m == 1) {	// 1 is not a prime
+		sieve[0] = 0;
+	}
 
-	// Get primes starting from the smallest value divisible by 2 (from <= m ) until n
-	// i*i is because we start from the square of i (see Khan Academy video)
-	for (size_t i = 2; i < primes.size; i++) {
+	// Get primes starting from the smallest value divisible by p (from <= m ) until == n	
+	for (size_t i = 2; i < primes.size(); i++) {
 		if (primes[i]) {
-			for (size_t p = i; p < size; p += i) {	// p = i because we are not starting from integer 2
+			int index = getStartIndex(i, m);
+			if (index > size) { break; }
+			for (size_t p = index; p < size; p += i) {	// p = i because we are not starting from integer 2
 				sieve[p] = false;
 			}
-		}
-		
+		}		
 	}
 
 	// print result
-	for (size_t i = m - start; i < size; i++) {
-		if (sieve[i])
-			cout << start + i << endl;
+	for (size_t i = 0; i < size; i++) {
+		if (sieve[i]) {
+			cout << m + i << endl;
+		}
 	}
 }
 
@@ -65,6 +86,6 @@ int main() {
 
 	for (size_t p = 0; p < t; p++) {
 		cin >> m >> n;	
-		getPrimes(primes, m, n);
+		getPrimesForRange(primes, m, n);
 	}
 }
