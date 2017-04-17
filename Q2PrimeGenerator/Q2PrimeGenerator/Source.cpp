@@ -22,6 +22,7 @@ void buildPrimes(vector<int>& primes) {
 		}
 
 		// i * i is because we start from the square of i (see Khan Academy video)
+		// http://stackoverflow.com/questions/5811151/why-do-we-check-up-to-the-square-root-of-a-prime-number-to-determine-if-it-is-pr
 		for (size_t p = i * i; p < size; p += i) {
 			primes[p] = false;
 		}
