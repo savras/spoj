@@ -27,12 +27,6 @@ int main() {
 		l = expr.length();
 		int bracketCount = 0;
 		for (size_t i = 0; i < l; i++) {
-			/*
-			if (expr[i] == '(') {
-				bracketCount++;
-			}
-			else 
-			*/
 			if (expr[i] == ')') {
 				while (!queue.empty())
 				{
@@ -40,7 +34,7 @@ int main() {
 					queue.pop();
 				}
 
-				while (!stack.empty()) {
+				if(!stack.empty()) {
 					result += stack.top();
 					stack.pop();
 				}
