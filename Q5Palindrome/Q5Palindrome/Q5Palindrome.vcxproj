@@ -19,8 +19,8 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{C02679A7-A935-4E46-8D19-05FB13E5A40E}</ProjectGuid>
-    <RootNamespace>Q4Palindrome</RootNamespace>
+    <ProjectGuid>{E273E9FA-7DCC-4C2C-95A4-CD908B23D627}</ProjectGuid>
+    <RootNamespace>Q5Palindrome</RootNamespace>
     <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
