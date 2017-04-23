@@ -22,7 +22,7 @@ string getNextPalindrome(string& expr) {
 	}
 
 	left = mid;
-	
+
 
 	while (left >= 0) {
 		if (expr[left] != expr[size - offset - left]) {
@@ -46,21 +46,21 @@ string getNextPalindrome(string& expr) {
 			break;
 		}
 		left--;
-	}	
+	}
 	return expr;
 }
 
 int main() {
 	int t;
 	cin >> t;
-	string expr;	
+	string expr;
 	while (--t >= 0) {
 		cin >> expr;
 		int number = stoi(expr);
 
 		string nextPalindrome;
 		nextPalindrome = getNextPalindrome(expr);
-		
+
 		int result = stoi(nextPalindrome);
 		if (number == result) {	// This algorithm doesn't handle inputs that are already a palindrome.
 			number++;
