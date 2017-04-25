@@ -2,14 +2,15 @@
 #include <string>
 #include <vector>
 #include <cmath>
-#define MAX_SIZE 7
+#include <sstream>
+#define MAX_SIZE 10
 
 using std::cin;
 using std::cout;
 using std::endl;
 using std::string;
 using std::vector;
-using std::stoi;
+using std::stringstream;
 using std::ceil;
 using std::to_string;
 
@@ -24,10 +25,9 @@ int getMid(int paddingSize, const int exprSize) {
 }
 
 int padZeroesAndReturnPaddingSize(string expr, vector<char>& arr) {
-	const int maxLength = 7;
 	arr.clear();
 	int size = expr.length();
-	int paddingSize = maxLength - size;
+	int paddingSize = MAX_SIZE - size;
 
 	for (size_t i = 0; i < paddingSize; i++) {
 		arr.push_back('0');
@@ -102,9 +102,11 @@ int main() {
 	string expr;
 	while (--t >= 0) {
 		cin >> expr;
-		int number = stoi(expr);
-		
+		int number;
+		stringstream convert(expr);
+		convert >> number;
 		number++;
+
 		expr = to_string(number);
 		int sizeBeforePadding = expr.length();
 
