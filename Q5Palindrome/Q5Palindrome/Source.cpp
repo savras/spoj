@@ -2,6 +2,7 @@
 #include <string>
 #include <vector>
 #include <cmath>
+#define MAX_SIZE 7
 
 using std::cin;
 using std::cout;
@@ -13,6 +14,7 @@ using std::ceil;
 using std::to_string;
 
 int getMid(int paddingSize, const int exprSize) {
+	// If size is odd, mid is the central value	
 	int mid = exprSize / 2;
 	if (exprSize % 2 == 0) {
 		mid--;
@@ -38,28 +40,30 @@ int padZeroesAndReturnPaddingSize(string expr, vector<char>& arr) {
 	return paddingSize;
 }
 
-bool isInputSameAsResult(string expr, const vector<char>& nextPalindrome) {
-	bool result = true;
-	const int maxLength = 7;
-
-	for (size_t i = 0; i < maxLength; i++) {
-		if (expr[i] != nextPalindrome[i]) {
-			result = false;
-			break;
-		}
+void printResult(const vector<char>& expr) {
+	int startIndex = 0;
+	while (expr[startIndex] == '0') {
+		startIndex++;
 	}
 
-	return result;
+	for (size_t i = startIndex; i < MAX_SIZE; i++) {
+		cout << expr[i];
+	}
+	cout << endl;
 }
 
-void getNextPalindrome(vector<char>& expr, const int mid) {	
+void getNextPalindrome(vector<char>& expr, const int& mid, const bool& isEven) {	
 	const int offset = 1;		
-	const int size = 7;
-	int left = mid;
-	int right = left + 1;
 
-	while (right < size) {
-		if (expr[left] != expr[right]) {
+	// If is odd. left == right == central value.
+	int left = mid;
+	int right = left;
+	if (isEven) {
+		right++;
+	}	
+
+	while (right < MAX_SIZE) {
+		if (expr[left] < expr[right]) {
 			left = mid;
 
 			while (expr[left] == '9') {
@@ -71,24 +75,19 @@ void getNextPalindrome(vector<char>& expr, const int mid) {
 			for (size_t i = left + 1; i <= mid; i++) {
 				expr[i] = '0';
 			}
-
-			// Set everything to the right side of mid to become a palindrome.
-			bool isEven = ((size - mid - offset) * 2) % 2 == 0;
-			left = mid;
-			right = mid + 1;
-			if (!isEven) {
-				right++;
-				left--;
-			}
-
-			while (right < size) {
-				expr[right] = expr[left];
-				left--;
-				right++;
-			}
-
 			break;
 		}
+		left--;
+		right++;
+	}
+
+	// Duplicate right side of the expression making it a palindrome
+	left = right = mid;
+	if (isEven) {
+		right++;
+	}
+	while(right < MAX_SIZE) {
+		expr[right] = expr[left];
 		left--;
 		right++;
 	}
@@ -103,24 +102,17 @@ int main() {
 	string expr;
 	while (--t >= 0) {
 		cin >> expr;
+		int number = stoi(expr);
+		
+		number++;
+		expr = to_string(number);
+		int sizeBeforePadding = expr.length();
+
 		int paddingSize = padZeroesAndReturnPaddingSize(expr, zeroPaddedExpression);
-		int mid = getMid(paddingSize, expr.length());
+		int mid = getMid(paddingSize, sizeBeforePadding);
 
-		getNextPalindrome(zeroPaddedExpression, mid);
-
-		if (isInputSameAsResult(expr, zeroPaddedExpression)) {	// This algorithm doesn't handle inputs that are already a palindrome.
-			int number = stoi(expr);
-			number++;
-			expr = to_string(number);
-			paddingSize = padZeroesAndReturnPaddingSize(expr, zeroPaddedExpression);
-			mid = getMid(paddingSize, expr.length());
-
-			getNextPalindrome(zeroPaddedExpression, mid);
-		}
-
-		for (size_t i = paddingSize; i < zeroPaddedExpression.size(); i++) {
-			cout << zeroPaddedExpression[i];
-		}
-		cout << endl;
+		bool isEven = sizeBeforePadding % 2 == 0;
+		getNextPalindrome(zeroPaddedExpression, mid, isEven);
+		printResult(zeroPaddedExpression);
 	}
 }
