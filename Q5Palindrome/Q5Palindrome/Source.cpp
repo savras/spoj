@@ -9,11 +9,26 @@ using std::cout;
 using std::endl;
 using std::string;
 using std::vector;
-using std::stringstream;
 using std::ceil;
 using std::to_string;
 
-bool AllNines(const string& expr, const int& size) {
+/* Utility functions */
+void AddOne(string& expr, const int& size) {
+	const int offset = 1;
+	int startIndex = size - offset;
+
+	while (expr[startIndex] == '9') {
+		startIndex--;
+	}
+	expr[startIndex]++;
+
+	// Set all digits between left to startIndex == 0
+	for (size_t i = startIndex + 1; i <= startIndex; i++) {
+		expr[i] = '0';
+	}
+}
+
+bool allNines(const string& expr, const int& size) {	
 	bool result = true;
 	for (size_t i = 0; i < size; i++) {
 		if (expr[i] != '9') {
@@ -34,22 +49,6 @@ int getMid(const string& expr, const int& size) {
 	return mid;
 }
 
-//int padZeroesAndReturnPaddingSize(string expr, vector<char>& arr) {
-//	arr.clear();
-//	int size = expr.length();
-//	int paddingSize = MAX_SIZE - size;
-//
-//	for (size_t i = 0; i < paddingSize; i++) {
-//		arr.push_back('0');
-//	}
-//
-//	for (size_t i = 0; i < size; i++) {
-//		arr.push_back(expr[i]);
-//	}
-//
-//	return paddingSize;
-//}
-
 void printResult(const string& expr) {int startIndex = 0;
 	while (expr[startIndex] == '0') {
 		startIndex++;
@@ -62,6 +61,7 @@ void printResult(const string& expr) {int startIndex = 0;
 	cout << endl;
 }
 
+/* Solution */
 void getNextPalindrome(string& expr, const int& size, const int& mid, const bool& isEven) {	
 	const int offset = 1;		
 
@@ -112,19 +112,15 @@ int main() {
 		cin >> expr;
 		
 		int size = expr.length();
-		if (AllNines(expr, size)) {			
-			expr = "1";
+		if (allNines(expr, size)) {			
+			cout << "1";
 			for (size_t i = 0; i < size - 1; i++) {
-				expr += "0";
+				cout << "0";
 			}
-			expr += "1";
+			cout << "1" << endl;
+			continue;
 		} else {
-			stringstream convert(expr);
-			int number;
-			convert >> number;
-			number++;
-
-			expr = to_string(number);
+			AddOne(expr, expr.length());
 			size = expr.length();
 			int mid = getMid(expr, size);
 
