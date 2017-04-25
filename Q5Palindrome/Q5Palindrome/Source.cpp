@@ -3,7 +3,6 @@
 #include <vector>
 #include <cmath>
 #include <sstream>
-#define MAX_SIZE 10
 
 using std::cin;
 using std::cout;
@@ -14,55 +13,66 @@ using std::stringstream;
 using std::ceil;
 using std::to_string;
 
-int getMid(int paddingSize, const int exprSize) {
+bool AllNines(const string& expr, const int& size) {
+	bool result = true;
+	for (size_t i = 0; i < size; i++) {
+		if (expr[i] != '9') {
+			result = false;
+			break;
+		}
+	}
+	return result;
+}
+
+int getMid(const string& expr, const int& size) {
 	// If size is odd, mid is the central value	
-	int mid = exprSize / 2;
-	if (exprSize % 2 == 0) {
+	int mid = size / 2;
+	if (size % 2 == 0) {
 		mid--;
 	}
 
-	return mid + paddingSize;
+	return mid;
 }
 
-int padZeroesAndReturnPaddingSize(string expr, vector<char>& arr) {
-	arr.clear();
-	int size = expr.length();
-	int paddingSize = MAX_SIZE - size;
+//int padZeroesAndReturnPaddingSize(string expr, vector<char>& arr) {
+//	arr.clear();
+//	int size = expr.length();
+//	int paddingSize = MAX_SIZE - size;
+//
+//	for (size_t i = 0; i < paddingSize; i++) {
+//		arr.push_back('0');
+//	}
+//
+//	for (size_t i = 0; i < size; i++) {
+//		arr.push_back(expr[i]);
+//	}
+//
+//	return paddingSize;
+//}
 
-	for (size_t i = 0; i < paddingSize; i++) {
-		arr.push_back('0');
-	}
-
-	for (size_t i = 0; i < size; i++) {
-		arr.push_back(expr[i]);
-	}
-
-	return paddingSize;
-}
-
-void printResult(const vector<char>& expr) {
-	int startIndex = 0;
+void printResult(const string& expr) {int startIndex = 0;
 	while (expr[startIndex] == '0') {
 		startIndex++;
 	}
 
-	for (size_t i = startIndex; i < MAX_SIZE; i++) {
+	int size = expr.size();
+	for (size_t i = startIndex; i < size; i++) {
 		cout << expr[i];
 	}
 	cout << endl;
 }
 
-void getNextPalindrome(vector<char>& expr, const int& mid, const bool& isEven) {	
+void getNextPalindrome(string& expr, const int& size, const int& mid, const bool& isEven) {	
 	const int offset = 1;		
 
 	// If is odd. left == right == central value.
-	int left = mid;
-	int right = left;
+	int left, right;
+	left = right = mid;
 	if (isEven) {
 		right++;
-	}	
+	}
 
-	while (right < MAX_SIZE) {
+	while (right < size) {
 		if (expr[left] < expr[right]) {
 			left = mid;
 
@@ -86,7 +96,7 @@ void getNextPalindrome(vector<char>& expr, const int& mid, const bool& isEven) {
 	if (isEven) {
 		right++;
 	}
-	while(right < MAX_SIZE) {
+	while(right < size) {
 		expr[right] = expr[left];
 		left--;
 		right++;
@@ -97,24 +107,30 @@ int main() {
 	int t;
 	cin >> t;
 
-	vector<char> zeroPaddedExpression;	// Max digits is 1000000
-
 	string expr;
 	while (--t >= 0) {
 		cin >> expr;
-		int number;
-		stringstream convert(expr);
-		convert >> number;
-		number++;
+		
+		int size = expr.length();
+		if (AllNines(expr, size)) {			
+			expr = "1";
+			for (size_t i = 0; i < size - 1; i++) {
+				expr += "0";
+			}
+			expr += "1";
+		} else {
+			stringstream convert(expr);
+			int number;
+			convert >> number;
+			number++;
 
-		expr = to_string(number);
-		int sizeBeforePadding = expr.length();
+			expr = to_string(number);
+			size = expr.length();
+			int mid = getMid(expr, size);
 
-		int paddingSize = padZeroesAndReturnPaddingSize(expr, zeroPaddedExpression);
-		int mid = getMid(paddingSize, sizeBeforePadding);
-
-		bool isEven = sizeBeforePadding % 2 == 0;
-		getNextPalindrome(zeroPaddedExpression, mid, isEven);
-		printResult(zeroPaddedExpression);
+			bool isEven = size % 2 == 0;
+			getNextPalindrome(expr, size, mid, isEven);
+		}
+		printResult(expr);
 	}
 }
