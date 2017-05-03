@@ -1,0 +1,1241 @@
+<!DOCTYPE html>
+<!-- saved from url=(0085)https://www.topcoder.com/community/data-science/data-science-tutorials/binary-search/ -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><style type="text/css">@charset "UTF-8";[ng\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak,.ng-hide{display:none !important;}ng\:form{display:block;}.ng-animate-block-transitions{transition:0s all!important;-webkit-transition:0s all!important;}</style>
+  
+  <meta name="fragment" content="!">
+  <title>Binary Search  –  topcoder</title>
+  <meta name="description" content="">
+  <meta name="author" content="@topcoder">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge"><script type="text/javascript" src="./Binary Search – topcoder_files/496af5ee90"></script><script src="./Binary Search – topcoder_files/nr-1026.min.js.download"></script><script async="" src="./Binary Search – topcoder_files/analytics.js.download"></script><script type="text/javascript">(window.NREUM||(NREUM={})).loader_config={xpid:"UgEGVFNbGwYGXVZaBgQ="};window.NREUM||(NREUM={}),__nr_require=function(t,n,e){function r(e){if(!n[e]){var o=n[e]={exports:{}};t[e][0].call(o.exports,function(n){var o=t[e][1][n];return r(o||n)},o,o.exports)}return n[e].exports}if("function"==typeof __nr_require)return __nr_require;for(var o=0;o<e.length;o++)r(e[o]);return r}({1:[function(t,n,e){function r(t){try{s.console&&console.log(t)}catch(n){}}var o,i=t("ee"),a=t(15),s={};try{o=localStorage.getItem("__nr_flags").split(","),console&&"function"==typeof console.log&&(s.console=!0,o.indexOf("dev")!==-1&&(s.dev=!0),o.indexOf("nr_dev")!==-1&&(s.nrDev=!0))}catch(c){}s.nrDev&&i.on("internal-error",function(t){r(t.stack)}),s.dev&&i.on("fn-err",function(t,n,e){r(e.stack)}),s.dev&&(r("NR AGENT IN DEVELOPMENT MODE"),r("flags: "+a(s,function(t,n){return t}).join(", ")))},{}],2:[function(t,n,e){function r(t,n,e,r,o){try{d?d-=1:i("err",[o||new UncaughtException(t,n,e)])}catch(s){try{i("ierr",[s,c.now(),!0])}catch(u){}}return"function"==typeof f&&f.apply(this,a(arguments))}function UncaughtException(t,n,e){this.message=t||"Uncaught error with no additional information",this.sourceURL=n,this.line=e}function o(t){i("err",[t,c.now()])}var i=t("handle"),a=t(16),s=t("ee"),c=t("loader"),f=window.onerror,u=!1,d=0;c.features.err=!0,t(1),window.onerror=r;try{throw new Error}catch(l){"stack"in l&&(t(8),t(7),"addEventListener"in window&&t(5),c.xhrWrappable&&t(9),u=!0)}s.on("fn-start",function(t,n,e){u&&(d+=1)}),s.on("fn-err",function(t,n,e){u&&(this.thrown=!0,o(e))}),s.on("fn-end",function(){u&&!this.thrown&&d>0&&(d-=1)}),s.on("internal-error",function(t){i("ierr",[t,c.now(),!0])})},{}],3:[function(t,n,e){t("loader").features.ins=!0},{}],4:[function(t,n,e){function r(t){}if(window.performance&&window.performance.timing&&window.performance.getEntriesByType){var o=t("ee"),i=t("handle"),a=t(8),s=t(7),c="learResourceTimings",f="addEventListener",u="resourcetimingbufferfull",d="bstResource",l="resource",p="-start",h="-end",m="fn"+p,w="fn"+h,v="bstTimer",y="pushState",g=t("loader");g.features.stn=!0,t(6);var b=NREUM.o.EV;o.on(m,function(t,n){var e=t[0];e instanceof b&&(this.bstStart=g.now())}),o.on(w,function(t,n){var e=t[0];e instanceof b&&i("bst",[e,n,this.bstStart,g.now()])}),a.on(m,function(t,n,e){this.bstStart=g.now(),this.bstType=e}),a.on(w,function(t,n){i(v,[n,this.bstStart,g.now(),this.bstType])}),s.on(m,function(){this.bstStart=g.now()}),s.on(w,function(t,n){i(v,[n,this.bstStart,g.now(),"requestAnimationFrame"])}),o.on(y+p,function(t){this.time=g.now(),this.startPath=location.pathname+location.hash}),o.on(y+h,function(t){i("bstHist",[location.pathname+location.hash,this.startPath,this.time])}),f in window.performance&&(window.performance["c"+c]?window.performance[f](u,function(t){i(d,[window.performance.getEntriesByType(l)]),window.performance["c"+c]()},!1):window.performance[f]("webkit"+u,function(t){i(d,[window.performance.getEntriesByType(l)]),window.performance["webkitC"+c]()},!1)),document[f]("scroll",r,{passive:!0}),document[f]("keypress",r,!1),document[f]("click",r,!1)}},{}],5:[function(t,n,e){function r(t){for(var n=t;n&&!n.hasOwnProperty(u);)n=Object.getPrototypeOf(n);n&&o(n)}function o(t){s.inPlace(t,[u,d],"-",i)}function i(t,n){return t[1]}var a=t("ee").get("events"),s=t(18)(a,!0),c=t("gos"),f=XMLHttpRequest,u="addEventListener",d="removeEventListener";n.exports=a,"getPrototypeOf"in Object?(r(document),r(window),r(f.prototype)):f.prototype.hasOwnProperty(u)&&(o(window),o(f.prototype)),a.on(u+"-start",function(t,n){var e=t[1],r=c(e,"nr@wrapped",function(){function t(){if("function"==typeof e.handleEvent)return e.handleEvent.apply(e,arguments)}var n={object:t,"function":e}[typeof e];return n?s(n,"fn-",null,n.name||"anonymous"):e});this.wrapped=t[1]=r}),a.on(d+"-start",function(t){t[1]=this.wrapped||t[1]})},{}],6:[function(t,n,e){var r=t("ee").get("history"),o=t(18)(r);n.exports=r,o.inPlace(window.history,["pushState","replaceState"],"-")},{}],7:[function(t,n,e){var r=t("ee").get("raf"),o=t(18)(r),i="equestAnimationFrame";n.exports=r,o.inPlace(window,["r"+i,"mozR"+i,"webkitR"+i,"msR"+i],"raf-"),r.on("raf-start",function(t){t[0]=o(t[0],"fn-")})},{}],8:[function(t,n,e){function r(t,n,e){t[0]=a(t[0],"fn-",null,e)}function o(t,n,e){this.method=e,this.timerDuration="number"==typeof t[1]?t[1]:0,t[0]=a(t[0],"fn-",this,e)}var i=t("ee").get("timer"),a=t(18)(i),s="setTimeout",c="setInterval",f="clearTimeout",u="-start",d="-";n.exports=i,a.inPlace(window,[s,"setImmediate"],s+d),a.inPlace(window,[c],c+d),a.inPlace(window,[f,"clearImmediate"],f+d),i.on(c+u,r),i.on(s+u,o)},{}],9:[function(t,n,e){function r(t,n){d.inPlace(n,["onreadystatechange"],"fn-",s)}function o(){var t=this,n=u.context(t);t.readyState>3&&!n.resolved&&(n.resolved=!0,u.emit("xhr-resolved",[],t)),d.inPlace(t,w,"fn-",s)}function i(t){v.push(t),h&&(g=-g,b.data=g)}function a(){for(var t=0;t<v.length;t++)r([],v[t]);v.length&&(v=[])}function s(t,n){return n}function c(t,n){for(var e in t)n[e]=t[e];return n}t(5);var f=t("ee"),u=f.get("xhr"),d=t(18)(u),l=NREUM.o,p=l.XHR,h=l.MO,m="readystatechange",w=["onload","onerror","onabort","onloadstart","onloadend","onprogress","ontimeout"],v=[];n.exports=u;var y=window.XMLHttpRequest=function(t){var n=new p(t);try{u.emit("new-xhr",[n],n),n.addEventListener(m,o,!1)}catch(e){try{u.emit("internal-error",[e])}catch(r){}}return n};if(c(p,y),y.prototype=p.prototype,d.inPlace(y.prototype,["open","send"],"-xhr-",s),u.on("send-xhr-start",function(t,n){r(t,n),i(n)}),u.on("open-xhr-start",r),h){var g=1,b=document.createTextNode(g);new h(a).observe(b,{characterData:!0})}else f.on("fn-end",function(t){t[0]&&t[0].type===m||a()})},{}],10:[function(t,n,e){function r(t){var n=this.params,e=this.metrics;if(!this.ended){this.ended=!0;for(var r=0;r<d;r++)t.removeEventListener(u[r],this.listener,!1);if(!n.aborted){if(e.duration=a.now()-this.startTime,4===t.readyState){n.status=t.status;var i=o(t,this.lastSize);if(i&&(e.rxSize=i),this.sameOrigin){var c=t.getResponseHeader("X-NewRelic-App-Data");c&&(n.cat=c.split(", ").pop())}}else n.status=0;e.cbTime=this.cbTime,f.emit("xhr-done",[t],t),s("xhr",[n,e,this.startTime])}}}function o(t,n){var e=t.responseType;if("json"===e&&null!==n)return n;var r="arraybuffer"===e||"blob"===e||"json"===e?t.response:t.responseText;return h(r)}function i(t,n){var e=c(n),r=t.params;r.host=e.hostname+":"+e.port,r.pathname=e.pathname,t.sameOrigin=e.sameOrigin}var a=t("loader");if(a.xhrWrappable){var s=t("handle"),c=t(11),f=t("ee"),u=["load","error","abort","timeout"],d=u.length,l=t("id"),p=t(14),h=t(13),m=window.XMLHttpRequest;a.features.xhr=!0,t(9),f.on("new-xhr",function(t){var n=this;n.totalCbs=0,n.called=0,n.cbTime=0,n.end=r,n.ended=!1,n.xhrGuids={},n.lastSize=null,p&&(p>34||p<10)||window.opera||t.addEventListener("progress",function(t){n.lastSize=t.loaded},!1)}),f.on("open-xhr-start",function(t){this.params={method:t[0]},i(this,t[1]),this.metrics={}}),f.on("open-xhr-end",function(t,n){"loader_config"in NREUM&&"xpid"in NREUM.loader_config&&this.sameOrigin&&n.setRequestHeader("X-NewRelic-ID",NREUM.loader_config.xpid)}),f.on("send-xhr-start",function(t,n){var e=this.metrics,r=t[0],o=this;if(e&&r){var i=h(r);i&&(e.txSize=i)}this.startTime=a.now(),this.listener=function(t){try{"abort"===t.type&&(o.params.aborted=!0),("load"!==t.type||o.called===o.totalCbs&&(o.onloadCalled||"function"!=typeof n.onload))&&o.end(n)}catch(e){try{f.emit("internal-error",[e])}catch(r){}}};for(var s=0;s<d;s++)n.addEventListener(u[s],this.listener,!1)}),f.on("xhr-cb-time",function(t,n,e){this.cbTime+=t,n?this.onloadCalled=!0:this.called+=1,this.called!==this.totalCbs||!this.onloadCalled&&"function"==typeof e.onload||this.end(e)}),f.on("xhr-load-added",function(t,n){var e=""+l(t)+!!n;this.xhrGuids&&!this.xhrGuids[e]&&(this.xhrGuids[e]=!0,this.totalCbs+=1)}),f.on("xhr-load-removed",function(t,n){var e=""+l(t)+!!n;this.xhrGuids&&this.xhrGuids[e]&&(delete this.xhrGuids[e],this.totalCbs-=1)}),f.on("addEventListener-end",function(t,n){n instanceof m&&"load"===t[0]&&f.emit("xhr-load-added",[t[1],t[2]],n)}),f.on("removeEventListener-end",function(t,n){n instanceof m&&"load"===t[0]&&f.emit("xhr-load-removed",[t[1],t[2]],n)}),f.on("fn-start",function(t,n,e){n instanceof m&&("onload"===e&&(this.onload=!0),("load"===(t[0]&&t[0].type)||this.onload)&&(this.xhrCbStart=a.now()))}),f.on("fn-end",function(t,n){this.xhrCbStart&&f.emit("xhr-cb-time",[a.now()-this.xhrCbStart,this.onload,n],n)})}},{}],11:[function(t,n,e){n.exports=function(t){var n=document.createElement("a"),e=window.location,r={};n.href=t,r.port=n.port;var o=n.href.split("://");!r.port&&o[1]&&(r.port=o[1].split("/")[0].split("@").pop().split(":")[1]),r.port&&"0"!==r.port||(r.port="https"===o[0]?"443":"80"),r.hostname=n.hostname||e.hostname,r.pathname=n.pathname,r.protocol=o[0],"/"!==r.pathname.charAt(0)&&(r.pathname="/"+r.pathname);var i=!n.protocol||":"===n.protocol||n.protocol===e.protocol,a=n.hostname===document.domain&&n.port===e.port;return r.sameOrigin=i&&(!n.hostname||a),r}},{}],12:[function(t,n,e){function r(){}function o(t,n,e){return function(){return i(t,[f.now()].concat(s(arguments)),n?null:this,e),n?void 0:this}}var i=t("handle"),a=t(15),s=t(16),c=t("ee").get("tracer"),f=t("loader"),u=NREUM;"undefined"==typeof window.newrelic&&(newrelic=u);var d=["setPageViewName","setCustomAttribute","setErrorHandler","finished","addToTrace","inlineHit","addRelease"],l="api-",p=l+"ixn-";a(d,function(t,n){u[n]=o(l+n,!0,"api")}),u.addPageAction=o(l+"addPageAction",!0),u.setCurrentRouteName=o(l+"routeName",!0),n.exports=newrelic,u.interaction=function(){return(new r).get()};var h=r.prototype={createTracer:function(t,n){var e={},r=this,o="function"==typeof n;return i(p+"tracer",[f.now(),t,e],r),function(){if(c.emit((o?"":"no-")+"fn-start",[f.now(),r,o],e),o)try{return n.apply(this,arguments)}finally{c.emit("fn-end",[f.now()],e)}}}};a("setName,setAttribute,save,ignore,onEnd,getContext,end,get".split(","),function(t,n){h[n]=o(p+n)}),newrelic.noticeError=function(t){"string"==typeof t&&(t=new Error(t)),i("err",[t,f.now()])}},{}],13:[function(t,n,e){n.exports=function(t){if("string"==typeof t&&t.length)return t.length;if("object"==typeof t){if("undefined"!=typeof ArrayBuffer&&t instanceof ArrayBuffer&&t.byteLength)return t.byteLength;if("undefined"!=typeof Blob&&t instanceof Blob&&t.size)return t.size;if(!("undefined"!=typeof FormData&&t instanceof FormData))try{return JSON.stringify(t).length}catch(n){return}}}},{}],14:[function(t,n,e){var r=0,o=navigator.userAgent.match(/Firefox[\/\s](\d+\.\d+)/);o&&(r=+o[1]),n.exports=r},{}],15:[function(t,n,e){function r(t,n){var e=[],r="",i=0;for(r in t)o.call(t,r)&&(e[i]=n(r,t[r]),i+=1);return e}var o=Object.prototype.hasOwnProperty;n.exports=r},{}],16:[function(t,n,e){function r(t,n,e){n||(n=0),"undefined"==typeof e&&(e=t?t.length:0);for(var r=-1,o=e-n||0,i=Array(o<0?0:o);++r<o;)i[r]=t[n+r];return i}n.exports=r},{}],17:[function(t,n,e){n.exports={exists:"undefined"!=typeof window.performance&&window.performance.timing&&"undefined"!=typeof window.performance.timing.navigationStart}},{}],18:[function(t,n,e){function r(t){return!(t&&t instanceof Function&&t.apply&&!t[a])}var o=t("ee"),i=t(16),a="nr@original",s=Object.prototype.hasOwnProperty,c=!1;n.exports=function(t,n){function e(t,n,e,o){function nrWrapper(){var r,a,s,c;try{a=this,r=i(arguments),s="function"==typeof e?e(r,a):e||{}}catch(f){l([f,"",[r,a,o],s])}u(n+"start",[r,a,o],s);try{return c=t.apply(a,r)}catch(d){throw u(n+"err",[r,a,d],s),d}finally{u(n+"end",[r,a,c],s)}}return r(t)?t:(n||(n=""),nrWrapper[a]=t,d(t,nrWrapper),nrWrapper)}function f(t,n,o,i){o||(o="");var a,s,c,f="-"===o.charAt(0);for(c=0;c<n.length;c++)s=n[c],a=t[s],r(a)||(t[s]=e(a,f?s+o:o,i,s))}function u(e,r,o){if(!c||n){var i=c;c=!0;try{t.emit(e,r,o,n)}catch(a){l([a,e,r,o])}c=i}}function d(t,n){if(Object.defineProperty&&Object.keys)try{var e=Object.keys(t);return e.forEach(function(e){Object.defineProperty(n,e,{get:function(){return t[e]},set:function(n){return t[e]=n,n}})}),n}catch(r){l([r])}for(var o in t)s.call(t,o)&&(n[o]=t[o]);return n}function l(n){try{t.emit("internal-error",n)}catch(e){}}return t||(t=o),e.inPlace=f,e.flag=a,e}},{}],ee:[function(t,n,e){function r(){}function o(t){function n(t){return t&&t instanceof r?t:t?c(t,s,i):i()}function e(e,r,o,i){if(!l.aborted||i){t&&t(e,r,o);for(var a=n(o),s=h(e),c=s.length,f=0;f<c;f++)s[f].apply(a,r);var d=u[y[e]];return d&&d.push([g,e,r,a]),a}}function p(t,n){v[t]=h(t).concat(n)}function h(t){return v[t]||[]}function m(t){return d[t]=d[t]||o(e)}function w(t,n){f(t,function(t,e){n=n||"feature",y[e]=n,n in u||(u[n]=[])})}var v={},y={},g={on:p,emit:e,get:m,listeners:h,context:n,buffer:w,abort:a,aborted:!1};return g}function i(){return new r}function a(){(u.api||u.feature)&&(l.aborted=!0,u=l.backlog={})}var s="nr@context",c=t("gos"),f=t(15),u={},d={},l=n.exports=o();l.backlog=u},{}],gos:[function(t,n,e){function r(t,n,e){if(o.call(t,n))return t[n];var r=e();if(Object.defineProperty&&Object.keys)try{return Object.defineProperty(t,n,{value:r,writable:!0,enumerable:!1}),r}catch(i){}return t[n]=r,r}var o=Object.prototype.hasOwnProperty;n.exports=r},{}],handle:[function(t,n,e){function r(t,n,e,r){o.buffer([t],r),o.emit(t,n,e)}var o=t("ee").get("handle");n.exports=r,r.ee=o},{}],id:[function(t,n,e){function r(t){var n=typeof t;return!t||"object"!==n&&"function"!==n?-1:t===window?0:a(t,i,function(){return o++})}var o=1,i="nr@id",a=t("gos");n.exports=r},{}],loader:[function(t,n,e){function r(){if(!x++){var t=b.info=NREUM.info,n=l.getElementsByTagName("script")[0];if(setTimeout(u.abort,3e4),!(t&&t.licenseKey&&t.applicationID&&n))return u.abort();f(y,function(n,e){t[n]||(t[n]=e)}),c("mark",["onload",a()+b.offset],null,"api");var e=l.createElement("script");e.src="https://"+t.agent,n.parentNode.insertBefore(e,n)}}function o(){"complete"===l.readyState&&i()}function i(){c("mark",["domContent",a()+b.offset],null,"api")}function a(){return E.exists&&performance.now?Math.round(performance.now()):(s=Math.max((new Date).getTime(),s))-b.offset}var s=(new Date).getTime(),c=t("handle"),f=t(15),u=t("ee"),d=window,l=d.document,p="addEventListener",h="attachEvent",m=d.XMLHttpRequest,w=m&&m.prototype;NREUM.o={ST:setTimeout,CT:clearTimeout,XHR:m,REQ:d.Request,EV:d.Event,PR:d.Promise,MO:d.MutationObserver};var v=""+location,y={beacon:"bam.nr-data.net",errorBeacon:"bam.nr-data.net",agent:"js-agent.newrelic.com/nr-1026.min.js"},g=m&&w&&w[p]&&!/CriOS/.test(navigator.userAgent),b=n.exports={offset:s,now:a,origin:v,features:{},xhrWrappable:g};t(12),l[p]?(l[p]("DOMContentLoaded",i,!1),d[p]("load",r,!1)):(l[h]("onreadystatechange",o),d[h]("onload",r)),c("mark",["firstbyte",s],null,"api");var x=0,E=t(17)},{}]},{},["loader",2,10,4,3]);</script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+
+  <!-- Favicons -->
+  <link rel="shortcut icon" href="https://www.topcoder.com/wp-content/themes/tcs-responsive/favicon.ico">
+
+    <!-- External JS -->
+  <!--[if lt IE 9]>
+  <script src="/js/html5shiv.js" type="text/javascript"></script>
+  <script src="/js/respond.min.js" type="text/javascript"></script>
+  <script src="/js/modernizr.js" type="text/javascript"></script>
+  <link rel = "stylesheet" href = "/css/ie.css ? v = 201407282" / >
+  <![endif]-->
+  <script type="text/javascript">
+    var wpUrl = "https://www.topcoder.com";
+    var tcApiRUL = 'https://api.topcoder.com/v2';
+    var myFiltersURL = '//lc1-user-settings-service.herokuapp.com';
+    var siteURL = 'https://www.topcoder.com';
+    var communityURL = '//community.topcoder.com';
+    var base_url = 'https://www.topcoder.com/wp-content/themes/tcs-responsive';
+    var stylesheet_dir = 'https://www.topcoder.com/wp-content/themes/tcs-responsive/css';
+    var autoRegister = '';
+    var timezone_string = "America/New_York";
+    var challengeType;
+    var cbApiURL = 'https://coderbits.com';
+  </script>
+
+<link rel="stylesheet" id="layerslider-css" href="./Binary Search – topcoder_files/layerslider.css" type="text/css" media="all">
+<link rel="stylesheet" id="ls-google-fonts-css" href="./Binary Search – topcoder_files/css" type="text/css" media="all">
+<link rel="stylesheet" id="tchook-style-css" href="./Binary Search – topcoder_files/tcapi.css" type="text/css" media="all">
+<link rel="stylesheet" id="tchook-selectyze-style-css" href="./Binary Search – topcoder_files/Selectyze.jquery.css" type="text/css" media="all">
+<link rel="stylesheet" id="advanced-responsive-video-embedder-css" href="./Binary Search – topcoder_files/advanced-responsive-video-embedder-public.css" type="text/css" media="all">
+<link rel="stylesheet" id="responsive-lightbox-fancybox-css" href="./Binary Search – topcoder_files/jquery.fancybox-1.3.4.css" type="text/css" media="all">
+<link rel="stylesheet" id="wp-syntax-css-css" href="./Binary Search – topcoder_files/wp-syntax.css" type="text/css" media="all">
+<link rel="stylesheet" id="default-css" href="./Binary Search – topcoder_files/default.min.css" type="text/css" media="all">
+<link rel="stylesheet" id="page-list-style-css" href="./Binary Search – topcoder_files/page-list.css" type="text/css" media="all">
+<!-- This site uses the Yoast Google Analytics plugin v5.2.7 - Universal enabled - https://yoast.com/wordpress/plugins/google-analytics/ -->
+<script type="text/javascript">
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','//www.google-analytics.com/analytics.js','__gaTracker');
+
+	__gaTracker('create', 'UA-6340959-1', 'auto');
+	__gaTracker('set', 'forceSSL', true);
+	__gaTracker('require', 'displayfeatures');
+	__gaTracker('send','pageview');
+
+</script>
+<!-- / Yoast Google Analytics --><script type="text/javascript" src="./Binary Search – topcoder_files/greensock.js.download"></script>
+<script type="text/javascript" src="./Binary Search – topcoder_files/jquery.min.js.download"></script>
+<script>window.jQuery || document.write('<script src="https://www.topcoder.com/wp-content/themes/tcs-responsive/js/vendor/jquery/jquery.js"><\/script>')</script>
+<script type="text/javascript" src="./Binary Search – topcoder_files/layerslider.kreaturamedia.jquery.js.download"></script>
+<script type="text/javascript" src="./Binary Search – topcoder_files/layerslider.transitions.js.download"></script>
+<script type="text/javascript" src="./Binary Search – topcoder_files/jquery.fancybox-1.3.4.js.download"></script>
+<script type="text/javascript">
+/* <![CDATA[ */
+var rlArgs = {"script":"fancybox","selector":"lightbox","customEvents":"","activeGalleries":"0","modal":"0","showOverlay":"1","showCloseButton":"1","enableEscapeButton":"1","hideOnOverlayClick":"1","hideOnContentClick":"0","cyclic":"0","showNavArrows":"1","autoScale":"1","scrolling":"yes","centerOnScroll":"1","opacity":"1","overlayOpacity":"70","overlayColor":"#666","titleShow":"1","titlePosition":"outside","transitions":"fade","easings":"swing","speeds":"300","changeSpeed":"300","changeFade":"100","padding":"5","margin":"5","videoWidth":"1080","videoHeight":"720"};
+/* ]]> */
+</script>
+<script type="text/javascript" src="./Binary Search – topcoder_files/front.js.download"></script>
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="https://www.topcoder.com/xmlrpc.php?rsd">
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="https://www.topcoder.com/wp-includes/wlwmanifest.xml"> 
+<link rel="prev" title="Representation of Integers and Reals: Section 2" href="https://www.topcoder.com/community/data-science/data-science-tutorials/representation-of-integers-and-reals-section-2/">
+<link rel="next" title="A Bit of Fun: Fun with Bits" href="https://www.topcoder.com/community/data-science/data-science-tutorials/a-bit-of-fun-fun-with-bits/">
+<meta name="generator" content="WordPress 3.9.1">
+<link rel="shortlink" href="https://www.topcoder.com/?p=15638">
+<meta name="google-site-verification" content="UA-6340959-1">
+<meta name="google-publisher-plugin-pagetype" content="page"><meta name="google-site-verification" content="13nbPcn6VRWD2zdq-CEG0LbT00aOwSyhofA3OAEmbEI"><meta name="google-site-verification" content="13nbPcn6VRWD2zdq-CEG0LbT00aOwSyhofA3OAEmbEI"><meta name="google-site-verification" content="13nbPcn6VRWD2zdq-CEG0LbT00aOwSyhofA3OAEmbEI"><meta name="google-site-verification" content="p0OVxcrMQ2HYDsGgaRLRS9bsXuXmjKVcTGZnXNphIUI">	<style type="text/css">.recentcomments a{display:inline !important;padding:0 !important;margin:0 !important;}</style>
+  <style>
+    .btn, a.btn, .blogCategoryMenu a, .searchBox input, .subscribeBox input {
+      behavior: url("https://www.topcoder.com/wp-content/themes/tcs-responsive/css/PIE.htc");
+    }
+  </style>
+
+</head>
+
+<body style="">
+
+
+<div id="wrapper" class="tcssoUsingJS">
+<div class="ng-header-bootstrap ng-scope"><div class="header-wrapper" ng-class="{&#39;menu-visible&#39;: main.menuVisible}">
+  <header class="top-header">
+    <a href="https://www.topcoder.com/" class="logo-link"></a>
+    <div class="show-small mobile-heading"><!-- ngIf: main.menuVisible -->
+      <!-- ngIf: !main.menuVisible --><button type="button" ng-if="!main.menuVisible" ng-click="main.menuVisible = true" class="btn-open-menu ng-scope">Menu</button><!-- end ngIf: !main.menuVisible -->
+      <!-- ngIf: main.menuVisible -->
+      <!-- ngIf: !main.menuVisible --><div data-ng-if="!main.menuVisible" class="user-link ng-scope">
+        <!-- ngIf: vm.isAuth -->
+        <!-- ngIf: !vm.isAuth --><a ng-if="!vm.isAuth" ng-click="vm.join()" class="tc-btn tc-btn-s btn-link ng-scope">JOIN</a><!-- end ngIf: !vm.isAuth -->
+        <!-- ngIf: !vm.isAuth --><a ng-if="!vm.isAuth" ng-click="vm.login()" class="tc-btn tc-btn-s tc-btn-ghost btn-link tc-header-login ng-scope">LOG IN</a><!-- end ngIf: !vm.isAuth -->
+      </div><!-- end ngIf: !main.menuVisible -->
+    </div>
+   <ul class="main-menu">
+      <li class="menu-item search-wrapper">
+        <div class="menu-item-header show-large">
+          <button type="button" class="btn-expand-search search-icon"></button>
+        </div>
+        <div class="submenu">
+          <input class="member-search-old-nav ng-pristine ng-valid" type="text" placeholder="find members by username or skill" ng-model="vm.searchTerm" ng-keyup="vm.checkSubmit($event)">
+        </div>
+      </li>
+      <li ng-switch="vm.isAuth" ng-class="{&#39;anonymous-menu&#39;: !vm.isAuth}" class="menu-item link-group user-menu anonymous-menu">
+        <!-- ngSwitchWhen: true -->
+        <!-- ngSwitchWhen: false --><div ng-switch-when="false" class="menu-item-header ng-scope">
+          <a ng-click="vm.join()" class="tc-btn tc-btn-s btn-link">JOIN</a>
+          <a ng-click="vm.login()" class="tc-btn tc-btn-s tc-btn-ghost btn-link tc-header-login">LOG IN</a>
+        </div>
+      </li>
+      <!-- ngRepeat: header in vm.menuHeaders --><li ng-repeat="header in vm.menuHeaders" class="menu-item link-group ng-scope">
+        <div class="menu-item-header ng-binding">compete</div>
+        <ul class="submenu">
+          <!-- ngRepeat: item in vm.menuLinks[header] --><li class="submenu-item ng-scope" ng-repeat="item in vm.menuLinks[header]">
+            <a ng-click="$event.stopPropagation();" ng-href="/challenges/" ng-class="{ &#39;active&#39;: vm.isActive(item.href) }" class="menu-link" target="_self" href="https://www.topcoder.com/challenges/">
+              <img ng-src="/mf/i/nav/rocket.svg" class="menu-icon" src="./Binary Search – topcoder_files/rocket.svg">
+              <div class="menu-text ng-binding">ALL CHALLENGES</div>
+            </a>
+          </li><!-- end ngRepeat: item in vm.menuLinks[header] --><li class="submenu-item ng-scope" ng-repeat="item in vm.menuLinks[header]">
+            <a ng-click="$event.stopPropagation();" ng-href="https://arena.topcoder.com" ng-class="{ &#39;active&#39;: vm.isActive(item.href) }" class="menu-link" target="_blank" href="https://arena.topcoder.com/">
+              <img ng-src="/mf/i/nav/track-cp.svg" class="menu-icon" src="./Binary Search – topcoder_files/track-cp.svg">
+              <div class="menu-text ng-binding">COMPETITIVE PROGRAMMING</div>
+            </a>
+          </li><!-- end ngRepeat: item in vm.menuLinks[header] -->
+        </ul>
+      </li><!-- end ngRepeat: header in vm.menuHeaders --><li ng-repeat="header in vm.menuHeaders" class="menu-item link-group ng-scope">
+        <div class="menu-item-header ng-binding">learn</div>
+        <ul class="submenu">
+          <!-- ngRepeat: item in vm.menuLinks[header] --><li class="submenu-item ng-scope" ng-repeat="item in vm.menuLinks[header]">
+            <a ng-click="$event.stopPropagation();" ng-href="/getting-started/" ng-class="{ &#39;active&#39;: vm.isActive(item.href) }" class="menu-link" target="_self" href="https://www.topcoder.com/getting-started/">
+              <img ng-src="/mf/i/nav/rocket.svg" class="menu-icon" src="./Binary Search – topcoder_files/rocket.svg">
+              <div class="menu-text ng-binding">GETTING STARTED</div>
+            </a>
+          </li><!-- end ngRepeat: item in vm.menuLinks[header] --><li class="submenu-item ng-scope" ng-repeat="item in vm.menuLinks[header]">
+            <a ng-click="$event.stopPropagation();" ng-href="/community/design/" ng-class="{ &#39;active&#39;: vm.isActive(item.href) }" class="menu-link" target="_self" href="https://www.topcoder.com/community/design/">
+              <img ng-src="/mf/i/nav/book-design.svg" class="menu-icon" src="./Binary Search – topcoder_files/book-design.svg">
+              <div class="menu-text ng-binding">DESIGN</div>
+            </a>
+          </li><!-- end ngRepeat: item in vm.menuLinks[header] --><li class="submenu-item ng-scope" ng-repeat="item in vm.menuLinks[header]">
+            <a ng-click="$event.stopPropagation();" ng-href="/community/development/" ng-class="{ &#39;active&#39;: vm.isActive(item.href) }" class="menu-link" target="_self" href="https://www.topcoder.com/community/development/">
+              <img ng-src="/mf/i/nav/book-develop.svg" class="menu-icon" src="./Binary Search – topcoder_files/book-develop.svg">
+              <div class="menu-text ng-binding">DEVELOPMENT</div>
+            </a>
+          </li><!-- end ngRepeat: item in vm.menuLinks[header] --><li class="submenu-item ng-scope" ng-repeat="item in vm.menuLinks[header]">
+            <a ng-click="$event.stopPropagation();" ng-href="/community/data-science/" ng-class="{ &#39;active&#39;: vm.isActive(item.href) }" class="menu-link" target="_self" href="https://www.topcoder.com/community/data-science/">
+              <img ng-src="/mf/i/nav/book-data.svg" class="menu-icon" src="./Binary Search – topcoder_files/book-data.svg">
+              <div class="menu-text ng-binding">DATA SCIENCE</div>
+            </a>
+          </li><!-- end ngRepeat: item in vm.menuLinks[header] --><li class="submenu-item ng-scope" ng-repeat="item in vm.menuLinks[header]">
+            <a ng-click="$event.stopPropagation();" ng-href="/community/competitive-programming/" ng-class="{ &#39;active&#39;: vm.isActive(item.href) }" class="menu-link" target="_self" href="https://www.topcoder.com/community/competitive-programming/">
+              <img ng-src="/mf/i/nav/book-cp.svg" class="menu-icon" src="./Binary Search – topcoder_files/book-cp.svg">
+              <div class="menu-text ng-binding">COMPETITIVE PROGRAMMING</div>
+            </a>
+          </li><!-- end ngRepeat: item in vm.menuLinks[header] -->
+        </ul>
+      </li><!-- end ngRepeat: header in vm.menuHeaders --><li ng-repeat="header in vm.menuHeaders" class="menu-item link-group ng-scope">
+        <div class="menu-item-header ng-binding">community</div>
+        <ul class="submenu">
+          <!-- ngRepeat: item in vm.menuLinks[header] --><li class="submenu-item ng-scope" ng-repeat="item in vm.menuLinks[header]">
+            <a ng-click="$event.stopPropagation();" ng-href="/community/members/" ng-class="{ &#39;active&#39;: vm.isActive(item.href) }" class="menu-link" target="_self" href="https://www.topcoder.com/community/members/">
+              <img ng-src="/mf/i/nav/members.svg" class="menu-icon" src="./Binary Search – topcoder_files/members.svg">
+              <div class="menu-text ng-binding">OVERVIEW</div>
+            </a>
+          </li><!-- end ngRepeat: item in vm.menuLinks[header] --><li class="submenu-item ng-scope" ng-repeat="item in vm.menuLinks[header]">
+            <a ng-click="$event.stopPropagation();" ng-href="/tco" ng-class="{ &#39;active&#39;: vm.isActive(item.href) }" class="menu-link" target="_self" href="https://www.topcoder.com/tco">
+              <img ng-src="/mf/i/nav/tco-generic.svg" class="menu-icon" src="./Binary Search – topcoder_files/tco-generic.svg">
+              <div class="menu-text ng-binding">TCO</div>
+            </a>
+          </li><!-- end ngRepeat: item in vm.menuLinks[header] --><li class="submenu-item ng-scope" ng-repeat="item in vm.menuLinks[header]">
+            <a ng-click="$event.stopPropagation();" ng-href="/community/member-programs/" ng-class="{ &#39;active&#39;: vm.isActive(item.href) }" class="menu-link" target="_self" href="https://www.topcoder.com/community/member-programs/">
+              <img ng-src="/mf/i/nav/programs.svg" class="menu-icon" src="./Binary Search – topcoder_files/programs.svg">
+              <div class="menu-text ng-binding">PROGRAMS</div>
+            </a>
+          </li><!-- end ngRepeat: item in vm.menuLinks[header] --><li class="submenu-item ng-scope" ng-repeat="item in vm.menuLinks[header]">
+            <a ng-click="$event.stopPropagation();" ng-href="https://apps.topcoder.com/forums/" ng-class="{ &#39;active&#39;: vm.isActive(item.href) }" class="menu-link" target="_self" href="https://apps.topcoder.com/forums/">
+              <img ng-src="/mf/i/nav/forums.svg" class="menu-icon" src="./Binary Search – topcoder_files/forums.svg">
+              <div class="menu-text ng-binding">FORUMS</div>
+            </a>
+          </li><!-- end ngRepeat: item in vm.menuLinks[header] --><li class="submenu-item ng-scope" ng-repeat="item in vm.menuLinks[header]">
+            <a ng-click="$event.stopPropagation();" ng-href="/community/statistics/" ng-class="{ &#39;active&#39;: vm.isActive(item.href) }" class="menu-link" target="_self" href="https://www.topcoder.com/community/statistics/">
+              <img ng-src="/mf/i/nav/statistics.svg" class="menu-icon" src="./Binary Search – topcoder_files/statistics.svg">
+              <div class="menu-text ng-binding">STATISTICS</div>
+            </a>
+          </li><!-- end ngRepeat: item in vm.menuLinks[header] --><li class="submenu-item ng-scope" ng-repeat="item in vm.menuLinks[header]">
+            <a ng-click="$event.stopPropagation();" ng-href="/community/events/" ng-class="{ &#39;active&#39;: vm.isActive(item.href) }" class="menu-link" target="_self" href="https://www.topcoder.com/community/events/">
+              <img ng-src="/mf/i/nav/events.svg" class="menu-icon" src="./Binary Search – topcoder_files/events.svg">
+              <div class="menu-text ng-binding">EVENTS</div>
+            </a>
+          </li><!-- end ngRepeat: item in vm.menuLinks[header] --><li class="submenu-item ng-scope" ng-repeat="item in vm.menuLinks[header]">
+            <a ng-click="$event.stopPropagation();" ng-href="/blog/" ng-class="{ &#39;active&#39;: vm.isActive(item.href) }" class="menu-link" target="_self" href="https://www.topcoder.com/blog/">
+              <img ng-src="/mf/i/nav/blog.svg" class="menu-icon" src="./Binary Search – topcoder_files/blog.svg">
+              <div class="menu-text ng-binding">BLOG</div>
+            </a>
+          </li><!-- end ngRepeat: item in vm.menuLinks[header] -->
+        </ul>
+      </li><!-- end ngRepeat: header in vm.menuHeaders -->
+    </ul>
+  </header>
+</div>
+</div>
+<!-- Bugfix: I-108496 hidden element needed for non-firefox browsers to detect cache-persist status of page, used for above code to display member details -->
+<input type="hidden" id="cache-persist" value="1">
+  <!-- /#header -->
+
+<script type="text/javascript">
+	var siteurl = "https://www.topcoder.com";
+</script>
+<div class="content">
+	<div id="main">
+
+		<!-- Start Overview Page-->
+		<div class="pageTitleWrapper">
+			<div class="pageTitle container">
+				<h2 class="overviewPageTitle BinarySearchPageTitle">Binary Search</h2>
+			</div>
+		</div>
+
+
+
+
+		<article id="mainContent" class="splitLayout overviewPage">
+			<div class="container">
+				<div class="rightSplit  grid-3-3">
+					<div class="mainStream postContent pageContent grid-2-3">
+
+						<p>By&nbsp;<strong><a class="tc_coder coder" href="https://www.topcoder.com/member-profile/lovro" style="color: #EE0000">lovro</a></strong>– <em>TopCoder Member</em>
+<br><a href="http://apps.topcoder.com/forums/?module=ThreadList&amp;forumID=505895">Discuss this article in the forums</a></p>
+
+<p>Binary search is one of the fundamental algorithms in computer science. In
+order to explore it, we’ll first build up a theoretical backbone, then use that
+to implement the algorithm properly and avoid those nasty off-by-one errors
+everyone’s been talking about.</p>
+
+<p><span class="bodySubtitle">Finding a value in a sorted sequence</span><br>
+In its simplest form, binary search is used to quickly find a value in a sorted
+sequence (consider a sequence an ordinary array for now). We’ll call the sought
+value the <i>target</i> value for clarity. Binary search maintains a contiguous
+subsequence of the starting sequence where the target value is surely located.
+This is called the <i>search space</i>. The search space is initially the
+entire sequence. At each step, the algorithm compares the median value in the
+search space to the target value. Based on the comparison and because the
+sequence is sorted, it can then eliminate half of the search space. By doing
+this repeatedly, it will eventually be left with a search space consisting of a
+single element, the target value.</p>
+
+<p>For example, consider the following sequence of integers sorted in ascending
+order and say we are looking for the number 55:</p>
+
+
+
+<table align="center" cellpadding="6" cellspacing="2" class="formFrame" style="visibility: visible;" width="500">
+    <tbody>
+        <tr class="GAtableText">
+            <td align="center">0</td>
+
+            <td align="center">5</td>
+
+            <td align="center">13</td>
+
+            <td align="center">19</td>
+
+            <td align="center">22</td>
+
+            <td align="center">41</td>
+
+            <td align="center">55</td>
+
+            <td align="center">68</td>
+
+            <td align="center">72</td>
+
+            <td align="center">81</td>
+
+            <td align="center">98</td>
+        </tr>
+    </tbody>
+</table>
+
+
+
+<p>We are interested in the location of the target value in the sequence so we
+will represent the search space as indices into the sequence. Initially, the
+search space contains indices 1 through 11. Since the search space is really an
+interval, it suffices to store just two numbers, the low and high indices. As
+described above, we now choose the median value, which is the value at index 6
+(the midpoint between 1 and 11): this value is 41 and it is smaller than the
+target value. From this we conclude not only that the element at index 6 is not
+the target value, but also that no element at indices between 1 and 5 can be
+the target value, because all elements at these indices are smaller than 41,
+which is smaller than the target value. This brings the search space down to
+indices 7 through 11:</p>
+
+
+
+<table align="center" cellpadding="6" cellspacing="2" class="formFrame" style="visibility: visible;" width="200">
+    <tbody>
+        <tr class="GAtableText">
+            <td align="center">55</td>
+
+            <td align="center">68</td>
+
+            <td align="center">72</td>
+
+            <td align="center">81</td>
+
+            <td align="center">98</td>
+        </tr>
+    </tbody>
+</table>
+
+
+
+<p>Proceeding in a similar fashion, we chop off the second half of the search
+space and are left with:</p>
+
+
+
+<table align="center" cellpadding="6" cellspacing="2" class="formFrame" style="visibility: visible;" width="80">
+    <tbody>
+        <tr class="GAtableText">
+            <td align="center">55</td>
+
+            <td align="center">68</td>
+        </tr>
+    </tbody>
+</table>
+
+
+
+<p>Depending on how we choose the median of an even number of elements we will
+either find 55 in the next step or chop off 68 to get a search space of only
+one element. Either way, we conclude that the index where the target value is
+located is 7.</p>
+
+<p>If the target value was not present in the sequence, binary search would
+empty the search space entirely. This condition is easy to check and handle.
+Here is some code to go with the description:</p>
+<pre class="code">binary_search(A, target):
+   lo = 1, hi = size(A)
+   while lo &lt;= hi:
+      mid = lo + (hi-lo)/2
+      if A[mid] == target:
+         return mid            
+      else if A[mid] &lt; target: 
+         lo = mid+1
+      else:
+         hi = mid-1
+            
+   // target was not found
+</pre><span class="bodySubtitle">Complexity</span><br>
+Since each comparison binary search uses halves the search space, we can assert
+and easily prove that binary search will never use more than (in big-oh
+notation) <i>O</i>(log <i>N</i>) comparisons to find the target value.
+
+
+
+<p>The logarithm is an awfully slowly growing function. In case you’re not
+aware of just how efficient binary search is, consider looking up a name in a
+phone book containing a million names. Binary search lets you systematically
+find any given name using at most 21 comparisons. If you could manage a list
+containing all the people in the world sorted by name, you could find any
+person in less than 35 steps. This may not seem feasible or useful at the
+moment, but we’ll soon fix that.</p>
+
+<p>Note that this assumes that we have random access to the sequence. Trying to
+use binary search on a container such as a linked list makes little sense and
+it is better use a plain linear search instead.</p>
+
+<p><span class="bodySubtitle">Binary search in standard libraries</span><br>
+C++’s Standard Template Library implements binary search in algorithms
+lower_bound, upper_bound, binary_search and equal_range, depending exactly on
+what you need to do. Java has a built-in Arrays.binary_search method for arrays
+and the .NET Framework has Array.BinarySearch.</p>
+
+<p>You’re best off using library functions whenever possible, since, as you’ll
+see, implementing binary search on your own can be tricky.</p>
+
+<p><span class="bodySubtitle">Beyond arrays: the discrete binary
+search</span><br>
+This is where we start to abstract binary search. A sequence (array) is really
+just a function which associates integers (indices) with the corresponding
+values. However, there is no reason to restrict our usage of binary search to
+tangible sequences. In fact, we can use the same algorithm described above on
+any monotonic function <i>f</i> whose domain is the set of integers. The only
+difference is that we replace an array lookup with a function evaluation: we
+are now looking for some x such that f(x) is equal to the target value. The
+search space is now more formally a subinterval of the domain of the function,
+while the target value is an element of the codomain. The power of binary
+search begins to show now: not only do we need at most <i>O</i>(log <i>N</i>)
+comparisons to find the target value, but we also do not need to evaluate the
+function more than that many times. Additionally, in this case we aren’t
+restricted by practical quantities such as available memory, as was the case
+with arrays.</p>
+
+<p><span class="bodySubtitle">Taking it further: the main theorem</span><br>
+When you encounter a problem which you think could be solved by applying binary
+search, you need some way of proving it will work. I will now present another
+level of abstraction which will allow us to solve more problems, make proving
+binary search solutions very easy and also help implement them. This part is a
+tad formal, but don’t get discouraged, it’s not that bad.</p>
+
+<p>Consider a predicate <i>p</i> defined over some ordered set <i>S</i> (the
+search space). The search space consists of candidate solutions to the problem.
+In this article, a predicate is a function which returns a boolean value, true
+or false (we’ll also use <i>yes</i> and <i>no</i> as boolean values). We use
+the predicate to verify if a candidate solution is legal (does not violate some
+constraint) according to the definition of the problem.</p>
+
+<p>What we can call the <i>main theorem</i> states that <b>binary search can be
+used if and only if for all x in <i>S</i>, <i>p</i>(x) implies <i>p</i>(y) for
+all y &gt; x</b>. This property is what we use when we discard the second half
+of the search space. It is equivalent to saying that ¬<i>p</i>(x) implies
+¬<i>p</i>(y) for all y &lt; x (the symbol ¬ denotes the logical not operator),
+which is what we use when we discard the first half of the search space. The
+theorem can easily be proven, although I’ll omit the proof here to reduce
+clutter.</p>
+
+<p>Behind the cryptic mathematics I am really stating that if you had a yes or
+no question (the predicate), getting a <i>yes</i> answer for some potential
+solution x means that you’d also get a <i>yes</i> answer for any element after
+x. Similarly, if you got a <i>no</i> answer, you’d get a <i>no</i> answer for
+any element before x. As a consequence, if you were to ask the question for
+each element in the search space (in order), you would get a series of
+<i>no</i> answers followed by a series of <i>yes</i> answers.</p>
+
+<p>Careful readers may note that binary search can also be used when a
+predicate yields a series of <i>yes</i> answers followed by a series of
+<i>no</i> answers. This is true and complementing that predicate will satisfy
+the original condition. For simplicity we’ll deal only with predicates
+described in the theorem.</p>
+
+<p>If the condition in the main theorem is satisfied, we can use binary search
+to find the smallest legal solution, i.e. the smallest x for which <i>p</i>(x)
+is true. The first part of devising a solution based on binary search is
+designing a predicate which can be evaluated and for which it makes sense to
+use binary search: we need to choose what the algorithm should find. We can
+have it find either the <i>first x for which p(x) is true</i> or the <i>last x
+for which p(x) is false</i>. The difference between the two is only slight, as
+you will see, but it is necessary to settle on one. For starters, let us seek
+the first <i>yes</i> answer (first option).</p>
+
+<p>The second part is proving that binary search can be applied to the
+predicate. This is where we use the main theorem, verifying that the conditions
+laid out in the theorem are satisfied. The proof doesn’t need to be overly
+mathematical, you just need to convince yourself that <i>p</i>(x) implies
+<i>p</i>(y) for all y &gt; x or that ¬<i>p</i>(x) implies ¬<i>p</i>(y) for all
+y &lt; x. This can often be done by applying common sense in a sentence or
+two.</p>
+
+<p>When the domain of the predicate are the integers, it suffices to prove that
+<i>p</i>(x) implies <i>p</i>(x+1) or that ¬<i>p</i>(x) implies ¬<i>p</i>(x-1),
+the rest then follows by induction.</p>
+
+<p>These two parts are most often interleaved: when we think a problem can be
+solved by binary search, we aim to design the predicate so that it satisfies
+the condition in the main theorem.</p>
+
+<p>One might wonder why we choose to use this abstraction rather than the
+simpler-looking algorithm we’ve used so far. This is because many problems
+can’t be modeled as searching for a particular value, but it’s possible to
+define and evaluate a predicate such as <i>“Is there an assignment which costs
+x or less?”</i>, when we’re looking for some sort of assignment with the lowest
+cost. For example, the usual traveling salesman problem (TSP) looks for the
+<i>cheapest round-trip which visits every city exactly once</i>. Here, the
+<i>target value</i> is not defined as such, but we can define a predicate
+<i>“Is there a round-trip which costs x or less?”</i> and then apply binary
+search to find the smallest x which satisfies the predicate. This is called
+<i>reducing</i> the original problem to a decision (yes/no) problem.
+Unfortunately, we know of no way of efficiently evaluating this particular
+predicate and so the TSP problem isn’t easily solved by binary search, but many
+optimization problems are.</p>
+
+<p>Let us now convert the simple binary search on sorted arrays described in
+the introduction to this abstract definition. First, let’s rephrase the problem
+as: <i>“Given an array A and a target value, return the index of the first
+element in A equal to or greater than the target value.”</i> Incidentally, this
+is more or less how lower_bound behaves in C++.</p>
+
+<p>We want to find the index of the target value, thus any index into the array
+is a candidate solution. The search space <i>S</i> is the set of all candidate
+solutions, thus an interval containing all indices. Consider the predicate
+<i>“Is A[x] greater than or equal to the target value?”</i>. If we were to find
+the first x for which the predicate says <i>yes</i>, we’d get exactly what
+decided we were looking for in the previous paragraph.</p>
+
+<p>The condition in the main theorem is satisfied because the array is sorted
+in ascending order: if A[x] is greater than or equal to the target value, all
+elements after it are surely also greater than or equal to the target
+value.</p>
+
+<p>If we take the sample sequence from before:</p>
+
+
+
+<table align="center" cellpadding="6" cellspacing="2" class="formFrame" style="visibility: visible;" width="500">
+    <tbody>
+        <tr class="GAtableText">
+            <td align="center">0</td>
+
+            <td align="center">5</td>
+
+            <td align="center">13</td>
+
+            <td align="center">19</td>
+
+            <td align="center">22</td>
+
+            <td align="center">41</td>
+
+            <td align="center">55</td>
+
+            <td align="center">68</td>
+
+            <td align="center">72</td>
+
+            <td align="center">81</td>
+
+            <td align="center">98</td>
+        </tr>
+    </tbody>
+</table>
+
+
+
+<p>With the search space (indices):</p>
+
+
+
+<table align="center" cellpadding="6" cellspacing="2" class="formFrame" style="visibility: visible;" width="500">
+    <tbody>
+        <tr class="GAtableText">
+            <td align="center">1</td>
+
+            <td align="center">2</td>
+
+            <td align="center">3</td>
+
+            <td align="center">4</td>
+
+            <td align="center">5</td>
+
+            <td align="center">6</td>
+
+            <td align="center">7</td>
+
+            <td align="center">8</td>
+
+            <td align="center">9</td>
+
+            <td align="center">10</td>
+
+            <td align="center">11</td>
+        </tr>
+    </tbody>
+</table>
+
+
+
+<p>And apply our predicate (with a target value of 55) to it we get:</p>
+
+
+
+<table align="center" cellpadding="6" cellspacing="2" class="formFrame" style="visibility: visible;" width="500">
+    <tbody>
+        <tr class="GAtableText">
+            <td align="center">no</td>
+
+            <td align="center">no</td>
+
+            <td align="center">no</td>
+
+            <td align="center">no</td>
+
+            <td align="center">no</td>
+
+            <td align="center">no</td>
+
+            <td align="center">yes</td>
+
+            <td align="center">yes</td>
+
+            <td align="center">yes</td>
+
+            <td align="center">yes</td>
+
+            <td align="center">yes</td>
+        </tr>
+    </tbody>
+</table>
+
+
+
+<p>This is a series of <i>no</i> answers followed by a series of <i>yes</i>
+answers, as we were expecting. Notice how index 7 (where the target value is
+located) is the first for which the predicate yields <i>yes</i>, so this is
+what our binary search will find.</p>
+
+<p><span class="bodySubtitle">Implementing the discrete algorithm</span><br>
+One important thing to remember before beginning to code is to settle on what
+the two numbers you maintain (lower and upper bound) mean. A likely answer is
+<i>a closed interval which surely contains the first x for which p(x) is
+true</i>. All of your code should then be directed at maintaining this
+invariant: it tells you how to properly move the bounds, which is where a bug
+can easily find its way in your code, if you’re not careful.</p>
+
+<p>Another thing you need to be careful with is how high to set the bounds. By
+“high” I really mean “wide” since there are two bounds to worry about. Every so
+often it happens that a coder concludes during coding that the bounds he or she
+set are wide enough, only to find a counterexample during intermission (when
+it’s too late). Unfortunately, little helpful advice can be given here other
+than to always double- and triple-check your bounds! Also, since execution time
+increases logarithmically with the bounds, you can always set them higher, as
+long as it doesn’t break the evaluation of the predicate. Keep your eye out for
+overflow errors all around, especially in calculating the median.</p>
+
+<p>Now we finally get to the code which implements binary search as described
+in this and the previous section:</p>
+<pre class="code">binary_search(lo, hi, p):
+   while lo &lt; hi:
+      mid = lo + (hi-lo)/2
+      if p(mid) == true:
+         hi = mid
+      else:
+         lo = mid+1
+          
+   if p(lo) == false:
+      complain                // p(x) is false for all x in S!
+      
+   return lo         // lo is the least x for which p(x) is true
+</pre>The two crucial lines are hi = mid and lo = mid+1. When <i>p</i>(mid) is
+true, we can discard the second half of the search space, since the predicate
+is true for all elements in it (by the main theorem). However, we can not
+discard mid itself, since it may well be the first element for which <i>p</i>
+is true. This is why moving the upper bound to mid is as aggressive as we can
+do without introducing bugs.
+
+
+
+<p>In a similar vein, if <i>p</i>(mid) is false, we can discard the first half
+of the search space, but this time including mid. <i>p</i>(mid) is false so we
+don’t need it in our search space. This effectively means we can move the lower
+bound to mid+1.</p>
+
+<p>If we wanted to find the last x for which <i>p</i>(x) is false, we would
+devise (using a similar rationale as above) something like:</p>
+<pre class="code">// warning: there is a nasty bug in this snippet!
+binary_search(lo, hi, p):
+   while lo &lt; hi:
+      mid = lo + (hi-lo)/2    // note: division truncates
+      if p(mid) == true:
+         hi = mid-1
+      else:
+         lo = mid
+          
+   if p(lo) == true:
+      complain                // p(x) is true for all x in S!
+      
+   return lo         // lo is the greatest x for which p(x) is false
+</pre>You can verify that this satisfies our condition that the element we’re
+looking for always be present in the interval (lo, hi). However, there is
+another problem. Consider what happens when you run this code on some search
+space for which the predicate gives:
+
+
+
+
+
+<table align="center" cellpadding="6" cellspacing="2" class="formFrame" style="visibility: visible;" width="80">
+    <tbody>
+        <tr class="GAtableText">
+            <td align="center">no</td>
+
+            <td align="center">yes</td>
+        </tr>
+    </tbody>
+</table>
+
+
+
+<p>The code will get stuck in a loop. It will always select the first element
+as mid, but then will not move the lower bound because it wants to keep the
+<i>no</i> in its search space. The solution is to change mid = lo + (hi-lo)/2
+to mid = lo + (hi-lo+1)/2, i.e. so that it rounds up instead of down. There are
+other ways of getting around the problem, but this one is possibly the
+cleanest. Just remember to <b>always</b> test your code on a two-element set
+where the predicate is false for the first element and true for the second.</p>
+
+<p>You may also wonder as to why mid is calculated using mid = lo + (hi-lo)/2
+instead of the usual mid = (lo+hi)/2. This is to avoid another potential
+rounding bug: in the first case, we want the division to always round down,
+towards the lower bound. But division truncates, so when lo+hi would be
+negative, it would start rounding towards the higher bound. Coding the
+calculation this way ensures that the number divided is always positive and
+hence always rounds as we want it to. Although the bug doesn’t surface when the
+search space consists only of positive integers or real numbers, I’ve decided
+to code it this way throughout the article for consistency.</p>
+
+<p><span class="bodySubtitle">Real numbers</span><br>
+Binary search can also be used on monotonic functions whose domain is the set
+of real numbers. Implementing binary search on reals is usually easier than on
+integers, because you don’t need to watch out for how to move bounds:</p>
+<pre class="code">binary_search(lo, hi, p):
+   while we choose not to terminate:
+      mid = lo + (hi-lo)/2
+      if p(mid) == true:
+         hi = mid
+      else:
+         lo = mid
+          
+   return lo // lo is close to the border between <i>no</i> and <i>yes</i>
+</pre>Since the set of real numbers is dense, it should be clear that we
+usually won’t be able to find the exact target value. However, we can quickly
+find some x such that f(x) is within some tolerance of the border between
+<i>no</i> and <i>yes</i>. We have two ways of deciding when to terminate:
+terminate when the search space gets smaller than some predetermined bound (say
+10<sup>-12</sup>) or do a fixed number of iterations. On TopCoder, your best
+bet is to just use a few hundred iterations, this will give you the best
+possible precision without too much thinking. 100 iterations will reduce the
+search space to approximately 10<sup>-30</sup> of its initial size, which
+should be enough for most (if not all) problems.
+
+
+
+<p>If you need to do as few iterations as possible, you can terminate when the
+interval gets small, but try to do a relative comparison of the bounds, not
+just an absolute one. The reason for this is that doubles can never give you
+more than 15 decimal digits of precision so if the search space contains large
+numbers (say on the order of billions), you can never get an absolute
+difference of less than 10<sup>-7</sup>.</p>
+
+<p><span class="bodySubtitle">Example</span><br>
+At this point I will show how all this talk can be used to solve a TopCoder
+problem. For this I have chosen a moderately difficult problem, <a href="http://community.topcoder.com/stat?c=problem_statement&amp;pm=1901&amp;rd=4650">FairWorkload</a>, which was
+the division 1 level 2 problem in SRM 169.</p>
+
+<p>In the problem, a number of workers need to examine a number of filing
+cabinets. The cabinets are not all of the same size and we are told for each
+cabinet how many folders it contains. We are asked to find an assignment such
+that each worker gets a sequential series of cabinets to go through and that it
+minimizes the maximum amount of folders that a worker would have to look
+through.</p>
+
+<p>After getting familiar with the problem, a touch of creativity is required.
+Imagine that we have an unlimited number of workers at our disposal. The
+crucial observation is that, for some number <i>MAX</i>, we can calculate the
+minimum number of workers needed so that each worker has to examine no more
+than <i>MAX</i> folders (if this is possible). Let’s see how we’d do that. Some
+worker needs to examine the first cabinet so we assign any worker to it. But,
+since the cabinets must be assigned in sequential order (a worker cannot
+examine cabinets 1 and 3 without examining 2 as well), it’s always optimal to
+assign him to the second cabinet as well, if this does not take him over the
+limit we introduced (<i>MAX</i>). If it would take him over the limit, we
+conclude that his work is done and assign a new worker to the second cabinet.
+We proceed in a similar manner until all the cabinets have been assigned and
+assert that we’ve used the minimum number of workers possible, with the
+artificial limit we introduced. Note here that the number of workers is
+inversely proportional to <i>MAX</i>: the higher we set our limit, the fewer
+workers we will need.</p>
+
+<p>Now, if you go back and carefully examine what we’re asked for in the
+problem statement, you can see that we are really asked for the smallest
+<i>MAX</i> such that the number of workers required is less than or equal to
+the number of workers available. With that in mind, we’re almost done, we just
+need to connect the dots and see how all of this fits in the frame we’ve laid
+out for solving problems using binary search.</p>
+
+<p>With the problem rephrased to fit our needs better, we can now examine the
+predicate <i>Can the workload be spread so that each worker has to examine no
+more than x folders, with the limited number of workers available?</i> We can
+use the described greedy algorithm to efficiently evaluate this predicate for
+any x. This concludes the first part of building a binary search solution, we
+now just have to prove that the condition in the main theorem is satisfied. But
+observe that increasing x actually relaxes the limit on the maximum workload,
+so we can only need the same number of workers or fewer, not more. Thus, if the
+predicate says <i>yes</i> for some x, it will also say <i>yes</i> for all
+larger x.</p>
+
+<p>To wrap it up, here’s an STL-driven snippet which solves the problem:</p>
+<pre class="code">int getMostWork( vector  folders, int workers ) {
+   int n = folders.size();
+   int lo = *max_element( folders.begin(), folders.end() );
+   int hi = accumulate( folders.begin(), folders.end(), 0 );
+
+   while ( lo &lt; hi ) {
+      int x = lo + (hi-lo)/2;
+
+      int required = 1, current_load = 0;
+      for ( int i=0; i&lt;n; ++i ) {
+         if ( current_load + folders[i] &lt;= x ) {
+            // the current worker can handle it
+            current_load += folders[i];
+         }
+         else {
+            // assign next worker
+            ++required;
+            current_load = folders[i];               
+         }
+      }
+
+      if ( required &lt;= workers )
+         hi = x;
+      else
+         lo = x+1;
+   }
+
+   return lo;
+}
+</pre>Note the carefully chosen lower and upper bounds: you could replace the
+upper bound with any sufficiently large integer, but the lower bound must not
+to be less than the largest cabinet to avoid the situation where a single
+cabinet would be too large for any worker, a case which would not be correctly
+handled by the predicate. An alternative would be to set the lower bound to
+zero, then handle too small x’s as a special case in the predicate.
+
+
+
+<p>To verify that the solution doesn’t lock up, I used a small no/yes example
+with folders={1,1} and workers=1.</p>
+
+<p>The overall complexity of the solution is <i>O</i>(<i>n</i> log
+<i>SIZE</i>), where <i>SIZE</i> is the size of the search space. This is very
+fast.</p>
+
+<p>As you see, we used a greedy algorithm to evaluate the predicate. In other
+problems, evaluating the predicate can come down to anything from a simple math
+expression to finding a maximum cardinality matching in a bipartite graph.</p>
+
+<p><span class="bodySubtitle">Conclusion</span><br>
+If you’ve gotten this far without giving up, you should be ready to solve
+anything that can be solved with binary search. Try to keep a few things in
+mind:</p>
+
+<ul>
+    <li>Design a predicate which can be efficiently evaluated and so that
+    binary search can be applied</li>
+
+    <li>Decide on what you’re looking for and code so that the search space
+    always contains that (if it exists)</li>
+
+    <li>If the search space consists only of integers, test your algorithm on a
+    two-element set to be sure it doesn’t lock up</li>
+
+    <li>Verify that the lower and upper bounds are not overly constrained: it’s
+    usually better to relax them as long as it doesn’t break the predicate</li>
+</ul>Here are a few problems that can be solved using binary search:
+
+
+
+<p>Simple<br>
+<a href="http://community.topcoder.com/stat?c=problem_statement&amp;pm=3970&amp;rd=7993">AutoLoan</a> – SRM
+258<br>
+<a href="http://community.topcoder.com/stat?c=problem_statement&amp;pm=3561&amp;rd=6519">SortEstimate</a> -
+SRM 230</p>
+
+<p>Moderate<br>
+<a href="http://community.topcoder.com/stat?c=problem_statement&amp;pm=4823&amp;rd=8074">UnionOfIntervals</a> – SRM
+277<br>
+<a href="http://community.topcoder.com/stat?c=problem_statement&amp;pm=2427&amp;rd=4765">Mortgage</a> – SRM
+189<br>
+<a href="http://community.topcoder.com/stat?c=problem_statement&amp;pm=1901&amp;rd=4650">FairWorkload</a> -
+SRM 169<br>
+<a href="http://community.topcoder.com/stat?c=problem_statement&amp;pm=4721&amp;rd=8000">HairCuts</a> – SRM
+261</p>
+
+<p>Harder<br>
+<a href="http://community.topcoder.com/stat?c=problem_statement&amp;pm=4751&amp;rd=8067">PackingShapes</a> -
+SRM 270<br>
+<a href="http://community.topcoder.com/stat?c=problem_statement&amp;pm=4022&amp;rd=6534">RemoteRover</a> -
+SRM 235<br>
+<a href="http://community.topcoder.com/stat?c=problem_statement&amp;pm=2946&amp;rd=5856">NegativePhotoresist</a> -
+SRM 210<br>
+<a href="http://community.topcoder.com/stat?c=problem_statement&amp;pm=2420&amp;rd=5850">WorldPeace</a> -
+SRM 204<br>
+<a href="http://community.topcoder.com/stat?c=problem_statement&amp;pm=5921&amp;rd=8075">UnitsMoving</a> -
+SRM 278<br>
+<a href="http://community.topcoder.com/stat?c=problem_statement&amp;pm=3530&amp;rd=6535">Parking</a> – SRM
+236<br>
+<a href="http://community.topcoder.com/stat?c=problem_statement&amp;pm=2342&amp;rd=4770">SquareFree</a> -
+SRM 190<br>
+<a href="http://community.topcoder.com/stat?c=problem_statement&amp;pm=1206&amp;rd=4540">Flags</a> – SRM
+147<br></p>
+<style>
+
+.formFrame { background: #f5f5f5; margin: auto; }.formFrame td { border: 1px solid #ccc; padding: 5px; }.sideNote {background: #f5f5f5; margin: 15px; padding: 15px; border: 1px solid #eee;}pre {background: #f5f5f5; margin: 15px; padding: 15px; border: 1px solid #eee; overflow: scroll;}p{padding-bottom:0 !important;}
+
+</style>					
+
+						<!-- /.pageContent -->
+
+					</div>
+					<!-- /.mainStream -->
+
+					<aside class="sideStream  grid-1-3">
+								<div class="textwidget"><div style="display: inline-block; width: 320px; height: 44px; overflow: hidden; background-color: #f1f1f1; padding:5px;">
+           <p style="padding-top: 12px; padding-left: 7px; font-size: 22px">
+    More Resources</p>
+       </div>
+
+
+	  <br>
+<p style="padding-top: 12px; padding-left: 10px; line-height: 150%"><a href="http://www.topcoder.com/community/data-science/data-science-tutorials/">Member Tutorials </a><br>
+Read more than 40 data science tutorials written by topcoder members. </p>
+<p style="padding-top: 12px; padding-left: 10px; line-height: 150%"><a href="http://www.topcoder.com/community/data-science/data-science-editorials/">Problem Set Analysis </a><br>
+Read editorials explaining the problem and solution for each Single Round Match (SRM). </p>
+<p style="padding-top: 12px; padding-left: 10px; line-height: 150%"><a href="http://www.topcoder.com/community/data-science/getting-started-in-data-science/">
+Data Science Guide</a><br>
+New to topcoder's data science track? Read this guide for an overview on how to get started in the arena and how competitions work.</p>
+<p style="padding-top: 12px; padding-left: 10px; line-height: 150%"><a href="http://help.topcoder.com/">Help Center </a><br>
+Need specifics about the process or the rules? Everything you need to know about competing at topcoder can be found in the Help Center.</p>
+<p style="padding-top: 12px; padding-left: 10px; line-height: 150%"><a href="http://apps.topcoder.com/forums/">Member Forums</a> <br>
+Join your peers in our member forums and ask questions from the real experts - topcoder members!</p>
+</div>
+							</aside>
+
+					<!-- /.sideStream -->
+					<div class="clear"></div>
+				</div>
+				<!-- /.rightSplit -->
+			</div>
+		</article>
+		<!-- /#mainContent -->
+<footer class="bottom-footer">
+  <!-- Footer links -->
+  <nav class="menu-item">
+    <ul class="submenu">
+      <li class="submenu-item"><a ng-click="$event.stopPropagation();" href="https://www.topcoder.com/sitemap" class="menu-link">SITEMAP</a></li>
+      <li class="submenu-item"><a ng-click="$event.stopPropagation();" href="https://www.topcoder.com/about" class="menu-link">ABOUT US</a></li>
+      <li class="submenu-item"><a ng-click="$event.stopPropagation();" href="https://help.topcoder.com/hc/en-us/articles/219069687-Contact-Support" class="menu-link">CONTACT US</a></li>
+      <li class="submenu-item"><a ng-click="$event.stopPropagation();" href="http://help.topcoder.com/" target="_blank" class="menu-link">HELP CENTER</a></li>
+      <li class="submenu-item"><a ng-click="$event.stopPropagation();" href="http://topcoder.com/community/how-it-works/privacy-policy/" class="menu-link">PRIVACY POLICY</a></li>
+      <li class="submenu-item"><a ng-click="$event.stopPropagation();" href="http://topcoder.com/community/how-it-works/terms/" class="menu-link">TERMS</a></li>
+    </ul>
+    <!-- Social links -->
+  </nav>
+  <div class="social-links">
+    <p>Topcoder is also on</p><a href="https://www.facebook.com/topcoder" target="fbwindow" class="fb-link"></a><a href="http://www.twitter.com/topcoder" target="twwindow" class="twitter-link"></a><a href="https://www.linkedin.com/company/topcoder" target="liwindow" class="linkedin-link"></a><a href="https://plus.google.com/u/0/b/104268008777050019973/104268008777050019973/posts" target="gpwindow" class="google-link"></a>
+  </div>
+  <p class="copyright-notice">© 2016 Topcoder. All Rights Reserved</p>
+</footer>
+</div>
+<!-- /.content -->
+</div>
+<!-- /#wrapper -->
+
+
+<div id="bgModal"></div><!-- background modal -->
+<div id="bgOverlapModal"></div><!-- background modal -->
+<div id="bgLoadingModal"><span></span></div><!-- background loading -->
+<div id="thanks" class="modal">
+  <a href="javascript:;" class="closeBtn closeModal"></a>
+
+  <div class="content">
+    <h2>Thanks for joining!</h2>
+
+    <p>We have sent you an email with activation instructions.<br>If you do not receive that email within 1 hour,
+      please email <a href="mailto:support@topcoder.com">support@topcoder.com</a>.</p>
+
+    <div>
+      <a href="javascript:;" class="btn closeModal redirectOnConfirm">Close</a>
+    </div>
+  </div>
+</div><!-- END #thanks -->
+<div id="registerSuccess" class="modal">
+  <a href="javascript:;" class="btnClose closeModal"></a>
+  <div class="content">
+    <h2>Registered!</h2>
+    <p class="success">Thank you for registering. You may now download the challenge files and participate in the challenge forums.</p>
+    <p class="submitBtn">
+      <a class="btn closeModalReg" href="javascript:;">OK</a>
+    </p>
+  </div>
+</div><!-- END #registerSuccess -->
+<div id="registerFailed" class="modal">
+  <a href="javascript:;" class="btnClose closeModal"></a>
+  <div class="content">
+    <h2>Info</h2>
+    <p class="failedMessage"></p>
+    <p class="submitBtn">
+      <a class="btn closeModal" href="javascript:;">OK</a>
+    </p>
+  </div>
+</div><!-- END #registerFailed -->
+
+<div id="showSubmission" class="modal">
+    <a href="javascript:;" class="btnClose closePopupModal"></a>
+    <div class="content">
+       <img alt="" style="width:910px; height:850px">
+    </div>
+</div><!-- END #show submission -->
+
+<div id="filterSavedSuccess" class="modal">
+  <a href="javascript:;" class="btnClose closeModal"></a>
+  <div class="content">
+    <h2>Success</h2>
+    <p class="success">Your filters have been saved and stored in the "My Filters" dropdown list.</p>
+    <p class="submitBtn">
+      <a class="btn closeModal" href="javascript:;">OK</a>
+    </p>
+  </div>
+</div><!-- END #filterSavedSuccess -->
+
+<div id="filterSavedFailed" class="modal">
+  <a href="javascript:;" class="btnClose closeModal"></a>
+  <div class="content">
+    <h2>Info</h2>
+    <p class="failedMessage"></p>
+    <p class="submitBtn">
+      <a class="btn closeModal" href="javascript:;">OK</a>
+    </p>
+  </div>
+</div><!-- END #filterSavedFailed -->
+
+<div id="designSubmissionCommentExample" class="modal">
+  <a href="javascript:;" class="btnClose closeModal"></a>
+  <div class="content">
+    <h2>Comment Examples</h2>
+
+    <strong>Example 1:</strong><br>
+    The logo represents movement and "taking action" rather than being stagnant.
+    The colors I chose signify power and give the brand a strong feel.<br><br>
+
+    <strong>Example 2:</strong><br>
+    This is a revised version of my previous submission. Changes include a new
+    header graphic, new font choices for the pop-up box and new icons for the
+    widget on the fourth page.<br><br>
+
+    <strong>Example 3:</strong><br>
+    This is my Round 2 submission. I have implemented all of the feedback you
+    gave me after Round 1 and I hope you like the changes.<br><br>
+  </div>
+</div><!-- END #show submission -->
+
+<div id="typeTooltip" class="tooltip hide">
+  <div class="inner">
+    <header></header>
+    <div class="data">
+      <p class="contestTy"></p>
+    </div>
+    <div class="arrow"></div>
+  </div>
+</div><!-- /.tooltip -->
+<div id="winnerTooltip" class="tooltip hide">
+  <div class="inner">
+    <header></header>
+    <div class="data">
+      <div class="winnerInfo"></div>
+    </div>
+    <div class="arrow alt"></div>
+  </div>
+</div><!-- /.tooltip -->
+<div id="badgeTooltip" class="tooltip hide">
+  <div class="inner">
+    <header></header>
+    <div class="data">
+      <p class="earnedOn"></p>
+    </div>
+    <div class="data">
+      <p class="currentlyEarned"><span></span></p>
+    </div>
+    <div class="arrow"></div>
+  </div>
+</div><!-- /.tooltip -->
+<link rel="stylesheet" id="ng-grid-css" href="./Binary Search – topcoder_files/ng-grid.css" type="text/css" media="all">
+<script type="text/javascript" src="./Binary Search – topcoder_files/Selectyze.jquery.js.download"></script>
+<script type="text/javascript" src="./Binary Search – topcoder_files/tcapi.js.download"></script>
+<script type="text/javascript" src="./Binary Search – topcoder_files/jquery-ui.min.js.download"></script>
+<script type="text/javascript" src="./Binary Search – topcoder_files/auth0-1.6.4.js.download"></script>
+<script type="text/javascript" src="./Binary Search – topcoder_files/default.min.js.download"></script>
+<script type="text/javascript" src="./Binary Search – topcoder_files/angular.min.js.download"></script>
+<script type="text/javascript" src="./Binary Search – topcoder_files/angular-animate.min.js.download"></script>
+<script type="text/javascript" src="./Binary Search – topcoder_files/angular-route.min.js.download"></script>
+<script type="text/javascript" src="./Binary Search – topcoder_files/underscore.min.js.download"></script>
+<script type="text/javascript" src="./Binary Search – topcoder_files/restangular.min.js.download"></script>
+<script type="text/javascript" src="./Binary Search – topcoder_files/ng-grid.min.js.download"></script>
+<script type="text/javascript" src="./Binary Search – topcoder_files/ng-grid-flexible-height.js.download"></script>
+<script type="text/javascript" src="./Binary Search – topcoder_files/angular-cookies.min.js.download"></script>
+<script type="text/javascript" src="./Binary Search – topcoder_files/angular-ui-router.min.js.download"></script>
+<script>
+  window.prerenderReady = false;
+  function getParameterByName(name, source) {
+    name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+    var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+    results = regex.exec(source || location.search);
+    return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+  }
+  function getHashParameterByName(name, source) {
+    name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+    var regex = new RegExp("[\\#&]" + name + "=([^&#]*)"),
+    results = regex.exec(source || location.hash);
+    return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+  }
+</script>
+
+<!-- Start of topcoder Zendesk Widget script -->
+<iframe src="javascript:false" title="" style="display: none;" src="./Binary Search – topcoder_files/saved_resource.html"></iframe><script>/*<![CDATA[*/window.zEmbed||function(e,t){var n,o,d,i,s,a=[],r=document.createElement("iframe");window.zEmbed=function(){a.push(arguments)},window.zE=window.zE||window.zEmbed,r.src="javascript:false",r.title="",r.role="presentation",(r.frameElement||r).style.cssText="display: none",d=document.getElementsByTagName("script"),d=d[d.length-1],d.parentNode.insertBefore(r,d),i=r.contentWindow,s=i.document;try{o=s}catch(c){n=document.domain,r.src='javascript:var d=document.open();d.domain="'+n+'";void(0);',o=s}o.open()._l=function(){var o=this.createElement("script");n&&(this.domain=n),o.id="js-iframe-async",o.src=e,this.t=+new Date,this.zendeskHost=t,this.zEQueue=a,this.body.appendChild(o)},o.write('<body onload="document._l();">'),o.close()}("https://assets.zendesk.com/embeddable_framework/main.js","topcoder.zendesk.com");
+/*]]>*/</script>
+<!-- End of topcoder Zendesk Widget script -->
+
+<script>
+(function() {
+  var headerApp = angular.module('tc.header', [])
+  headerApp.config(function($sceDelegateProvider) {
+    $sceDelegateProvider.resourceUrlWhitelist([
+      // Allow same origin resource loads.
+      'self',
+      // Allow loading from subdomains.  Notice the difference between * and **.
+      'http://*.topcoder.com/**',
+      'https://*.topcoder.com/**',
+      'http://*.topcoder-qa.com/**',
+      'https://*.topcoder-qa.com/**',
+      'http://*.topcoder-dev.com/**',
+      'https://*.topcoder-dev.com/**'
+    ]);
+  });
+  headerApp.directive('ngHeaderBootstrap', function(){
+    return {
+      restrict: 'C',
+      templateUrl: '/mf/js/app/header/partials/header-nav.html',
+      controller: function($scope, $timeout){
+        $scope.vm = vm = {};
+        $scope.main = {};
+        $scope.main.menuVisible = false;
+        vm.isAuth = false;
+
+        if (app.isLoggedIn()) {
+          vm.isAuth = true;
+          app.getHandle(function(handle) {
+            $.get(tcconfig.apiURL + '/users/' + handle, function(data) {
+              var photoLink = data['photoLink'];
+              if (photoLink) {
+                if (photoLink.indexOf('//') == -1) {
+                  photoLink = tcconfig.communityURL + data['photoLink']
+                }
+              } else {
+                photoLink = tcconfig.communityURL + '/i/m/nophoto_login.gif';
+              }
+              
+              var color = '';
+              var ratings = data['ratingSummary'];
+              if (ratings) {
+                var maxRating = 0;
+                for (var i = 0; i < ratings.length; i++) {
+                  if (maxRating < ratings[i]['rating']) {
+                    maxRating = ratings[i]['rating'];
+                    color = ratings[i]['colorStyle'].split(": ")[1];
+                  }
+                }
+              } else if (data['isPM'] == true) {
+                color = '#FF9900';
+              }
+              
+              $timeout(function() {
+                vm.handleStyle = { color: color };
+                vm.photoURL = photoLink;
+              });
+            });
+
+            $timeout(function() {
+              vm.userHandle = handle;
+              vm.userMenu = [
+                { 'href': '/my-dashboard', 'text': 'DASHBOARD', 'icon': '/mf/i/nav/dashboard.svg' },
+                { 'href': '/members/' + handle, 'text': 'MY PROFILE', 'icon': '/mf/i/nav/profile.svg' },
+                { 'href': 'https:' + tcconfig.communityURL + '/PactsMemberServlet?module=PaymentHistory&full_list=false', 'text': 'PAYMENTS', 'icon': '/mf/i/nav/wallet.svg' },
+                { 'href': '/settings/profile', 'text': 'SETTINGS', 'icon': '/mf/i/nav/settings.svg' },
+              ];
+            });
+          });
+        }
+
+        vm.menuHeaders = [ 'compete', 'learn', 'community' ];
+        vm.menuLinks =
+        {
+          'compete': [
+              { 'href':  "/challenges/", 'text': 'ALL CHALLENGES', 'icon': '/mf/i/nav/rocket.svg' },
+              { 'href':  'https:' + tcconfig.arenaURL, 'text': 'COMPETITIVE PROGRAMMING', 'icon': '/mf/i/nav/track-cp.svg', 'target': '_blank' },
+          ],
+          'learn': [
+              { 'href': '/getting-started/', 'text': 'GETTING STARTED', 'icon': '/mf/i/nav/rocket.svg' },
+              { 'href': '/community/design/', 'text': 'DESIGN', 'icon': '/mf/i/nav/book-design.svg' },
+              { 'href': '/community/development/', 'text': 'DEVELOPMENT', 'icon': '/mf/i/nav/book-develop.svg' },
+              { 'href': '/community/data-science/', 'text': 'DATA SCIENCE', 'icon': '/mf/i/nav/book-data.svg' },
+              { 'href': '/community/competitive-programming/', 'text': 'COMPETITIVE PROGRAMMING', 'icon': '/mf/i/nav/book-cp.svg' },
+          ],
+          'community': [
+              { 'href': '/community/members/', 'text': 'OVERVIEW', 'icon': '/mf/i/nav/members.svg' },
+              { 'href': '/tco', 'text': 'TCO', 'icon': '/mf/i/nav/tco-generic.svg' },  
+              { 'href': '/community/member-programs/', 'text': 'PROGRAMS', 'icon': '/mf/i/nav/programs.svg' },
+              { 'href': 'https://' + tcconfig.forumsAppURL, 'text': 'FORUMS', 'icon': '/mf/i/nav/forums.svg' },
+              { 'href': '/community/statistics/', 'text': 'STATISTICS', 'icon': '/mf/i/nav/statistics.svg' },
+              { 'href': '/community/events/', 'text': 'EVENTS', 'icon': '/mf/i/nav/events.svg' },
+              { 'href': '/blog/', 'text': 'BLOG', 'icon': '/mf/i/nav/blog.svg' }
+          ]
+        };
+
+        vm.checkSubmit = function(ev) {
+          if (ev.keyCode === 13)
+            window.location.replace(tcconfig.mainURL + '/search/members/?q=' + window.encodeURIComponent(vm.searchTerm));
+        }
+
+        vm.isActive = function(href) {
+          if (window.location.pathname == href)
+            return true;
+          return false;
+        }
+
+        vm.login = function() {
+          window.location.href = tcconfig.accountAppURL + "?next=" + encodeURIComponent(window.location.href);
+        }
+
+        vm.join = function() {
+          window.location.href = tcconfig.accountAppURL + '/registration?next=' + encodeURIComponent(window.location.href);
+        }
+
+        vm.logout = function() {
+          document.cookie = 'tcsso=; path=/; domain=.' + tcconfig.domain + '; expires=' + new Date(0).toUTCString();
+          document.cookie = 'tcjwt=; path=/; domain=.' + tcconfig.domain + '; expires=' + new Date(0).toUTCString();
+          main.menuVisible = vm.isAuth = false;
+          window.location.href = '/logout';
+        }
+      }
+    };
+  });
+
+  angular.bootstrap($('.ng-header-bootstrap'), ['tc.header']);
+})();
+</script>
+
+</div>
+
+<script type="text/javascript">window.NREUM||(NREUM={});NREUM.info={"beacon":"bam.nr-data.net","licenseKey":"496af5ee90","applicationID":"5697815","transactionName":"ZlcBbBQAChBSARIKXV8dIlsSCAsNHBYDDkJdUxddSw4SBkEUDwZFHEUKXAEEEApJBwI=","queueTime":0,"applicationTime":140,"atts":"ShACGlwaGR4=","errorBeacon":"bam.nr-data.net","agent":""}</script>
+
+
+<div id="fancybox-tmp"></div><div id="fancybox-loading"><div></div></div><div id="fancybox-overlay"></div><div id="fancybox-wrap"><div id="fancybox-outer"><div class="fancybox-bg" id="fancybox-bg-n"></div><div class="fancybox-bg" id="fancybox-bg-ne"></div><div class="fancybox-bg" id="fancybox-bg-e"></div><div class="fancybox-bg" id="fancybox-bg-se"></div><div class="fancybox-bg" id="fancybox-bg-s"></div><div class="fancybox-bg" id="fancybox-bg-sw"></div><div class="fancybox-bg" id="fancybox-bg-w"></div><div class="fancybox-bg" id="fancybox-bg-nw"></div><div id="fancybox-content"></div><a id="fancybox-close"></a><div id="fancybox-title"></div><a href="javascript:;" id="fancybox-left"><span class="fancy-ico" id="fancybox-left-ico"></span></a><a href="javascript:;" id="fancybox-right"><span class="fancy-ico" id="fancybox-right-ico"></span></a></div></div><div><iframe data-reactroot="" id="ticketSubmissionForm" class="zEWidget-ticketSubmissionForm" style="border: none; background: transparent; z-index: 999999; transform: translateZ(0px); position: fixed; opacity: 0; right: 0px; bottom: 0px; width: 357px; margin-left: 15px; margin-right: 15px; margin-top: 0px; height: 476px; transition-property: none; transition-timing-function: unset; top: -9999px;" src="./Binary Search – topcoder_files/saved_resource(1).html"></iframe></div><div><iframe data-reactroot="" id="launcher" class="zEWidget-launcher zEWidget-launcher--active" style="border: none; background: transparent; z-index: 999998; transform: translateZ(0px); position: fixed; opacity: 1; right: 0px; bottom: 0px; width: 139px; height: 47px; margin: 10px 20px;" src="./Binary Search – topcoder_files/saved_resource(2).html"></iframe></div><div><iframe data-reactroot="" id="nps" class="zEWidget-nps" style="border: none; background: transparent; z-index: 2147483647; transform: translateZ(0px); position: fixed; opacity: 0; right: 0px; bottom: 0px; left: 50%; margin-left: -310px; margin-bottom: 15px; width: 640px; margin-top: 0px; height: 178px; transition-property: none; transition-timing-function: unset; top: -9999px;" src="./Binary Search – topcoder_files/saved_resource(3).html"></iframe></div><div><iframe data-reactroot="" id="ipm" class="zEWidget-ipm" style="border: none; background: transparent; z-index: 2147483647; transform: translateZ(0px); position: fixed; opacity: 0; right: 0px; top: -230px; margin-right: 15px; margin-top: 0px; height: 180px; width: 395px; transition-property: none; transition-timing-function: unset;" src="./Binary Search – topcoder_files/saved_resource(4).html"></iframe></div></body></html>

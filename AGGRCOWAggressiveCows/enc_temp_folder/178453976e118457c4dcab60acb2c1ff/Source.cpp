@@ -20,8 +20,10 @@ int process(const vector<int>& stalls, const int& start, const int& end, const i
 
 	int cowCount = 1;	// Starting count.
 	int runningDistance = 0;
+	int max = -999999;
 	for (size_t i = 1; i < stalls.size(); i++) {
 		runningDistance += stalls[i] - runningDistance;
+		if (runningDistance > max) { max = runningDistance; }
 
 		if (runningDistance >= minimumDistanceCandidate) {
 			cowCount++;
@@ -36,10 +38,10 @@ int process(const vector<int>& stalls, const int& start, const int& end, const i
 	if (cowCount < totalCows) {
 		// Need to reduce the distance between the cows. Going left ensures a smaller distance because the stalls are sorted.
 		// There is no need to try larger value. Remember that the maximum lmd is the mid point.
-		minimumDistanceCandidate = process(stalls, start, mid - 1, totalCows);
+		 max = process(stalls, start, mid - 1, totalCows);
 	}	
 
-	return minimumDistanceCandidate;
+	return max;
 }
 
 int compare(const void * a, const void * b)
