@@ -1,3 +1,10 @@
+/*
+ * Hints: 
+ *    https://www.quora.com/What-is-the-correct-approach-to-solve-the-SPOJ-problem-Aggressive-cow
+ *    https://discuss.codechef.com/questions/77613/spoj-problem-aggrcow-aggressive-cows
+ *    http://sahilmutneja.com/blog/2015/02/aggressive-cowsaggrcow-spoj/
+ *    
+ */
 #include<iostream>
 #include<vector>
 #include<cstdlib>
