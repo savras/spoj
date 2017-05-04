@@ -18,14 +18,15 @@ using std::qsort;
 // We use the array index median because the largest minimum distance (lmd) between two cows is the center point.
 // For multiple cows, the lmd is the distance when the cows are spreaded evenly apart.
 // Catch: the stall positions/locations are random.
-int process(const vector<int>& stalls, const int& start, const int& end, const int& totalCows) {
-	if (start >= end) { return 0; }
+bool process(const vector<int>& stalls, const int& start, const int& end, const int& totalCows) {
+	bool result = false;
+	if (start >= end) { return result; }
 
 	int mid = start + ((end - start) / 2);
 
 	int minimumDistanceCandidate = stalls[mid];
 
-	int cowCount = 1;	// Starting count.
+	int cowCount = 1;	// Starting count. First cow is always on the left most of the search space
 	int runningDistance = 0;
 	for (size_t i = 1; i < stalls.size(); i++) {
 		runningDistance += stalls[i] - runningDistance;
@@ -36,17 +37,12 @@ int process(const vector<int>& stalls, const int& start, const int& end, const i
 		}
 
 		if (cowCount >= totalCows) {
+			result = true;
 			break;
 		}
 	}
 
-	if (cowCount < totalCows) {
-		// Need to reduce the distance between the cows. Going left ensures a smaller distance because the stalls are sorted.
-		// There is no need to try larger value. Remember that the maximum lmd is the mid point.
-		minimumDistanceCandidate = process(stalls, start, mid - 1, totalCows);
-	}	
-
-	return minimumDistanceCandidate;
+	return result;
 }
 
 int compare(const void * a, const void * b)
@@ -67,6 +63,19 @@ int main() {
 			stalls.push_back(value);
 		}
 		qsort(stalls.data(), stalls.size(), sizeof(int), compare);
+
+		/*
+		// We want to find the minimum possible value where f(x), represented by stalls[mid] such that cowsRequired >= totalCows
+		if (cowCount < totalCows) {
+		// Need to reduce the distance between the cows. Going left ensures a smaller distance because the stalls are sorted.
+		minimumDistanceCandidate = process(stalls, start, mid - 1, totalCows);
+		}
+		else {
+		minimumDistanceCandidate = process(stalls, mid + 1, end, totalCows);
+		}
+
+		return minimumDistanceCandidate;
+		*/
 		cout << process(stalls, 0, stalls.size() - 1, c) << endl;
 	}
 }
