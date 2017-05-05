@@ -17,32 +17,49 @@ using std::qsort;
 
 // We use the array index median because the largest minimum distance (lmd) between two cows is the center point.
 // For multiple cows, the lmd is the distance when the cows are spreaded evenly apart.
-// Catch: the stall positions/locations are random.
-bool process(const vector<int>& stalls, const int& start, const int& end, const int& totalCows) {
-	bool result = false;
-	if (start >= end) { return result; }
+// Catch: the stall positions/locations are random and not necessarily the mid point.
+int process(const vector<int>& stalls, const int& start, const int& end, const int& totalCows) {
+	int minDistance = stalls[end] - stalls[0];
+	
+	bool increaseDistanceBetweenCows = false;
 
-	int mid = start + ((end - start) / 2);
+	if (start < end) {
+		int mid = start + ((end - start + 1) / 2);
 
-	int minimumDistanceCandidate = stalls[mid];
+		int minimumDistanceCandidate = stalls[mid] - stalls[0];
+		minDistance = minimumDistanceCandidate;
 
-	int cowCount = 1;	// Starting count. First cow is always on the left most of the search space
-	int runningDistance = 0;
-	for (size_t i = 1; i < stalls.size(); i++) {
-		runningDistance += stalls[i] - runningDistance;
+		int cowCount = 1;	// Starting count. First cow is always on the left most of the search space
+		int runningDistance = 0;
+		for (size_t i = 1; i < stalls.size(); i++) {
+			// This is how far we are in total from the current stall, stalls[i], to the previous stall where we have placed a cow.
+			runningDistance += stalls[i] - runningDistance;
+			
+			if (runningDistance - stalls[start] >= minimumDistanceCandidate) {
+				cowCount++;
+				runningDistance = stalls[i];
+			}
 
-		if (runningDistance >= minimumDistanceCandidate) {
-			cowCount++;
-			runningDistance = 0;
+			if (cowCount >= totalCows) {
+				// We have put too little space between the cows. Need to increase the distance.
+				increaseDistanceBetweenCows = true;
+				break;
+			}
 		}
-
-		if (cowCount >= totalCows) {
-			result = true;
-			break;
+		
+		// We want to find the minimum possible value where f(x), represented by stalls[mid] such that cowsRequired >= totalCows
+		if (increaseDistanceBetweenCows) {
+			// Need to increase the distance between the cows. Going right ensures a larger distance because the stalls are sorted so.
+			// However, this could be a possible answer so we need to keep this in the search space.
+			minDistance = process(stalls, mid, end, totalCows);
+		}
+		else {
+			// This distance doesn't give enough space between cows. We cannot use it.
+			minDistance = process(stalls, start, mid - 1, totalCows);
 		}
 	}
 
-	return result;
+	return minDistance;
 }
 
 int compare(const void * a, const void * b)
@@ -62,20 +79,9 @@ int main() {
 			cin >> value;
 			stalls.push_back(value);
 		}
-		qsort(stalls.data(), stalls.size(), sizeof(int), compare);
-
-		/*
-		// We want to find the minimum possible value where f(x), represented by stalls[mid] such that cowsRequired >= totalCows
-		if (cowCount < totalCows) {
-		// Need to reduce the distance between the cows. Going left ensures a smaller distance because the stalls are sorted.
-		minimumDistanceCandidate = process(stalls, start, mid - 1, totalCows);
-		}
-		else {
-		minimumDistanceCandidate = process(stalls, mid + 1, end, totalCows);
-		}
-
-		return minimumDistanceCandidate;
-		*/
+		qsort(stalls.data(), stalls.size(), sizeof(int), compare);	
 		cout << process(stalls, 0, stalls.size() - 1, c) << endl;
+
+		stalls.clear();
 	}
 }
