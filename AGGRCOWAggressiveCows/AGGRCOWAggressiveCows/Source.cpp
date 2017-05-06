@@ -12,13 +12,13 @@
  */
 #include<iostream>
 #include<vector>
-#include<cstdlib>
+#include<algorithm>
 
 using std::cin;
 using std::cout;
 using std::endl;
 using std::vector;
-using std::qsort;
+using std::sort;
 
 bool predicate(const vector<int>& stalls, const int& mid, const int& totalCows) {
 	int cowCount = 1;	// Starting count. First cow is always on the left most of the search space.
@@ -38,27 +38,25 @@ bool predicate(const vector<int>& stalls, const int& mid, const int& totalCows) 
 	return false;
 }
 
-int binary_search(const vector<int>& stalls, const int& start, const int& end, const int& totalCows) {
-	int minDistanceIndex = stalls[end];
-
-	if (start < end) {
-		int mid = start + (end - start - 1) / 2;	// Handle |YES|NO| situation where we will call binary_search with mid = x and end = x + 1 all the time.
+// We will get an array like this |Y|Y|Y|Y|N|N|N|.
+// What we want is the value in index 3, which is the rightmost Y.
+int binary_search(const vector<int>& stalls, int start, int end, const int& totalCows) {
+	while (start < end) {
+		const int handleRoundUp = 1;
+		// Handle |YES|NO| situation where we will call binary_search with mid = x and end = x + 1 all the time.
+		// By doing this, we will always select the right side of the |YES|NO| as the mid instead of the left.
+		int mid = start + (end - start + handleRoundUp) / 2;
 		bool pResult = predicate(stalls, mid, totalCows);
 
 		if (pResult) {
-			minDistanceIndex = binary_search(stalls, mid, end, totalCows);
+			start = mid;
 		}
 		else {
-			minDistanceIndex = binary_search(stalls, start, mid - 1, totalCows);
+			end = mid - 1;
 		}
-	}	
+	}
 
-	return stalls[minDistanceIndex] - stalls[0];
-}
-
-int compare(const void * a, const void * b)
-{
-	return (*(int*)a > *(int*)b);
+	return stalls[start] - stalls[0];
 }
 
 int main() {
@@ -73,9 +71,30 @@ int main() {
 			cin >> value;
 			stalls.push_back(value);
 		}
-		qsort(stalls.data(), stalls.size(), sizeof(int), compare);	
+		sort(stalls.begin(), stalls.end());	
 		cout << binary_search(stalls, 0, stalls.size() - 1, c) << endl;
 
 		stalls.clear();
 	}
 }
+
+//int binary_search_recursive(const vector<int>& stalls, const int& start, const int& end, const int& totalCows) {
+//	int minDistanceIndex = stalls[end];
+//
+//	if (start < end) {
+//		const int handleRoundUp = 1;
+//		// Handle |YES|NO| situation where we will call binary_search with mid = x and end = x + 1 all the time.
+//		// By doing this, we will always select the right side of the |YES|NO| as the mid instead of the left.
+//		int mid = start + (end - start + handleRoundUp) / 2;	
+//		bool pResult = predicate(stalls, mid, totalCows);
+//
+//		if (pResult) {
+//			minDistanceIndex = binary_search_recursive(stalls, mid, end, totalCows);
+//		}
+//		else {
+//			minDistanceIndex = binary_search_recursive(stalls, start, mid - 1, totalCows);
+//		}
+//	}	
+//
+//	return stalls[minDistanceIndex] - stalls[0];
+//}
