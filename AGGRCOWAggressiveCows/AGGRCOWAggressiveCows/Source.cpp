@@ -1,9 +1,14 @@
 /*
+ * We use the array index median because the largest minimum distance (lmd) between two cows is the center point.
+ * For multiple cows, the lmd is the distance when the cows are spreaded evenly apart.
+ * Catch: the stall positions/locations are random and not necessarily the mid point.
+ * So, for each of given the stall values, calculate the distances from stalls[0], then see how many
+ * cows you can fit into the stalls array with that distance.
+ *
  * Hints: 
  *    https://www.quora.com/What-is-the-correct-approach-to-solve-the-SPOJ-problem-Aggressive-cow
  *    https://discuss.codechef.com/questions/77613/spoj-problem-aggrcow-aggressive-cows
  *    http://sahilmutneja.com/blog/2015/02/aggressive-cowsaggrcow-spoj/
- *    
  */
 #include<iostream>
 #include<vector>
@@ -15,51 +20,40 @@ using std::endl;
 using std::vector;
 using std::qsort;
 
-// We use the array index median because the largest minimum distance (lmd) between two cows is the center point.
-// For multiple cows, the lmd is the distance when the cows are spreaded evenly apart.
-// Catch: the stall positions/locations are random and not necessarily the mid point.
-int process(const vector<int>& stalls, const int& start, const int& end, const int& totalCows) {
-	int minDistance = stalls[end] - stalls[0];
-	
-	bool increaseDistanceBetweenCows = false;
-
-	if (start < end) {
-		int mid = start + ((end - start + 1) / 2);
-
-		int minimumDistanceCandidate = stalls[mid] - stalls[0];
-		minDistance = minimumDistanceCandidate;
-
-		int cowCount = 1;	// Starting count. First cow is always on the left most of the search space
-		int runningDistance = 0;
-		for (size_t i = 1; i < stalls.size(); i++) {
-			// This is how far we are in total from the current stall, stalls[i], to the previous stall where we have placed a cow.
-			runningDistance += stalls[i] - runningDistance;
-			
-			if (runningDistance - stalls[start] >= minimumDistanceCandidate) {
-				cowCount++;
-				runningDistance = stalls[i];
-			}
-
-			if (cowCount >= totalCows) {
-				// We have put too little space between the cows. Need to increase the distance.
-				increaseDistanceBetweenCows = true;
-				break;
-			}
+bool predicate(const vector<int>& stalls, const int& mid, const int& totalCows) {
+	int cowCount = 1;	// Starting count. First cow is always on the left most of the search space.
+	int candidateDistance = stalls[mid] - stalls[0];		// Distance of stalls[mid] from 1st cow.
+	int basePosition = 0;
+	for (size_t i = 1; i < stalls.size(); i++) {
+		if (stalls[i] - stalls[basePosition] >= candidateDistance) {
+			cowCount++;
+			basePosition = i;
 		}
-		
-		// We want to find the minimum possible value where f(x), represented by stalls[mid] such that cowsRequired >= totalCows
-		if (increaseDistanceBetweenCows) {
-			// Need to increase the distance between the cows. Going right ensures a larger distance because the stalls are sorted so.
-			// However, this could be a possible answer so we need to keep this in the search space.
-			minDistance = process(stalls, mid, end, totalCows);
-		}
-		else {
-			// This distance doesn't give enough space between cows. We cannot use it.
-			minDistance = process(stalls, start, mid - 1, totalCows);
+
+		if (cowCount >= totalCows)
+		{
+			return true;
 		}
 	}
+	return false;
+}
 
-	return minDistance;
+int binary_search(const vector<int>& stalls, const int& start, const int& end, const int& totalCows) {
+	int minDistanceIndex = stalls[end];
+
+	if (start < end) {
+		int mid = start + (end - start - 1) / 2;	// Handle |YES|NO| situation where we will call binary_search with mid = x and end = x + 1 all the time.
+		bool pResult = predicate(stalls, mid, totalCows);
+
+		if (pResult) {
+			minDistanceIndex = binary_search(stalls, mid, end, totalCows);
+		}
+		else {
+			minDistanceIndex = binary_search(stalls, start, mid - 1, totalCows);
+		}
+	}	
+
+	return stalls[minDistanceIndex] - stalls[0];
 }
 
 int compare(const void * a, const void * b)
@@ -80,7 +74,7 @@ int main() {
 			stalls.push_back(value);
 		}
 		qsort(stalls.data(), stalls.size(), sizeof(int), compare);	
-		cout << process(stalls, 0, stalls.size() - 1, c) << endl;
+		cout << binary_search(stalls, 0, stalls.size() - 1, c) << endl;
 
 		stalls.clear();
 	}
