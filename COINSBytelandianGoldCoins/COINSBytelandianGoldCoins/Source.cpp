@@ -12,7 +12,7 @@ using std::pair;
 using std::max;
 using std::min;
 
-//void slowDp(int n, vector<long long>& arr) {
+//void bottomUpDP(int n, vector<long long>& arr) {
 //	int limit = min(n, 500000000);
 //
 //	long sum = 0;
@@ -56,7 +56,6 @@ long long getValue(int n, map<int, long long>& m) {
 int main() {
 	map<int, long long> m;
 	//vector<long long> arr(0);
-
 	//arr.push_back(0);
 	//arr.push_back(1);
 
