@@ -14,18 +14,20 @@ void main() {
 	cin >> input;
 	while (input != "0") {
 		int size = input.length();
-		vector<int> arr(size, 0);
+		vector<long long> arr(size, 0);
 		arr[0] = 1;
 		string numCode = "";
 
-		// ToDo:: Validate that code has no 0's;		
 		for (size_t i = 1; i < size; i++) {
 			numCode = "";
 			numCode.push_back(input[i - 1]);
 			numCode.push_back(input[i]);
-
-			int value = stoi(numCode);
-			if (value > 26) {
+			
+			int value = stoi(numCode);			
+			if (input[i] == '0' || input[i - 1] == '0' || ((i < size - 1) && input[i + 1] == '0')) {
+				arr[i] = arr[i - 1];
+			}
+			else if (value > 26) {
 				arr[i] = arr[i - 1];
 			}
 			else {
@@ -42,6 +44,8 @@ void main() {
 			}
 		}
 		cout << arr[size - 1] << endl;
+
+		arr.clear();
 		cin >> input;
 	} 
 }
