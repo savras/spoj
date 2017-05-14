@@ -8,7 +8,7 @@ using std::endl;
 using std::queue;
 using std::vector;
 
-void merge(vector<int>& arr, const int& start, const int&end, const int& mid) {
+void merge(vector<int>& arr, const int& start, const int&end, const int& mid, long long & result) {
 	queue<int> left, right;
 
 	for (size_t i = start; i <= mid; i++) {
@@ -26,6 +26,7 @@ void merge(vector<int>& arr, const int& start, const int&end, const int& mid) {
 			left.pop();
 		}
 		else {
+			result += left.size();
 			arr[i] = right.front();
 			right.pop();
 		}
@@ -43,13 +44,13 @@ void merge(vector<int>& arr, const int& start, const int&end, const int& mid) {
 	}
 }
 
-void mergesort(vector<int>& arr, const int& start, const int& end) {
+void mergesort(vector<int>& arr, const int& start, const int& end, long long & result) {
 	if (start < end) {
 		int mid = start + (end - start) / 2;
-		mergesort(arr, start, mid);
-		mergesort(arr, mid + 1, end);
+		mergesort(arr, start, mid, result);
+		mergesort(arr, mid + 1, end, result);
 
-		merge(arr, start, end, mid);
+		merge(arr, start, end, mid, result);
 	}	
 }
 
@@ -57,16 +58,18 @@ int main() {
 	int t, n, p;
 	cin >> t;
 
+	
 	while (t--) {
 		cin >> n;
 		vector<int> arr;
+		long long result = 0;
 		for (size_t i = 0; i < n; i++) {
 			cin >> p;
 			arr.push_back(p);
-		}
-
-		mergesort(arr, 0, arr.size() - 1);
+		}		
+		mergesort(arr, 0, arr.size() - 1, result);
+		cout << result << endl;		
 	}
-
+	
 	return 0;
 }
