@@ -35,7 +35,15 @@ void createbinaryIndexTree(vector<int>& arr) {
 			arr[counter] += store;
 		}
 	}
+}
 
+long long getRunningSum(const vector<int>& arr, int index) {
+	long long sum = 0;
+	int counter = index;
+	while (counter > 0) {
+		sum += arr[counter];
+		counter = getParent(counter);
+	}
 }
 
 void merge(vector<int>& arr, const int& start, const int&end, const int& mid, long long & result) {
