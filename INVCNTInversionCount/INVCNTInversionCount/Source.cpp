@@ -8,16 +8,16 @@ using std::endl;
 using std::queue;
 using std::vector;
 
-// 1) Perform two's complement on itself
-// 2) AND with itself
-// 3) Add to itself
+// 1) Perform two's complement on index
+// 2) AND result with index
+// 3) Add to index
 int getNext(int index) {
 	return ((~index + 1) & index) + index;
 }
 
-// 1) Perform two's complement on itself
-// 2) AND with itself
-// 3) Subtract from original number
+// 1) Perform two's complement on index
+// 2) AND result with index
+// 3) Subtract from index
 // OR...
 // 1) & index with index-1
 // a.k.a. flip l.s.b. bit with value 1
@@ -25,15 +25,14 @@ int getParent(int index) {
 	return index & (index - 1);
 }
 
-void createbinaryIndexTree(vector<int>& arr) {
-	for (size_t i = 1; i < arr.size(); i++) {
-		int store = arr[i - 1];
-		arr[i] += store;
-
-		int counter = getNext(i);
-		while (counter <= arr.size()) {
-			arr[counter] += store;
-		}
+void createbinaryIndexedTree(const vector<int>& arr, vector<int>& bit) {
+	for (size_t i = 0; i < arr.size();  i++) {
+		int store = arr[i];
+		int counter = i + 1;
+		do {			
+			bit[counter] += store;
+			counter = getNext(counter);
+		} while (counter < bit.size());
 	}
 }
 
@@ -44,6 +43,8 @@ long long getRunningSum(const vector<int>& arr, int index) {
 		sum += arr[counter];
 		counter = getParent(counter);
 	}
+
+	return sum;
 }
 
 void merge(vector<int>& arr, const int& start, const int&end, const int& mid, long long & result) {
@@ -100,12 +101,14 @@ int main() {
 	while (t--) {
 		cin >> n;
 		vector<int> arr;
+		vector<int> bit(n + 1);
 		long long result = 0;
 		for (size_t i = 0; i < n; i++) {
 			cin >> p;
 			arr.push_back(p);
 		}		
 		// mergesort(arr, 0, arr.size() - 1, result);
+		createbinaryIndexedTree(arr, bit);
 
 		cout << result << endl;		
 	}
