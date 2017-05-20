@@ -99,7 +99,7 @@ long long getSumAtIndex(const vector<int>& bit, int index) {
 
 	while (index > 0) {
 		index = getParent(index);
-		sum += index;
+		sum += bit[index];
 	}
 
 	return sum;
@@ -124,21 +124,37 @@ long long getRunningSum(const vector<int>& arr, int index) {
 	return sum;
 }
 
-int binarySearch(const int& value, const vector<int>& arr) {
-	int index = 0;
+int binarySearch(const vector<int>& sorted, const int& value, const int& start, const int &end) {
+	int result = -1;
+	if (start <= end) {		
+		int mid = start + (end - start) / 2;
 
-	return index;
+		if (sorted[mid] == value) {
+			result = mid;
+		}
+		else if (sorted[mid] > value) {
+			result = binarySearch(sorted, value, start, mid - 1);
+		}
+		else
+		{
+			result = binarySearch(sorted, value, mid + 1, end);
+		}
+	}
+	return result;
+}
+int getMappedValue(const int& value, const vector<int>& sorted) {
+	return binarySearch(sorted, value, 0, sorted.size() - 1);
 }
 
 void binaryIndexTree(const vector<int>& arr, vector<int>& bit, long long& result) {
-	createbinaryIndexedTree(arr, bit);
+	//createbinaryIndexedTree(arr, bit);
 	
 	vector<int> sorted(arr);
 	sort(sorted.begin(), sorted.end());
 
 	vector<int> map(arr.size());
 	for (size_t i = 0; i < arr.size(); i++) {
-		map[i] = binarySearch(arr[i], sorted);
+		map[i] = getMappedValue(arr[i], sorted) + 1;
 	}
 
 	for (int i = arr.size() - 1; i > 0; i--) {
