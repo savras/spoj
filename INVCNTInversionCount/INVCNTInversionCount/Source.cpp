@@ -10,65 +10,10 @@ using std::queue;
 using std::vector;
 using std::sort;
 
-// 1) Perform two's complement on index
-// 2) AND result with index
-// 3) Add to index
-int getNext(int index) {
-	return ((~index + 1) & index) + index;
-}
 
-// 1) Perform two's complement on index
-// 2) AND result with index
-// 3) Subtract from index
-// OR...
-// 1) & index with index-1
-// a.k.a. flip l.s.b. bit with value 1
-int getParent(int index) {
-	int x = index & -index;
-	return index & (index - 1);
-}
-
-void createbinaryIndexedTree(const vector<int>& arr, vector<int>& bit) {
-	for (size_t i = 0; i < arr.size();  i++) {
-		int store = arr[i];
-		int counter = i + 1;
-		do {			
-			bit[counter] += store;
-			counter = getNext(counter);
-		} while (counter < bit.size());
-	}
-}
-
-long long getSumAtIndex(const vector<int>& bit, int index) {
-	long long sum = bit[index];
-
-	while (index > 0) {
-		index = getParent(index);
-		sum += index;
-	}
-
-	return sum;
-}
-
-void updateAtIndex(vector<int>& bit, int index, const int& value)
-{
-	do {
-		bit[index] += value;
-		index = getParent(index);
-	} while (index > 0);
-}
-
-long long getRunningSum(const vector<int>& arr, int index) {
-	long long sum = 0;
-	int counter = index;
-	while (counter > 0) {
-		sum += arr[counter];
-		counter = getParent(counter);
-	}
-
-	return sum;
-}
-
+/*
+ * Mergsort solution
+ */
 void merge(vector<int>& arr, const int& start, const int&end, const int& mid, long long & result) {
 	queue<int> left, right;
 
@@ -113,6 +58,70 @@ void mergesort(vector<int>& arr, const int& start, const int& end, long long & r
 
 		merge(arr, start, end, mid, result);
 	}	
+}
+
+/*
+ * Binary index tree solution
+ */
+
+ // 1) Perform two's complement on index
+ // 2) AND result with index
+ // 3) Add to index
+int getNext(int index) {
+	return ((~index + 1) & index) + index;
+	// ToDo:: Change to return index & -index;
+}
+
+// 1) Perform two's complement on index
+// 2) AND result with index
+// 3) Subtract from index
+// OR...
+// 1) & index with index-1
+// a.k.a. flip l.s.b. bit with value 1
+int getParent(int index) {
+	int x = index & -index;
+	return index & (index - 1);
+}
+
+void createbinaryIndexedTree(const vector<int>& arr, vector<int>& bit) {
+	for (size_t i = 0; i < arr.size(); i++) {
+		int store = arr[i];
+		int counter = i + 1;
+		do {
+			bit[counter] += store;
+			counter = getNext(counter);
+		} while (counter < bit.size());
+	}
+}
+
+long long getSumAtIndex(const vector<int>& bit, int index) {
+	long long sum = bit[index];
+
+	while (index > 0) {
+		index = getParent(index);
+		sum += index;
+	}
+
+	return sum;
+}
+
+void updateAtIndex(vector<int>& bit, int index, const int& value)
+{
+	do {
+		bit[index] += value;
+		index = getParent(index);
+	} while (index > 0);
+}
+
+long long getRunningSum(const vector<int>& arr, int index) {
+	long long sum = 0;
+	int counter = index;
+	while (counter > 0) {
+		sum += arr[counter];
+		counter = getParent(counter);
+	}
+
+	return sum;
 }
 
 int binarySearch(const int& value, const vector<int>& arr) {
