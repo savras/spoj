@@ -1,12 +1,14 @@
 #include "iostream"
 #include "queue"
 #include "vector"
+#include "algorithm"
 
 using std::cin;
 using std::cout;
 using std::endl;
 using std::queue;
 using std::vector;
+using std::sort;
 
 // 1) Perform two's complement on index
 // 2) AND result with index
@@ -22,6 +24,7 @@ int getNext(int index) {
 // 1) & index with index-1
 // a.k.a. flip l.s.b. bit with value 1
 int getParent(int index) {
+	int x = index & -index;
 	return index & (index - 1);
 }
 
@@ -34,6 +37,25 @@ void createbinaryIndexedTree(const vector<int>& arr, vector<int>& bit) {
 			counter = getNext(counter);
 		} while (counter < bit.size());
 	}
+}
+
+long long getSumAtIndex(const vector<int>& bit, int index) {
+	long long sum = bit[index];
+
+	while (index > 0) {
+		index = getParent(index);
+		sum += index;
+	}
+
+	return sum;
+}
+
+void updateAtIndex(vector<int>& bit, int index, const int& value)
+{
+	do {
+		bit[index] += value;
+		index = getParent(index);
+	} while (index > 0);
 }
 
 long long getRunningSum(const vector<int>& arr, int index) {
@@ -93,10 +115,32 @@ void mergesort(vector<int>& arr, const int& start, const int& end, long long & r
 	}	
 }
 
+int binarySearch(const int& value, const vector<int>& arr) {
+	int index = 0;
+
+	return index;
+}
+
+void binaryIndexTree(const vector<int>& arr, vector<int>& bit, long long& result) {
+	createbinaryIndexedTree(arr, bit);
+	
+	vector<int> sorted(arr);
+	sort(sorted.begin(), sorted.end());
+
+	vector<int> map(arr.size());
+	for (size_t i = 0; i < arr.size(); i++) {
+		map[i] = binarySearch(arr[i], sorted);
+	}
+
+	for (int i = arr.size() - 1; i > 0; i--) {
+		result += getSumAtIndex(bit, map[i]);
+		updateAtIndex(bit, map[i], 1);
+	}
+}
+
 int main() {
 	int t, n, p;
 	cin >> t;
-
 	
 	while (t--) {
 		cin >> n;
@@ -107,8 +151,9 @@ int main() {
 			cin >> p;
 			arr.push_back(p);
 		}		
+
 		// mergesort(arr, 0, arr.size() - 1, result);
-		createbinaryIndexedTree(arr, bit);
+		binaryIndexTree(arr, bit, result);
 
 		cout << result << endl;		
 	}
