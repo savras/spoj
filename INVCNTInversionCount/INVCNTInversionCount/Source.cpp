@@ -68,8 +68,8 @@ void mergesort(vector<int>& arr, const int& start, const int& end, long long & r
  // 2) AND result with index
  // 3) Add to index
 int getNext(int index) {
-	return ((~index + 1) & index) + index;
-	// ToDo:: Change to return index & -index;
+	index += index & -index;
+	return index;
 }
 
 // 1) Perform two's complement on index
@@ -79,8 +79,7 @@ int getNext(int index) {
 // 1) & index with index-1
 // a.k.a. flip l.s.b. bit with value 1
 int getParent(int index) {
-	int x = index & -index;
-	return index & (index - 1);
+	return index & (index - 1);	// return index -= index & -index;
 }
 
 void createbinaryIndexedTree(const vector<int>& arr, vector<int>& bit) {
@@ -109,8 +108,8 @@ void updateAtIndex(vector<int>& bit, int index, const int& value)
 {
 	do {
 		bit[index] += value;
-		index = getParent(index);
-	} while (index > 0);
+		index = getNext(index);
+	} while (index < bit.size());
 }
 
 long long getRunningSum(const vector<int>& arr, int index) {
@@ -157,7 +156,7 @@ void binaryIndexTree(const vector<int>& arr, vector<int>& bit, long long& result
 		map[i] = getMappedValue(arr[i], sorted) + 1;
 	}
 
-	for (int i = arr.size() - 1; i > 0; i--) {
+	for (int i = arr.size() - 1; i >= 0; i--) {
 		result += getSumAtIndex(bit, map[i]);
 		updateAtIndex(bit, map[i], 1);
 	}
