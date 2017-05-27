@@ -33,7 +33,7 @@ void populateInitialTree(const vector<int>& arr, vector<int>& tree, const int& s
 }
 
 void calcParent(vector<int>& tree) {
-	int treeSize = sizeof(tree) / sizeof(int);
+	int treeSize = tree.size();
 	for (int i = treeSize - 1; i > 0; i -= 2) {
 		int p = getParent(i);
 		tree[p] = max(tree[i], tree[i - 1]);
