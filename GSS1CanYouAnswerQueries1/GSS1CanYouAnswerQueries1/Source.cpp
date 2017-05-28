@@ -21,28 +21,21 @@ int getRightChild(const int& index) {
 	return (2 * index) + 2;
 }
 
-void populateInitialTree(const vector<int>& arr, vector<int>& tree, const int& start, const int& end, const int& current) {
+int populateInitialTree(const vector<int>& arr, vector<int>& tree, const int& start, const int& end, const int& current) {
 	if (start == end) {
 		tree[current] = arr[start];
-		return;
 	}
-
-	int mid = start + ((end - start) / 2);
-	populateInitialTree(arr, tree, start, mid, (2 * current) + 1);
-	populateInitialTree(arr, tree, mid + 1, end, (2 * current) + 2);
-}
-
-void calcParent(vector<int>& tree) {
-	int treeSize = tree.size();
-	for (int i = treeSize - 1; i > 0; i -= 2) {
-		int p = getParent(i);
-		tree[p] = max(tree[i], tree[i - 1]);
-	}
+	else {
+		int mid = start + ((end - start) / 2);
+		int leftVal = populateInitialTree(arr, tree, start, mid, (2 * current) + 1);
+		int rightVal = populateInitialTree(arr, tree, mid + 1, end, (2 * current) + 2);
+		tree[current] = max(leftVal, rightVal);
+	}	
+	return tree[current];
 }
 
 void buildTree(vector<int>& arr, vector<int>& tree) {
 	populateInitialTree(arr, tree, 0, arr.size() - 1, 0);
-	calcParent(tree);
 }
 
 // Cater for these three scenarios:
@@ -61,7 +54,9 @@ long long findMax(const vector<int>& tree, const int& start, const int& end, con
 	}
 	else {
 		int mid = start + ((end - start) / 2);
-		return max(findMax(tree, start, mid, xi, yi, (2 * current + 1)), findMax(tree, mid + 1, end, xi, yi, (2 * current + 2)));
+		int leftVal = findMax(tree, start, mid, xi, yi, (2 * current + 1));
+		int rightVal = findMax(tree, mid + 1, end, xi, yi, (2 * current + 2));
+		return max(leftVal, rightVal);
 	}
 }
 
@@ -71,7 +66,21 @@ int main() {
 	vector<int> arr;
 
 	cin >> n;
-	int treeSize = ((2 * n) - 1);
+
+	// -- The Algorithm Design Manual --
+	// height = log n, where:
+	// h is height
+	// n = number of leaf nodes
+	// log is log to base d, where d is the maximum number of children allowed per node.
+	
+	// The height of a perfectly balanced binary search tree, would be :
+	// h = log m, where m is the total number of nodes.
+	int height = (int)(ceil(log2(n)));	// Ceil gives number of nodes for perfectly balanced tree 
+
+	// h = log m , therefore via log identity,
+	// 2^h == total number of nodes in a tree of height h
+	int treeSize = 2 * (int)pow(2, height) - 1;
+
 	vector<int> tree(treeSize);
 
 	while (n--) {
@@ -83,7 +92,7 @@ int main() {
 	cin >> m;
 	while (m--)
 	{
-		cin >> xi >> yi;		
+		cin >> xi >> yi;
 		long long result = findMax(tree, 0, arr.size() - 1, xi, yi, 0);
 		cout << result << endl;
 	}
