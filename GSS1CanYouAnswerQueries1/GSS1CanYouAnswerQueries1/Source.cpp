@@ -1,5 +1,6 @@
 #include<iostream>
 #include<vector>
+#include<cmath>
 #include<algorithm>
 #include<limits>
 
@@ -50,7 +51,7 @@ long long findMax(const vector<int>& tree, const int& start, const int& end, con
 		return tree[current];
 	}
 	else if (end < xi || start > yi) {
-		return INT_MIN;
+		return std::numeric_limits<std::int32_t>::max();
 	}
 	else {
 		int mid = start + ((end - start) / 2);
@@ -79,7 +80,7 @@ int main() {
 
 	// h = log m , therefore via log identity,
 	// 2^h == total number of nodes in a tree of height h
-	int treeSize = 2 * (int)pow(2, height) - 1;
+	long long treeSize = 2 * (int)pow(2, height) - 1;
 
 	vector<int> tree(treeSize);
 
@@ -93,7 +94,7 @@ int main() {
 	while (m--)
 	{
 		cin >> xi >> yi;
-		long long result = findMax(tree, 0, arr.size() - 1, xi, yi, 0);
+		long long result = findMax(tree, 0, arr.size() - 1, xi - 1, yi - 1, 0);
 		cout << result << endl;
 	}
 
