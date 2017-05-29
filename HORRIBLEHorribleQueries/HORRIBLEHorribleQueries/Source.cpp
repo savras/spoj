@@ -10,32 +10,33 @@ using std::string;
 
 // BIT/Fenwick implementation
 int getNext(const int& index) {
-	return index & (index - 1);
+	return index + (index & (~index + 1));
 }
 
 int getParent(const int& index) {
-	return index + (~index);
+	return index & (index - 1);	
 }
 
 long long getAt(const vector<int>& arr, const int& index) {
 	long long result = 0;
-	int parent = getParent(index);
-	while (parent > 0) {
-		result += arr[parent];
-	}
+	int current = index;
+	do {
+		result += arr[current];
+		current = getParent(current);
+	} while (current > 0);
 
 	return result;
 }
 
 void update(vector<int>& arr, const int& index, const int& value) {
-	int next = getNext(index);
-	while (next < arr.size()) {
-		arr[next] += value;
-	}
+	int current = index;
+	do {
+		arr[current] += value;
+		current = getNext(current);
+	} while (current < arr.size());
 }
 
 // Segment tree implementation
-
 int main() {
 	int t;
 	int n, c, code, xi, yi, value;
@@ -43,16 +44,19 @@ int main() {
 	cin >> t;
 	while (t--) {
 		cin >> n;
+		vector<int> arr(n + 1);
 		while (n--) {
-			vector<int> arr(n);
 			cin >> c;
 			while (c--) {
-				cin >> code >> xi >> yi >> value;
-				if (code == 1) {
+				cin >> code;
+				if (code == 0) {
+					cin >> xi >> yi >> value;
 					update(arr, xi, value);
 				}
 				else {
-
+					cin >> xi >> yi;
+					long long result = getAt(arr, yi) - getAt(arr, xi - 1);
+					cout << result << endl;
 				}
 			}
 		}
