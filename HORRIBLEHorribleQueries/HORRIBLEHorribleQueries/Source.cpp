@@ -39,25 +39,24 @@ void update(vector<int>& arr, const int& index, const int& value) {
 // Segment tree implementation
 int main() {
 	int t;
-	int n, c, code, xi, yi, value;
+	int n, c, code, xi, yi, valu me;
 
 	cin >> t;
 	while (t--) {
 		cin >> n;
 		vector<int> arr(n + 1);
-		while (n--) {
-			cin >> c;
-			while (c--) {
-				cin >> code;
-				if (code == 0) {
-					cin >> xi >> yi >> value;
-					update(arr, xi, value);
-				}
-				else {
-					cin >> xi >> yi;
-					long long result = getAt(arr, yi) - getAt(arr, xi - 1);
-					cout << result << endl;
-				}
+
+		cin >> c;
+		while (c--) {
+			cin >> code;
+			if (code == 0) {
+				cin >> xi >> yi >> value;
+				update(arr, xi, value);
+			}
+			else {
+				cin >> xi >> yi;
+				long long result = getAt(arr, yi) - getAt(arr, xi - 1);
+				cout << result << endl;
 			}
 		}
 	}
