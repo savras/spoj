@@ -5,6 +5,17 @@ using std::cin;
 using std::vector;
 using std::ios_base;
 
+/*
+Prefix sum solution:
+for each update:
+arr[l] += value;
+arr[r + 1] -= value;
+
+build prefix sum from arr.
+
+profit!
+*/
+
 int getParent(const int& index) {
 	return index - (index & (-index));
 }
