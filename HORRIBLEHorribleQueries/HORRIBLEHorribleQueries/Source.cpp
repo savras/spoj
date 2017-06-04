@@ -44,8 +44,22 @@ long long update(vector<int>& arr, vector<int>& lazy, const int& s, const int& e
 	int leftChild = (2 * current) + 1;
 	int rightChild = (2 * current) + 2;
 
+
 	if ((l < s  && r > e) || (s < l && e < l) || (s > r && e > r)) {
-		return 0;
+		if (lazy[current] != 0) {
+			if (s != e) {
+				int mid = s + ((e - s) / 2);
+				arr[current] += ((e - s + 1) * lazy[current]);
+				lazy[leftChild] += lazy[current];
+				lazy[rightChild] += lazy[current];
+			}
+			else {
+				arr[current] = lazy[current];
+			}
+
+			lazy[current] = 0;
+		}
+		return arr[current];
 	}
 
 	if (s >= l && e <= r) {		
@@ -55,7 +69,8 @@ long long update(vector<int>& arr, vector<int>& lazy, const int& s, const int& e
 		}
 
 		if (s != e) {	// Has children
-			arr[current] += (2 * value);
+			int mid = s + ((e - s) / 2);
+			arr[current] += ((e - s + 1) * value);
 			lazy[leftChild] += value;			
 			lazy[rightChild] += value;
 		}
@@ -66,58 +81,72 @@ long long update(vector<int>& arr, vector<int>& lazy, const int& s, const int& e
 		return arr[current];
 	}
 
-	int mid = s + ((e - s) / 2);
-	long long leftVal = update(arr, lazy, s, mid, l, r, value, leftChild);
-	long long rightVal = update(arr, lazy, mid + 1, e, l, r, value, rightChild);
-	
 	if (lazy[current] != 0)
 	{
-		arr[current] += lazy[current];
-		lazy[current] = 0;		
+		if (s != e) {	// Has children
+			int mid = s + ((e - s) / 2);
+			lazy[leftChild] += lazy[current];
+			lazy[rightChild] += lazy[current];
+			lazy[current] = 0;
+		}
 	}
-	arr[current] += leftVal + rightVal;
+
+	int mid = s + ((e - s) / 2);
+	long long leftVal = update(arr, lazy, s, mid, l, r, value, leftChild);
+	long long rightVal = update(arr, lazy, mid + 1, e, l, r, value, rightChild);	
+	
+	arr[current] = leftVal + rightVal;
 
 	return arr[current];
 }
 
-long long getValue(vector<int>& st, vector<int> lazy, const int& s, const int& e, const int& l, const int& r, const int& current) {
+long long getSum(vector<int>& arr, vector<int> lazy, const int& s, const int& e, const int& l, const int& r, const int& current) {
 	if (l <= s && r >= e) {
-		return st[current];
+		if (lazy[current] != 0) {
+			int leftChild = (2 * current) + 1;
+			int rightChild = (2 * current) + 2;
+
+			if (s != e) {
+				lazy[leftChild] += lazy[current];
+				lazy[rightChild] += lazy[current];
+			}
+
+			arr[current] += lazy[current];
+			lazy[current] = 0;
+		}
+		return arr[current];
 	}
 
-	if (s < l && e > r) {
+	if ((s < l && e > r) || (s < l && e < l) || (s > r && e > r)) {
+		if (lazy[current] != 0) {
+			int leftChild = (2 * current) + 1;
+			int rightChild = (2 * current) + 2;
+
+			if (s != e) {
+				lazy[leftChild] += lazy[current];
+				lazy[rightChild] += lazy[current];
+			}
+
+			arr[current] += lazy[current];
+			lazy[current] = 0;
+		}
 		return 0;
 	}
 
 	int mid = s + (e - s) / 2;
-	long long leftVal = getValue(st, lazy, s, mid, l, r, (2 * current) + 1);
-	long long rightVal = getValue(st, lazy, mid + 1, e, l, r,  2 * current + 2);
+	long long leftVal = getSum(arr, lazy, s, mid, l, r, (2 * current) + 1);
+	long long rightVal = getSum(arr, lazy, mid + 1, e, l, r,  2 * current + 2);
 	return leftVal + rightVal;
 }
-//
-//long long buildSegmentTree(const vector<int>& arr, vector<int>& st, const int& s, const int& e, const int& current) {
-//	if (s == e)
-//	{
-//		st[current] = arr[s];
-//		return st[current];
-//	}
-//
-//	int mid = s + (e - s) / 2;
-//	long long leftVal = buildSegmentTree(arr, st, s, mid, (2 * current) + 1);
-//	long long rightVal = buildSegmentTree(arr, st, mid + 1, e, (2 * current) + 2);
-//	st[current] = leftVal + rightVal;
-//
-//	return st[current];
-//}
 
 int main() {
 	int t;
-	int n, c, code, xi, yi, value;
+	int n, c, code, l, r, value;
 
 	cin >> t;
 	while (t--) {
 		cin >> n;
-		\
+		
 		int height = (int)(ceil(log2(n)));										
 		long long treeSize = 2 * (int)pow(2, height) - 1;
 
@@ -128,12 +157,12 @@ int main() {
 		while (c--) {
 			cin >> code;
 			if (code == 0) {
-				cin >> xi >> yi >> value;
-				update(arr, lazy, 0, n - 1, xi, yi, value, 0);
+				cin >> l >> r >> value;
+				update(arr, lazy, 0, n - 1, l - 1, r - 1, value, 0);
 			}
 			else {
-				cin >> xi >> yi;
-
+				cin >> l >> r;
+				cout << getSum(arr, lazy, 0, n - 1, l - 1, r - 1, 0) << "\n";
 
 				//long long result = getAt(arr, yi) - getAt(arr, xi - 1);
 				//cout << result << endl;
