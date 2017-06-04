@@ -44,25 +44,25 @@ long long update(vector<int>& arr, vector<int>& lazy, const int& s, const int& e
 	int leftChild = (2 * current) + 1;
 	int rightChild = (2 * current) + 2;
 
-	if (l < s  && r > e) {
+	if ((l < s  && r > e) || (s < l && e < l) || (s > r && e > r)) {
 		return 0;
 	}
 
-	if (s >= l && e <= r) {
+	if (s >= l && e <= r) {		
 		if (lazy[current] != 0) {
 			arr[current] += lazy[current];
 			lazy[current] = 0;
-
-			if (leftChild <= lazy.size() - 1)
-			{
-				lazy[leftChild] += value;
-			}
-			if (rightChild <= lazy.size() - 1)
-			{
-				lazy[rightChild] += value;
-			}
 		}
-		arr[current] += value;
+
+		if (s != e) {	// Has children
+			arr[current] += (2 * value);
+			lazy[leftChild] += value;			
+			lazy[rightChild] += value;
+		}
+		else {
+			arr[current] += value;
+		}
+
 		return arr[current];
 	}
 
@@ -75,6 +75,8 @@ long long update(vector<int>& arr, vector<int>& lazy, const int& s, const int& e
 		arr[current] += lazy[current];
 		lazy[current] = 0;		
 	}
+	arr[current] += leftVal + rightVal;
+
 	return arr[current];
 }
 
@@ -92,21 +94,21 @@ long long getValue(vector<int>& st, vector<int> lazy, const int& s, const int& e
 	long long rightVal = getValue(st, lazy, mid + 1, e, l, r,  2 * current + 2);
 	return leftVal + rightVal;
 }
-
-long long buildSegmentTree(const vector<int>& arr, vector<int>& st, const int& s, const int& e, const int& current) {
-	if (s == e)
-	{
-		st[current] = arr[s];
-		return st[current];
-	}
-
-	int mid = s + (e - s) / 2;
-	long long leftVal = buildSegmentTree(arr, st, s, mid, (2 * current) + 1);
-	long long rightVal = buildSegmentTree(arr, st, mid + 1, e, (2 * current) + 2);
-	st[current] = leftVal + rightVal;
-
-	return st[current];
-}
+//
+//long long buildSegmentTree(const vector<int>& arr, vector<int>& st, const int& s, const int& e, const int& current) {
+//	if (s == e)
+//	{
+//		st[current] = arr[s];
+//		return st[current];
+//	}
+//
+//	int mid = s + (e - s) / 2;
+//	long long leftVal = buildSegmentTree(arr, st, s, mid, (2 * current) + 1);
+//	long long rightVal = buildSegmentTree(arr, st, mid + 1, e, (2 * current) + 2);
+//	st[current] = leftVal + rightVal;
+//
+//	return st[current];
+//}
 
 int main() {
 	int t;
@@ -115,8 +117,12 @@ int main() {
 	cin >> t;
 	while (t--) {
 		cin >> n;
-		vector<int> arr(n);
-		vector<int> lazy(n);
+		\
+		int height = (int)(ceil(log2(n)));										
+		long long treeSize = 2 * (int)pow(2, height) - 1;
+
+		vector<int> arr(treeSize);
+		vector<int> lazy(treeSize);
 		
 		cin >> c;
 		while (c--) {
