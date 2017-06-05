@@ -44,40 +44,32 @@ long long update(vector<int>& arr, vector<int>& lazy, const int& s, const int& e
 	int leftChild = (2 * current) + 1;
 	int rightChild = (2 * current) + 2;
 
-
 	if ((l < s  && r > e) || (s < l && e < l) || (s > r && e > r)) {
 		if (lazy[current] != 0) {
 			if (s != e) {
-				int mid = s + ((e - s) / 2);
-				arr[current] += ((e - s + 1) * lazy[current]);
+				int mid = s + ((e - s) / 2);				
 				lazy[leftChild] += lazy[current];
 				lazy[rightChild] += lazy[current];
 			}
-			else {
-				arr[current] = lazy[current];
-			}
 
+			arr[current] += ((e - s + 1) * lazy[current]);
 			lazy[current] = 0;
 		}
 		return arr[current];
 	}
 
 	if (s >= l && e <= r) {		
-		if (lazy[current] != 0) {
-			arr[current] += lazy[current];
-			lazy[current] = 0;
-		}
+		long long newVal = value + lazy[current];
 
 		if (s != e) {	// Has children
 			int mid = s + ((e - s) / 2);
-			arr[current] += ((e - s + 1) * value);
-			lazy[leftChild] += value;			
-			lazy[rightChild] += value;
-		}
-		else {
-			arr[current] += value;
+			lazy[leftChild] += newVal;
+			lazy[rightChild] += newVal;
 		}
 
+		arr[current] += ((e - s + 1) * newVal);
+
+		lazy[current] = 0;
 		return arr[current];
 	}
 
@@ -100,38 +92,43 @@ long long update(vector<int>& arr, vector<int>& lazy, const int& s, const int& e
 	return arr[current];
 }
 
-long long getSum(vector<int>& arr, vector<int> lazy, const int& s, const int& e, const int& l, const int& r, const int& current) {
-	if (l <= s && r >= e) {
-		if (lazy[current] != 0) {
-			int leftChild = (2 * current) + 1;
-			int rightChild = (2 * current) + 2;
+long long getSum(vector<int>& arr, vector<int>& lazy, const int& s, const int& e, const int& l, const int& r, const int& current) {
+	if (current >= lazy.size())
+	{
+		return 0;
+	}
 
+	int leftChild = (2 * current) + 1;
+	int rightChild = (2 * current) + 2;
+
+	if (s >= l && e <= r) {
+		if (lazy[current] != 0) {
 			if (s != e) {
 				lazy[leftChild] += lazy[current];
 				lazy[rightChild] += lazy[current];
 			}
 
-			arr[current] += lazy[current];
+			arr[current] += ((e - s + 1) * lazy[current]);
 			lazy[current] = 0;
 		}
+
 		return arr[current];
 	}
 
 	if ((s < l && e > r) || (s < l && e < l) || (s > r && e > r)) {
-		if (lazy[current] != 0) {
-			int leftChild = (2 * current) + 1;
-			int rightChild = (2 * current) + 2;
+		//if (lazy[current] != 0) {
+		//	if (s != e) {
+		//		lazy[leftChild] += lazy[current];
+		//		lazy[rightChild] += lazy[current];
+		//	}
+		//
+		//	arr[current] += ((e - s + 1) * lazy[current]);
+		//	lazy[current] = 0;
+		//}
 
-			if (s != e) {
-				lazy[leftChild] += lazy[current];
-				lazy[rightChild] += lazy[current];
-			}
-
-			arr[current] += lazy[current];
-			lazy[current] = 0;
-		}
 		return 0;
 	}
+
 
 	int mid = s + (e - s) / 2;
 	long long leftVal = getSum(arr, lazy, s, mid, l, r, (2 * current) + 1);
