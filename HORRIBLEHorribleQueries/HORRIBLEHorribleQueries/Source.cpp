@@ -1,12 +1,17 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <numeric>
+#include <cmath>
 
 using std::cin;
 using std::cout;
 using std::endl;
 using std::vector;
 using std::string;
+using std::ceil;
+using std::pow;
+using std::log2;
 
 // BIT/Fenwick implementation
 // ToDo:: On hold - to be completed when I understand how to do this.
@@ -38,7 +43,7 @@ void update(vector<int>& arr, const int& index, const int& value) {
 }
 
 // Segment tree implementation
-long long update(vector<int>& arr, vector<int>& lazy, const int& s, const int& e, 
+long long update(vector<long long>& arr, vector<long long>& lazy, const int& s, const int& e,
 	const int& l, const int& r, const int& value, const int& current) {
 
 	int leftChild = (2 * current) + 1;
@@ -92,7 +97,7 @@ long long update(vector<int>& arr, vector<int>& lazy, const int& s, const int& e
 	return arr[current];
 }
 
-long long getSum(vector<int>& arr, vector<int>& lazy, const int& s, const int& e, const int& l, const int& r, const int& current) {
+long long getSum(vector<long long>& arr, vector<long long>& lazy, const int& s, const int& e, const int& l, const int& r, const int& current) {
 	if (current >= lazy.size())
 	{
 		return 0;
@@ -141,14 +146,16 @@ int main() {
 	int n, c, code, l, r, value;
 
 	cin >> t;
+	vector<long long> results;
+
 	while (t--) {
 		cin >> n;
 		
 		int height = (int)(ceil(log2(n)));										
 		long long treeSize = 2 * (int)pow(2, height) - 1;
 
-		vector<int> arr(treeSize);
-		vector<int> lazy(treeSize);
+		vector<long long> arr(treeSize);
+		vector<long long> lazy(treeSize);
 		
 		cin >> c;
 		while (c--) {
@@ -159,7 +166,7 @@ int main() {
 			}
 			else {
 				cin >> l >> r;
-				cout << getSum(arr, lazy, 0, n - 1, l - 1, r - 1, 0) << "\n";
+				results.push_back(getSum(arr, lazy, 0, n - 1, l - 1, r - 1, 0));
 
 				//long long result = getAt(arr, yi) - getAt(arr, xi - 1);
 				//cout << result << endl;
@@ -167,5 +174,13 @@ int main() {
 		}
 	}
 
+	for (size_t i = 0; i < results.size(); i++) {
+		cout << results[i];
+
+		if (i != results.size() - 1) {
+			cout << "\n";
+		}
+	}
+	
 	return 0;
 }
