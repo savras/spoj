@@ -24,6 +24,7 @@ namespace PT07ZLongestPathInTree
                 var v = int.Parse(inArr[1]);
                 u--; v--;
                 adjList[u].Add(v);
+                adjList[v].Add(u);
             }
 
             var pathCount = 0;
