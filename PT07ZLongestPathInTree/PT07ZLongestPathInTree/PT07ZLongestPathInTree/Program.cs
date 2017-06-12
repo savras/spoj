@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace PT07ZLongestPathInTree
 {
@@ -7,6 +8,7 @@ namespace PT07ZLongestPathInTree
     {
         static void Main(string[] args)
         {
+            // Build Adj list
             var n = int.Parse(Console.ReadLine());
             var adjList = new List<int>[n];
 
@@ -24,37 +26,37 @@ namespace PT07ZLongestPathInTree
                 var v = int.Parse(inArr[1]);
                 u--; v--;
                 adjList[u].Add(v);
-                adjList[v].Add(u);
+                //adjList[v].Add(u);
             }
 
-            var pathCount = 0;
-            var max = 0;
+            // Process
             var visited = new HashSet<int>();
-            Dfs(adjList, visited, 0, ref pathCount, ref max);
+            visited.Add(0);
 
-            Console.WriteLine(max);
+            var neighbourLength = adjList[0]
+                .Select(node => Dfs(adjList, visited, node, 1)).ToList();
+
+            var sortedNeighbourLength = neighbourLength.OrderByDescending(nl => nl).ToList();
+            var neighbourSize = adjList[0].Count;
+
+            var maxLength = neighbourSize > 1 ? sortedNeighbourLength[0] + sortedNeighbourLength[1] : sortedNeighbourLength[0];
+            Console.WriteLine(maxLength);
         }
 
-        static void Dfs(List<int>[] adjList, HashSet<int> visited, int current, ref int pathCount, ref int max)
+        private static int Dfs(List<int>[] adjList, HashSet<int> visited, int current, int count)
         {
-            var neighbours = new List<int>();
-            neighbours.AddRange(adjList[current]);
-            foreach (var node in neighbours)
+            var max = count;
+            foreach (var node in adjList[current])
             {
                 if (!visited.Contains(node))
                 {
                     visited.Add(node);
-                    pathCount++;
-                    Dfs(adjList, visited, node, ref pathCount, ref max);
-
-                    if (pathCount > max)
-                    {
-                        max = pathCount;
-                    }
-                    pathCount--;
+                    max = Math.Max(max, Dfs(adjList, visited, node, ++count));
+                    count--;
                 }
-
             }
+
+            return max;
         }
     }
 }
