@@ -1,4 +1,8 @@
-﻿using System;
+﻿/*
+ * Concept: Given an arbitrary node in an undirected tree, we take the two longest path branching out from
+ * the node. These two longest path will form the longest line.
+ */
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -20,19 +24,18 @@ namespace PT07ZLongestPathInTree
             for (var i = 0; i < n - 1; i++)
             {
                 var line = Console.ReadLine();
-                var inArr = line.Split(' ');
+                var inArr = line.Split(' ');    // Assume line will never be null for this question.
 
                 var u = int.Parse(inArr[0]);
                 var v = int.Parse(inArr[1]);
                 u--; v--;
                 adjList[u].Add(v);
-                //adjList[v].Add(u);
             }
 
             // Process
-            var visited = new HashSet<int>();
-            visited.Add(0);
+            var visited = new HashSet<int> {0};
 
+            // Iterate through each neighbour in an arbitrary node. Here we have chosen node 0 in the adjList.
             var neighbourLength = adjList[0]
                 .Select(node => Dfs(adjList, visited, node, 1)).ToList();
 
