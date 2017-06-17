@@ -28,7 +28,7 @@ namespace DQuery
         private static int GetAt(List<int> bit, int index)
         {
             if (index == 0) { return 0; }
-            var value = 0;
+            int value = 0;
             do
             {
                 value += bit[index];
@@ -88,11 +88,23 @@ namespace DQuery
                 bit.Add(0);
             }
 
-            Solve(arr, bit, sortedTuples);
+            var resultOrder = new int[q];
+            Solve(arr, bit, sortedTuples, tuples, resultOrder);
 
+            for (var i = 0; i < resultOrder.Length; i++)
+            {
+                if (i == resultOrder.Length - 1)
+                {
+                    Console.Write(resultOrder[i]);
+                }
+                else
+                {
+                    Console.WriteLine(resultOrder[i]);
+                }
+            }
         }
 
-        static void Solve(int[] arr, List<int> bit, List<Tuple<int, int>> sortedTuples)
+        static void Solve(int[] arr, List<int> bit, List<Tuple<int, int>> sortedTuples, List<Tuple<int, int>> tuples, int[] resultOrder)
         {
             var dict = new Dictionary<int, int>();
             for (var i = 0; i < arr.Length; i++)
@@ -110,7 +122,9 @@ namespace DQuery
 
                 foreach(var query in QueriesAtI(sortedTuples, i + 1))
                 {
-                    Console.WriteLine(GetUniqueElementsInRange(bit, query.Item1, query.Item2));
+                    var result = GetUniqueElementsInRange(bit, query.Item1, query.Item2);
+                    var index = tuples.IndexOf(query);
+                    resultOrder[index] = result;
                 }
             }
         }
