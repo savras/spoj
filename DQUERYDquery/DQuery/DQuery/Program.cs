@@ -9,6 +9,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 namespace DQuery
@@ -31,10 +32,10 @@ namespace DQuery
             {
                 bit[index] += value;
                 index = getNext(index);
-            } while (index <= bit.Count);
+            } while (index < bit.Count);
         }
 
-        static int getUniqueElements(List<int> bit, int l, int r)
+        static int getUniqueElementsInRange(List<int> bit, int l, int r)
         {
             var sum = 0;
             for (var i = l; i <= r; i++)
@@ -58,10 +59,9 @@ namespace DQuery
             {
                 arr[i] = int.Parse(strArr[i]);
             }
-
-            var prefixSum = BuildPrefixSum(arr, n);
-            var sortedPrefixSum = prefixSum.OrderByDescending(d => d).ToList();
-            // Get D-queries
+            
+            // Get offline D-queries
+            var tuples = new List<Tuple<int, int>>();
             var q = int.Parse(Console.ReadLine());
             for (var m = 0; m < q; m++)
             {
@@ -69,26 +69,60 @@ namespace DQuery
                 var split = input.Split(' ');
                 var i = int.Parse(split[0]);
                 var j = int.Parse(split[1]);
-                Console.WriteLine(sortedPrefixSum[--j] - sortedPrefixSum[--i] + 1);
+                
+                tuples.Add(new Tuple<int, int>(i, j));
+            }
+            var sortedTuples = tuples.OrderBy(t => t.Item2).ToList();
+
+            // Solve
+            var bit = new List<int>(n + 1);
+            for (var i = 0; i < n + 1; i++)
+            {
+                bit.Add(0);
+            }
+
+            Solve(arr, bit, sortedTuples);
+
+        }
+
+        static void Solve(int[] arr, List<int> bit, List<Tuple<int, int>> sortedTuples)
+        {
+            var dict = new Dictionary<int, int>();
+            // Loop through array
+            // each iteration update previous occureing index of arr[i] to current.
+                // or update bit[i] only,m8
+            // each iteration check if i == r
+            // if so, get answer.
+
+            for (var i = 0; i < arr.Length; i++)
+            {
+                if (dict.ContainsKey(arr[i]))
+                {
+                    update(bit, dict[arr[i]], -1);
+                    dict[arr[i]] = i + 1;
+                }
+                else
+                {
+                    dict.Add(arr[i], i + 1);
+                }
+                update(bit, dict[arr[i]], 1);
+
+                foreach(var query in QueriesAtI(sortedTuples, i + 1))
+                {
+                    Console.WriteLine(getUniqueElementsInRange(bit, query.Item1, query.Item2));
+                }
             }
         }
 
-        static List<int> BuildPrefixSum(int[] arr, int n)
+        public static IEnumerable<Tuple<int, int>> QueriesAtI(List<Tuple<int, int>>  tuples, int i)
         {
-            var hs = new HashSet<int>();
-            var prefixSum = new List<int> {1};
-            hs.Add(arr[0]);
-
-            for (int i = 1; i < n; i++)
+            foreach (var tuple in tuples)
             {
-                prefixSum.Add(prefixSum[i - 1]);
-                if (!hs.Contains(arr[i]))
+                if (tuple.Item2 == i)
                 {
-                    hs.Add(arr[i]);
-                    prefixSum[i]++;
+                    yield return tuple;
                 }
             }
-            return prefixSum;
         }
     }
 }
