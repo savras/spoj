@@ -1,5 +1,13 @@
-﻿using System;
-using System.CodeDom;
+﻿// Helpful links:
+// https://stackoverflow.com/questions/18553567/difficulty-in-understanding-the-approach-for-solving-spoj-dquery
+// https://stackoverflow.com/questions/27656135/spoj-dquery-tle-even-with-bit
+// Key: The BIT will be storing the index of latest occurence of each number in the original array at each iteration.
+// E.g. arr = {1, 1, 2, 1, 3}: BIT will contain all zeroes except for BIT[3] = 1, BIT[4] = 1, BIT[5] = 1.
+// The last occurence of digit 1 in the arr is at index 4 (since BIT uses index 0 as a placeholder).
+// Offline/Online solution: Offline means that we can read in all the queries and preprocess them. Online means that we have to read in the queries
+// one line at a time.
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
