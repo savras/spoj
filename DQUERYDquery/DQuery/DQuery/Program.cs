@@ -9,40 +9,47 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 
 namespace DQuery
 {
     class Program
     {
-        static int getNext(int currentIndex)
+        static int GetNext(int currentIndex)
         {
-            return currentIndex += (currentIndex & (-currentIndex));
+            return currentIndex + (currentIndex & (-currentIndex));
         }
 
-        static int getParent(int currentIndex)
+        static int GetParent(int currentIndex)
         {
-            return currentIndex & (--currentIndex);
+            return currentIndex & (currentIndex - 1);
         }
 
-        static void update(List<int> bit, int index, int value)
+        private static int GetAt(List<int> bit, int index)
+        {
+            if (index == 0) { return 0; }
+            var value = 0;
+            do
+            {
+                value += bit[index];
+                index = GetParent(index);
+            } while (index > 0);
+
+            return value;
+        }
+
+        static void UpdateAt(List<int> bit, int index, int value)
         {
             do
             {
                 bit[index] += value;
-                index = getNext(index);
+                index = GetNext(index);
             } while (index < bit.Count);
         }
 
-        static int getUniqueElementsInRange(List<int> bit, int l, int r)
+        static int GetUniqueElementsInRange(List<int> bit, int l, int r)
         {
-            var sum = 0;
-            for (var i = l; i <= r; i++)
-            {
-                sum += bit[i];
-            }
-
+            var sum = GetAt(bit, r) - GetAt(bit, l - 1);
             return sum;
         }
 
@@ -88,28 +95,22 @@ namespace DQuery
         static void Solve(int[] arr, List<int> bit, List<Tuple<int, int>> sortedTuples)
         {
             var dict = new Dictionary<int, int>();
-            // Loop through array
-            // each iteration update previous occureing index of arr[i] to current.
-                // or update bit[i] only,m8
-            // each iteration check if i == r
-            // if so, get answer.
-
             for (var i = 0; i < arr.Length; i++)
             {
                 if (dict.ContainsKey(arr[i]))
                 {
-                    update(bit, dict[arr[i]], -1);
+                    UpdateAt(bit, dict[arr[i]], -1);
                     dict[arr[i]] = i + 1;
                 }
                 else
                 {
                     dict.Add(arr[i], i + 1);
                 }
-                update(bit, dict[arr[i]], 1);
+                UpdateAt(bit, dict[arr[i]], 1);
 
                 foreach(var query in QueriesAtI(sortedTuples, i + 1))
                 {
-                    Console.WriteLine(getUniqueElementsInRange(bit, query.Item1, query.Item2));
+                    Console.WriteLine(GetUniqueElementsInRange(bit, query.Item1, query.Item2));
                 }
             }
         }
