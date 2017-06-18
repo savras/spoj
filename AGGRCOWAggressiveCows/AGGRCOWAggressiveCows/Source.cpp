@@ -27,6 +27,8 @@ bool predicate(const vector<int>& stalls, const int& mid, const int& totalCows) 
 	int candidateDistance = stalls[mid] - stalls[0];		// Distance of stalls[mid] from 1st cow.
 	int basePosition = 0;
 	for (size_t i = 1; i < stalls.size(); i++) {
+
+		// Find out how many cows can fit in the barn for each stall having 'candidate distance'
 		if (stalls[i] - stalls[basePosition] >= candidateDistance) {
 			cowCount++;
 			basePosition = i;
@@ -34,14 +36,19 @@ bool predicate(const vector<int>& stalls, const int& mid, const int& totalCows) 
 
 		if (cowCount >= totalCows)
 		{
+			// We can fit more cows than we have so the distance is not optimal.
+			// We need to make the distance between each stall larger.
 			return true;
 		}
 	}
+	// Can't fit all the cows in the barn with the given stall distance.
+	// We need to make the distance between the stalls smaller.
 	return false;
 }
 
 // We will get an array like this |Y|Y|Y|Y|N|N|N|.
 // What we want is the value in index 3, which is the rightmost Y.
+// The rightmost Y represents the distance where all cows will be equally spaced apart (a.k.a maximum distance) 
 // O(log X), where X is the number of positions in the stalls.. isn't X == N? I don't understand the question.
 int binary_search(const vector<int>& stalls, int start, int end, const int& totalCows) {
 	while (start < end) {
