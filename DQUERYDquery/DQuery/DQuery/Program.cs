@@ -15,6 +15,9 @@ namespace DQuery
 {
     class Program
     {
+        /*
+         * BIT Implementation
+         */
         static int GetNext(int currentIndex)
         {
             return currentIndex + (currentIndex & (-currentIndex));
@@ -53,6 +56,42 @@ namespace DQuery
             return sum;
         }
 
+        static void SolveBIT(int[] arr, List<int> bit, List<Tuple<int, int>> sortedTuples, List<Tuple<int, int>> tuples, int[] resultOrder)
+        {
+            var dict = new Dictionary<int, int>();
+            for (var i = 0; i < arr.Length; i++)
+            {
+                if (dict.ContainsKey(arr[i]))
+                {
+                    UpdateAt(bit, dict[arr[i]], -1);
+                    dict[arr[i]] = i + 1;
+                }
+                else
+                {
+                    dict.Add(arr[i], i + 1);
+                }
+                UpdateAt(bit, dict[arr[i]], 1);
+
+                foreach (var query in QueriesAtI(sortedTuples, i + 1))
+                {
+                    var result = GetUniqueElementsInRange(bit, query.Item1, query.Item2);
+                    var index = tuples.IndexOf(query);
+                    resultOrder[index] = result;
+                }
+            }
+        }
+        /*
+         * End BIT
+         */
+
+        /*
+         * MO's implementation
+         */
+        static void SolveMO()
+        {
+                                                         
+        }
+
         static void Main(string[] args)
         {
             var n = int.Parse(Console.ReadLine());
@@ -89,7 +128,7 @@ namespace DQuery
             }
 
             var resultOrder = new int[q];
-            Solve(arr, bit, sortedTuples, tuples, resultOrder);
+            SolveBIT(arr, bit, sortedTuples, tuples, resultOrder);
 
             for (var i = 0; i < resultOrder.Length; i++)
             {
@@ -100,31 +139,6 @@ namespace DQuery
                 else
                 {
                     Console.WriteLine(resultOrder[i]);
-                }
-            }
-        }
-
-        static void Solve(int[] arr, List<int> bit, List<Tuple<int, int>> sortedTuples, List<Tuple<int, int>> tuples, int[] resultOrder)
-        {
-            var dict = new Dictionary<int, int>();
-            for (var i = 0; i < arr.Length; i++)
-            {
-                if (dict.ContainsKey(arr[i]))
-                {
-                    UpdateAt(bit, dict[arr[i]], -1);
-                    dict[arr[i]] = i + 1;
-                }
-                else
-                {
-                    dict.Add(arr[i], i + 1);
-                }
-                UpdateAt(bit, dict[arr[i]], 1);
-
-                foreach(var query in QueriesAtI(sortedTuples, i + 1))
-                {
-                    var result = GetUniqueElementsInRange(bit, query.Item1, query.Item2);
-                    var index = tuples.IndexOf(query);
-                    resultOrder[index] = result;
                 }
             }
         }
