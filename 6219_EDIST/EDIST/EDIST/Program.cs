@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EDIST
 {
@@ -24,13 +20,30 @@ namespace EDIST
                 InitializeArray(arr);
 
                 // Solve
-                Solve(arr);
+                Solve(arr, s1, s2);
             }
         }
 
-        private static void Solve(int[,] arr)
+        private static void Solve(int[,] arr, string s1, string s2)
         {
-            throw new NotImplementedException();
+            for (var i = 1; i < arr.GetLength(0); i++)
+            {
+                for (var j = 1; j < arr.GetLength(1); j++)
+                {
+                    var left = arr[i - 1, j];
+                    var top = arr[i, j - 1];
+                    var diagonal = arr[i - 1, j - 1];
+                    var min = Math.Min(left, Math.Min(diagonal, top));
+                    arr[i, j] = min + 1;
+
+                    if (s1[i - 1] == s2[j - 1])
+                    {
+                        arr[i, j]--;
+                    }
+                }
+            }
+
+            Console.WriteLine(arr[s1.Length, s2.Length]);
         }
 
         private static void InitializeArray(int[,] arr)
