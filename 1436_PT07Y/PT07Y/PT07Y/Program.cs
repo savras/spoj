@@ -1,4 +1,10 @@
-﻿using System;
+﻿/*
+ * 1. Graph should be connected. (All nodes should be visited)
+ * 2. No. of cycles in graph
+ * 3. No. of edges == No. of nodes - 1. 
+*/
+
+using System;
 using System.Collections.Generic;
 
 namespace PT07Y
@@ -12,24 +18,31 @@ namespace PT07Y
             var n = int.Parse(split[0]);
             var m = int.Parse(split[1]);
 
-            // Build adj list
-            var adj = new List<int>[n];
-            for (int i = 0; i < n; i++)
+            if (m != n - 1)
             {
-                adj[i] = new List<int>();
+                Console.WriteLine("NO");
             }
-
-            for (int i = 0; i < m; i++)
+            else
             {
-                var inEdge = Console.ReadLine();
-                var inSplit = inEdge.Split(' ');
-                var node = int.Parse(inSplit[0]);
-                var edge = int.Parse(inSplit[1]);
-                adj[node - 1].Add(edge - 1);
-            }
+                // Build adj list
+                var adj = new List<int>[n];
+                for (int i = 0; i < n; i++)
+                {
+                    adj[i] = new List<int>();
+                }
 
-            // DFS
-            Solve(adj);
+                for (int i = 0; i < m; i++)
+                {
+                    var inEdge = Console.ReadLine();
+                    var inSplit = inEdge.Split(' ');
+                    var node = int.Parse(inSplit[0]);
+                    var edge = int.Parse(inSplit[1]);
+                    adj[node - 1].Add(edge - 1);
+                }
+
+                // DFS
+                Solve(adj, n);
+            }
         }
 
         private static bool Dfs(List<int>[] adj, HashSet<int> visited, Stack<int> stack, int currentNode, bool hasCycle)
@@ -57,13 +70,14 @@ namespace PT07Y
             return hasCycle;
         }
 
-        private static void Solve(List<int>[] adj)
+        private static void Solve(List<int>[] adj, int n)
         {
             var stack = new Stack<int>();
-            var visited = new HashSet<int>();
-            visited.Add(0);
-            var isTree = Dfs(adj, visited, stack, 0, false);
-            Console.WriteLine(isTree ? "NO" : "YES");
+            var visited = new HashSet<int> {0};
+            var hasCycle = Dfs(adj, visited, stack, 0, false);
+            var hasVisitedAllNodes = visited.Count == n;
+
+            Console.WriteLine(!hasCycle && hasVisitedAllNodes? "YES" : "NO");
         }
     }
 }
