@@ -25,25 +25,9 @@ namespace PT07Y
             }
             else
             {
-                // Build adj list
-                var adj = new List<int>[n];
-                for (int i = 0; i < n; i++)
-                {
-                    adj[i] = new List<int>();
-                }
-
-                for (int i = 0; i < m; i++)
-                {
-                    var inEdge = Console.ReadLine();
-                    var inSplit = inEdge.Split(' ');
-                    var node = int.Parse(inSplit[0]);
-                    var edge = int.Parse(inSplit[1]);
-                    adj[node - 1].Add(edge - 1);
-                }
-
                 // DFS
-                //SolveDfs(adj, n);
-                SolveDisjountSet(adj, n);
+                //SolveDfs(n, m);
+                SolveDisjountSet(n, m);
             }
         }
 
@@ -56,19 +40,8 @@ namespace PT07Y
             }
             return Find(ds, ds[x]);
         }
-
-        private static void Union(int[] ds, int x, int y)
-        {
-            var xParent = Find(ds, x);
-            var yParent = Find(ds, y);
-
-            if (xParent != yParent)
-            {
-                ds[x] = yParent;
-            }
-        }
         
-        private static void SolveDisjountSet(List<int>[] adj, int n)
+        private static void SolveDisjountSet(int n, int m)
         {
             // Initialize disjoint set
             var ds = new int[n];
@@ -77,15 +50,40 @@ namespace PT07Y
                 ds[i] = i;
             }
 
-            foreach (var node in adj)
+            var hasCycle  = false;
+            // Read edges and solve
+            for (var i = 0; i < m && !hasCycle; i++)
             {
-                var currentParent = Find(ds, node[0]);
-                foreach (var neighbour in node)
+                var inputString = Console.ReadLine();
+                var edge = inputString.Split(' ');
+                var node1 = Convert.ToInt32(edge[0]) - 1;
+                var node2 = Convert.ToInt32(edge[1]) - 1;
+                
+                var node1Parent = Find(ds, node1);
+                var node2Parent = Find(ds, node2);
+
+                if (node1Parent != node2Parent)
                 {
-                    var neighbourParent = Find(ds, neighbour);
-                    Union(ds, currentParent, neighbourParent);
+                    ds[node1Parent] = node2Parent;
+                }
+                else
+                {
+                    hasCycle = true;
                 }
             }
+
+            // Check if all belongs to the same set (Not disjoint)
+            var rootCount = 0;
+            for (var i = 0; i < n && !hasCycle && rootCount <= 1; i++)
+            {
+                if (ds[i] == i)
+                {
+                    rootCount++;
+                }
+            }
+            hasCycle = rootCount == 1;
+
+            Console.WriteLine(hasCycle ? "NO" : "YES");
         }
 
         private static bool Dfs(List<int>[] adj, HashSet<int> visited, Stack<int> stack, int currentNode, bool hasCycle)
@@ -113,8 +111,24 @@ namespace PT07Y
             return hasCycle;
         }
 
-        private static void SolveDfs(List<int>[] adj, int n)
+        private static void SolveDfs(int n, int m)
         {
+            // Build adj list
+            var adj = new List<int>[n];
+            for (int i = 0; i < n; i++)
+            {
+                adj[i] = new List<int>();
+            }
+
+            for (int i = 0; i < m; i++)
+            {
+                var inEdge = Console.ReadLine();
+                var inSplit = inEdge.Split(' ');
+                var node = int.Parse(inSplit[0]);
+                var edge = int.Parse(inSplit[1]);
+                adj[node - 1].Add(edge - 1);
+            }
+
             var stack = new Stack<int>();
             var visited = new HashSet<int> {0};
             var hasCycle = Dfs(adj, visited, stack, 0, false);
