@@ -6,6 +6,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 
 namespace PT07Y
 {
@@ -41,7 +42,49 @@ namespace PT07Y
                 }
 
                 // DFS
-                Solve(adj, n);
+                //SolveDfs(adj, n);
+                SolveDisjountSet(adj, n);
+            }
+        }
+
+        // Get root
+        private static int Find(int[] ds, int x)
+        {
+            if (ds[x] == x)
+            {
+                return x;
+            }
+            return Find(ds, ds[x]);
+        }
+
+        private static void Union(int[] ds, int x, int y)
+        {
+            var xParent = Find(ds, x);
+            var yParent = Find(ds, y);
+
+            if (xParent != yParent)
+            {
+                ds[x] = yParent;
+            }
+        }
+        
+        private static void SolveDisjountSet(List<int>[] adj, int n)
+        {
+            // Initialize disjoint set
+            var ds = new int[n];
+            for (var i = 0; i < n; i++)
+            {
+                ds[i] = i;
+            }
+
+            foreach (var node in adj)
+            {
+                var currentParent = Find(ds, node[0]);
+                foreach (var neighbour in node)
+                {
+                    var neighbourParent = Find(ds, neighbour);
+                    Union(ds, currentParent, neighbourParent);
+                }
             }
         }
 
@@ -70,7 +113,7 @@ namespace PT07Y
             return hasCycle;
         }
 
-        private static void Solve(List<int>[] adj, int n)
+        private static void SolveDfs(List<int>[] adj, int n)
         {
             var stack = new Stack<int>();
             var visited = new HashSet<int> {0};
