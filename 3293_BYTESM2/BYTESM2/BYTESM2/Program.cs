@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Configuration;
 
 namespace BYTESM2
 {
@@ -13,8 +12,8 @@ namespace BYTESM2
                 // Initialize
                 var rowCol = Console.ReadLine();
                 var rowColSplit = rowCol.Split(' ');
-                var rowNum = rowCol[0];
-                var colNum = rowCol[1];
+                var rowNum = Convert.ToInt32(rowColSplit[0]);
+                var colNum = Convert.ToInt32(rowColSplit[1]);
 
                 var arr = new int[rowNum, colNum];
 
@@ -28,34 +27,33 @@ namespace BYTESM2
                     }
                 }
 
+                var arrDp = new int[rowNum, colNum];
+                for (int i = 0; i < colNum; i++)
+                {
+                    arrDp[0, i] = arr[0, i];
+                }
+
                 // Solve
                 for (var row = 0; row < rowNum - 1; row++)
                 {
                     for (var col = 0; col < colNum; col++)
                     {
-                        int bottomRight;
-                        int bottomLeft;
-                        var bottom = arr[row - 1, col];
-
-                        int value;
                         if (col == 0)
                         {
-                            bottomRight = arr[row - 1, col + 1];
-                            value = Math.Max(bottom, bottomRight);
+                            arrDp[row + 1, col]     = Math.Max(arrDp[row + 1, col], arr[row + 1, col] + arrDp[row, col]);
+                            arrDp[row + 1, col + 1] = Math.Max(arrDp[row + 1, col + 1], arr[row + 1, col + 1] + arrDp[row, col]);
                         }
-                        else if (col > 0 && col < rowNum - 1)
+                        else if (col > 0 && col < colNum - 1)
                         {
-                            bottomRight = arr[row - 1, col + 1];
-                            bottomLeft = arr[row - 1, col - 1];
-                            value = Math.Max(bottom, Math.Max(bottomRight, bottomLeft));
+                            arrDp[row + 1, col]     = Math.Max(arrDp[row + 1, col], arr[row + 1, col] + arrDp[row, col]);
+                            arrDp[row + 1, col + 1] = Math.Max(arrDp[row + 1, col + 1], arr[row + 1, col + 1] + arrDp[row, col]);
+                            arrDp[row + 1, col - 1] = Math.Max(arrDp[row + 1, col - 1], arr[row + 1, col - 1] + arrDp[row, col]);
                         }
-                        else
+                        else if (col == colNum - 1)
                         {
-                            bottomLeft = arr[row - 1, col - 1];
-                            value = Math.Max(bottom, bottomLeft);
+                            arrDp[row + 1, col]     = Math.Max(arrDp[row + 1, col], arr[row + 1, col] + arrDp[row, col]);
+                            arrDp[row + 1, col - 1] = Math.Max(arrDp[row + 1, col - 1], arr[row + 1, col - 1] + arrDp[row, col]);
                         }
-
-                        arr[row, col] = value;
                     }
                 }
 
@@ -64,7 +62,7 @@ namespace BYTESM2
                 var arrayOffset = 1;
                 for (var i = 0; i < colNum; i++)
                 {
-                    result = Math.Max(result, arr[rowNum - arrayOffset, i]);
+                    result = Math.Max(result, arrDp[rowNum - arrayOffset, i]);
                 }
                 Console.WriteLine(result);
             }
