@@ -1,9 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Configuration;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace _97_PARTY
 {
@@ -20,7 +16,7 @@ namespace _97_PARTY
                 var budget = Convert.ToInt32(inputSplit[0]);
                 var count = Convert.ToInt32(inputSplit[1]);
 
-                var parties = new List<Tuple<int, int>>();
+                var parties = new List<Tuple<int, int>> {new Tuple<int, int>(0, 0)};
                 for (var i = 0; i < count; i++)
                 {
                     var party = Console.ReadLine();
@@ -32,12 +28,16 @@ namespace _97_PARTY
                 var dpArr = new int[count + 1, budget + 1];
                 for (var i = 1; i <= count; i++) // Each party detail
                 {
-                    var priceOfPartyOfPartyI = parties[i - 1].Item1;
-                    for (var j = priceOfPartyOfPartyI; j <= budget; j++)    // Price
+                    var priceOfCurrentPartyItem = parties[i].Item1;
+                    for (var j = 1; j <= budget; j++) // Price
                     {
                         var previousBestFunFactor = dpArr[i - 1, j];
-                        var previousPartyFunFactorExcludingCurrentPartyItem = dpArr[i - 1, j - priceOfPartyOfPartyI];
-                        var funFactorAfterIncludingCurrentItem = previousPartyFunFactorExcludingCurrentPartyItem + parties[i - 1].Item2;
+                        var funFactorAfterIncludingCurrentItem = 0;
+                        if (j >= priceOfCurrentPartyItem)
+                        {
+                            var previousPartyFunFactorExcludingCurrentPartyItem = dpArr[i - 1, j - priceOfCurrentPartyItem];
+                            funFactorAfterIncludingCurrentItem = previousPartyFunFactorExcludingCurrentPartyItem + parties[i].Item2;
+                        }
 
                         dpArr[i, j] = Math.Max(previousBestFunFactor, funFactorAfterIncludingCurrentItem);
                     }
@@ -51,21 +51,21 @@ namespace _97_PARTY
                     var currentCount = i;
                     var currentBestFunFactor = dpArr[currentCount, currentBudget];
 
-                    var currentPartyItemPrice = parties[i - 1].Item1;
-                    var currentPartyItemFunFactor = parties[i - 1].Item2;
+                    var priceOfCurrentPartyItem = parties[i].Item1;
+                    var funFactorOfCurrentPartyItem = parties[i].Item2;
 
-                    if (currentPartyItemPrice <= currentBudget)
+                    if (priceOfCurrentPartyItem <= currentBudget)
                     {
-                        var previousPartyFunFactorExcludingCurrentPartyItem = dpArr[currentCount - 1, currentBudget - currentPartyItemPrice];
+                        var previousPartyFunFactorExcludingCurrentPartyItem = dpArr[currentCount - 1, currentBudget - priceOfCurrentPartyItem];
 
-                        if (Math.Abs(previousPartyFunFactorExcludingCurrentPartyItem - currentBestFunFactor) != currentPartyItemFunFactor)
+                        if (Math.Abs(previousPartyFunFactorExcludingCurrentPartyItem - currentBestFunFactor) != funFactorOfCurrentPartyItem)
                         {
                             partyToGoPrice[i] = 0;
                         }
                         else
                         {
                             partyToGoPrice[i] = 1;
-                            currentBudget = currentBudget - currentPartyItemPrice;
+                            currentBudget = currentBudget - priceOfCurrentPartyItem;
                         }
                     }
                 }
@@ -75,7 +75,7 @@ namespace _97_PARTY
                 {
                     if (partyToGoPrice[i] == 1)
                     {
-                        price += parties[i - 1].Item1;
+                        price += parties[i].Item1;
                     } 
                 }
                 Console.WriteLine(price + " " + dpArr[count, budget]);
