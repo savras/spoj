@@ -29,24 +29,21 @@ namespace _97_PARTY
                 }
 
                 // Build 2d Array
-                var dpArr = new int[count, budget];
-                for (var i = 1; i < count; i++)
+                var dpArr = new int[count + 1, budget + 1];
+                for (var i = 1; i <= count; i++) // Each party detail
                 {
-                    for (var j = 1; j < budget; j++)
+                    var priceOfPartyOfPartyI = parties[i - 1].Item1;
+                    for (var j = priceOfPartyOfPartyI; j <= budget; j++)    // Price
                     {
-                        var top = dpArr[i - 1, j];
-                        var left = dpArr[i, j - 1];
-                        var value = Math.Max(top, left);
-                        if (j%parties[i].Item1 == 0)
-                        {
-                            value = Math.Max(value, parties[i].Item1);
-                        }
-                        dpArr[i, j] = value;
+                        var previousBestFunFactor = dpArr[i - 1, j];
+                        var previousPartyFunFactorExcludingPartyI = dpArr[i - 1, j - priceOfPartyOfPartyI];
+                        var funFactorAfterIncludingPartyI = previousPartyFunFactorExcludingPartyI + parties[i - 1].Item2;
+
+                        dpArr[i, j] = Math.Max(previousBestFunFactor, funFactorAfterIncludingPartyI);
                     }
                 }
                 
                 // Solve
-
 
 
                 input = Console.ReadLine();
