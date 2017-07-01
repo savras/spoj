@@ -36,15 +36,49 @@ namespace _97_PARTY
                     for (var j = priceOfPartyOfPartyI; j <= budget; j++)    // Price
                     {
                         var previousBestFunFactor = dpArr[i - 1, j];
-                        var previousPartyFunFactorExcludingPartyI = dpArr[i - 1, j - priceOfPartyOfPartyI];
-                        var funFactorAfterIncludingPartyI = previousPartyFunFactorExcludingPartyI + parties[i - 1].Item2;
+                        var previousPartyFunFactorExcludingCurrentPartyItem = dpArr[i - 1, j - priceOfPartyOfPartyI];
+                        var funFactorAfterIncludingCurrentItem = previousPartyFunFactorExcludingCurrentPartyItem + parties[i - 1].Item2;
 
-                        dpArr[i, j] = Math.Max(previousBestFunFactor, funFactorAfterIncludingPartyI);
+                        dpArr[i, j] = Math.Max(previousBestFunFactor, funFactorAfterIncludingCurrentItem);
                     }
                 }
                 
                 // Solve
+                var partyToGoPrice = new int[count + 1];
+                var currentBudget = budget;
+                for (var i = count; i > 0; i--)
+                {
+                    var currentCount = i;
+                    var currentBestFunFactor = dpArr[currentCount, currentBudget];
 
+                    var currentPartyItemPrice = parties[i - 1].Item1;
+                    var currentPartyItemFunFactor = parties[i - 1].Item2;
+
+                    if (currentPartyItemPrice <= currentBudget)
+                    {
+                        var previousPartyFunFactorExcludingCurrentPartyItem = dpArr[currentCount - 1, currentBudget - currentPartyItemPrice];
+
+                        if (Math.Abs(previousPartyFunFactorExcludingCurrentPartyItem - currentBestFunFactor) != currentPartyItemFunFactor)
+                        {
+                            partyToGoPrice[i] = 0;
+                        }
+                        else
+                        {
+                            partyToGoPrice[i] = 1;
+                            currentBudget = currentBudget - currentPartyItemPrice;
+                        }
+                    }
+                }
+
+                var price = 0;
+                for (var i = 1; i <= count; i++)
+                {
+                    if (partyToGoPrice[i] == 1)
+                    {
+                        price += parties[i - 1].Item1;
+                    } 
+                }
+                Console.WriteLine(price + " " + dpArr[count, budget]);
 
                 input = Console.ReadLine();
             }
