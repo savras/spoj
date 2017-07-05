@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace TRT
 {
@@ -20,22 +16,34 @@ namespace TRT
                 arr[i] = int.Parse(inputSplit[i]);
             }
 
-            var result = FindPathRecursive(arr, 0, n - 1, 1);
+            var memo = new int[n, n];
+
+            var result = FindPathRecursive(arr, 0, n - 1, 1, memo);
 
             Console.WriteLine(result);
         }
 
-        static int FindPathRecursive(int[] arr, int i, int j, int day)
+        static int FindPathRecursive(int[] arr, int i, int j, int day, int[,] memo)
         {
             if (i > j)
             {
                 return 0;
             }
 
-            return Math.Max(
-                FindPathRecursive(arr, i + 1, j, day + 1) + (arr[i]*day),
-                FindPathRecursive(arr, i, j - 1, day + 1) + (arr[j]*day)
+
+            if (memo[i, j] != 0)
+            {
+                return memo[i, j];
+            }
+            else {
+                var max = Math.Max(
+                FindPathRecursive(arr, i + 1, j, day + 1, memo) + (arr[i]*day),
+                FindPathRecursive(arr, i, j - 1, day + 1, memo) + (arr[j]*day)
                 );
+
+                memo[i, j] = max;
+                return max;
+            }
         }
     }
 }
