@@ -8,22 +8,21 @@ namespace TRT
         {
             var n = int.Parse(Console.ReadLine());
 
-            var input = Console.ReadLine();
-            var inputSplit = input.Split(' ');
             var arr = new int[n];
             for (var i = 0; i < n; i++)
             {
-                arr[i] = int.Parse(inputSplit[i]);
+                var value = int.Parse(Console.ReadLine());
+                arr[i] = (value);
             }
 
-            var memo = new int[n, n];
+            var memo = new ulong[n, n];
 
             var result = FindPathRecursive(arr, 0, n - 1, 1, memo);
 
             Console.WriteLine(result);
         }
 
-        static int FindPathRecursive(int[] arr, int i, int j, int day, int[,] memo)
+        static ulong FindPathRecursive(int[] arr, int i, int j, int day, ulong[,] memo)
         {
             if (i > j)
             {
@@ -37,8 +36,8 @@ namespace TRT
             }
             else {
                 var max = Math.Max(
-                FindPathRecursive(arr, i + 1, j, day + 1, memo) + (arr[i]*day),
-                FindPathRecursive(arr, i, j - 1, day + 1, memo) + (arr[j]*day)
+                FindPathRecursive(arr, i + 1, j, day + 1, memo) + (ulong)(arr[i]*day),
+                FindPathRecursive(arr, i, j - 1, day + 1, memo) + (ulong)(arr[j]*day)
                 );
 
                 memo[i, j] = max;
