@@ -25,15 +25,15 @@ namespace TRT
 
         private static ulong FindPathDp(int[] arr, ulong[,] memo, int n)
         {
-            FillDiagonal(arr, memo, n); // bottom left to top right
+            FillBottomLeftToTopRightDiagonal(arr, memo, n);
 
             var offset = 1;
-            for (var i = n - 1 - offset; i >= 0; i--)   // top right most row and column cell is already filled, so we start with the cell below that.
+            for (var i = n - 1 - offset; i >= 0; i--)   // Top right most row and column cell is already filled, so we start with the cell below that.
             {
-                for (var j = n - offset; j >= 0; j--)
+                for (var j = i + 1; j < n; j++)
                 {
                     var dayValue = i + 1;
-                    // Treat value for the next day
+                    // Value of treat for the next day
                     var topCell = memo[i + 1, j];
                     var leftCell = memo[i, j - 1];
 
@@ -55,13 +55,13 @@ namespace TRT
             return memo[0, n - offset];
         }
 
-        private static void FillDiagonal(int[] arr, ulong[,] memo, int n)
+        private static void FillBottomLeftToTopRightDiagonal(int[] arr, ulong[,] memo, int n)
         {
             // Base case diagonal is filled with the treats multiplied by the last day
-            var lastDay = n;
+            var lastDayValue = n;   // Just for clarity, number of input == number of days since we can only pick one treat per day.
             for (var i = 0; i < n; i++)
             {
-                memo[i, i] = (ulong) (arr[i]*(n));
+                memo[i, i] = (ulong) (arr[i]*(lastDayValue));
             }
         }
 
