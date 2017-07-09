@@ -1,4 +1,6 @@
 /*
+For concept behind solution, see C# project solution.
+
 Test cases:
 Input:
 8
@@ -41,10 +43,13 @@ using std::cout;
 using std::max;
 using std::to_string;
 
-long long solveRecursive(const vector<int>& coins, const int current) {
+long long solveRecursive(const vector<int>& coins, const int current, vector<long long>& memo) {
 	if (current < 0) { return 0; }
 
-	return max(solveRecursive(coins, current - 2), solveRecursive(coins, current - 3)) + coins[current];
+	if (current >= 0 && memo[current] != 0) {
+		return memo[current];
+	}
+	return max(solveRecursive(coins, current - 2, memo), solveRecursive(coins, current - 3, memo)) + coins[current];
 }
 
 long long solveDp(const vector<int>& coins, const int n) {
@@ -96,7 +101,8 @@ int main() {
 		// Solve
 		//long long result = solveDp(coins, n);
 
-		long long result = max(solveRecursive(coins, n - 1), solveRecursive(coins, n - 2));
+		vector<long long> memo(n);
+		long long result = max(solveRecursive(coins, n - 1, memo), solveRecursive(coins, n - 2, memo));
 		cout << "Case " + to_string((i + 1)) + ": " + to_string(result) << endl;
 
 		coins.clear();
