@@ -1,4 +1,5 @@
 ﻿/*
+ * Note: This is the same question as the "maximum sum such that no two elements are adjacent" question.
  * For dpArr[i], its value is the sum the current monster coin value, i, and the sum of either of the following:
  * (Note that we can't select dpArr[i - 1] because of the specification)
  * 1) The sum of dpArr[i - 2], which means that we have selected dpArr[i - 2].
