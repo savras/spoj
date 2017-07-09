@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace TRT
 {
@@ -17,10 +18,12 @@ namespace TRT
 
             
             var memo = new ulong[n, n];
-            //var result = FindPathRecursive(arr, 0, n - 1, 1, memo);
-            var result = FindPathDp(arr, memo, n);
-
+            var result = FindPathRecursive(arr, 0, n - 1, 1, memo);
             Console.WriteLine(result);
+
+            var memoDp = new ulong[n, n];
+            var resultDp = FindPathDp(arr, memoDp, n);
+            Console.WriteLine(resultDp);
         }
 
         private static ulong FindPathDp(int[] arr, ulong[,] memo, int n)
@@ -32,10 +35,10 @@ namespace TRT
             {
                 for (var j = i + 1; j < n; j++)
                 {
-                    var dayValue = i + 1;
+                    var dayValue = i + 1;   // Because our array index starts with is 0 when day should be 1
                     // Value of treat for the next day
-                    var topCell = memo[i + 1, j];
-                    var leftCell = memo[i, j - 1];
+                    ulong topCell = memo[i + 1, j];
+                    ulong leftCell = memo[i, j - 1];
 
                     ulong value;
                     if (topCell > leftCell)
@@ -55,7 +58,7 @@ namespace TRT
             return memo[0, n - offset];
         }
 
-        private static void FillBottomLeftToTopRightDiagonal(int[] arr, ulong[,] memo, int n)
+        private static void FillBottomLeftToTopRightDiagonal(IReadOnlyList<int> arr, ulong[,] memo, int n)
         {
             // Base case diagonal is filled with the treats multiplied by the last day
             var lastDayValue = n;   // Just for clarity, number of input == number of days since we can only pick one treat per day.
