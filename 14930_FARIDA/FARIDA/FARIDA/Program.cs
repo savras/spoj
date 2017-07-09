@@ -20,6 +20,13 @@ namespace FARIDA
             for (var i = 0; i < t; i++)
             {
                 var n = Convert.ToInt32(Console.ReadLine());
+
+                if (n == 0)
+                {
+                    Console.WriteLine("Case {0}: {1}", i + 1, 0);
+                    continue;
+                }
+
                 var coins = new int[n];
 
                 var line = Console.ReadLine();
