@@ -9,7 +9,7 @@ namespace HOTELS
             var line = Console.ReadLine();
             var lineSplit = line.Split(' ');
             var n = int.Parse(lineSplit[0]);
-            var m = int.Parse(lineSplit[1]);
+            var m = ulong.Parse(lineSplit[1]);
 
             var inputLine = Console.ReadLine();
             var inputSplit = inputLine.Split(' ');
@@ -21,7 +21,7 @@ namespace HOTELS
             }
 
             // Solve
-            ulong max = 0;
+            ulong max = 0;  // Good base candidate as question says required number will be greater than 0 in all test data.
             ulong sum = 0;
 
             var i = 0;
@@ -29,28 +29,30 @@ namespace HOTELS
 
             while (j < n)
             {
-                if (arr[j] > m)
-                {
-                    j++;
-                    i = j;
-                    sum = 0;
-                }
-
-                while (j < n && sum <= (ulong) m)
+                do
                 {
                     sum += (ulong) arr[j];
                     j++;
-                }
-                max = Math.Max(max, max -  (ulong) arr[j - 1]);
+                } while (j < n && sum <= m);
+                
 
-                while (sum > (ulong) m)
+                j--;
+                sum -= (ulong) arr[j];
+                max = Math.Max(max, sum);
+
+                sum += (ulong) arr[j];
+                j++;
+
+                while (sum > m && i < j)
                 {
                     sum -= (ulong) arr[i];
                     i++;
                 }
 
-                j++;
+                max = Math.Max(max, sum);
             }
+
+            Console.WriteLine(max);
         }
     }
 }
