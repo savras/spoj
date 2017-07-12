@@ -4,13 +4,6 @@ namespace HOTELS
 {
     class Program
     {
-        static int getMaxOfNextSet(int[] arr, int i, int max)
-        {
-            var index = i;
-
-            return index;
-        }
-
         static void Main(string[] args)
         {
             var line = Console.ReadLine();
@@ -22,30 +15,41 @@ namespace HOTELS
             var inputSplit = inputLine.Split(' ');
 
             var arr = new int[n];
-            for (var i = 0; i < n; i++)
+            for (var p = 0; p < n; p++)
             {
-                arr[i] = int.Parse(inputSplit[i]);
+                arr[p] = int.Parse(inputSplit[p]);
             }
 
             // Solve
             ulong max = 0;
+            ulong sum = 0;
 
-            int i = 0;
-            for (i = 0; i < n; i++)
+            var i = 0;
+            var j = 0;
+
+            while (j < n)
             {
-                max += (ulong) arr[i];
-                if (max > (ulong)m)
+                if (arr[j] > m)
                 {
-                    max -= (ulong) arr[i];
-                    break;
+                    j++;
+                    i = j;
+                    sum = 0;
                 }
-            }
 
-            // Sliding window
-            for (var j = i; j < n; j++)
-            {
-                max += (ulong) arr[j] - (ulong) arr[j - i];
+                while (j < n && sum <= (ulong) m)
+                {
+                    sum += (ulong) arr[j];
+                    j++;
+                }
+                max = Math.Max(max, max -  (ulong) arr[j - 1]);
 
+                while (sum > (ulong) m)
+                {
+                    sum -= (ulong) arr[i];
+                    i++;
+                }
+
+                j++;
             }
         }
     }
