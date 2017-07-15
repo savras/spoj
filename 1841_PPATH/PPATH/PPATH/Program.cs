@@ -21,7 +21,7 @@ namespace PPATH
                 if (oldNum != newNum)
                 {
                     var primes = new bool[10000];
-                    for (var p = 1000; p < 10000; p++)
+                    for (var p = 0; p < 10000; p++)
                     {
                         primes[p] = true;
                     }
@@ -66,7 +66,6 @@ namespace PPATH
                         visited.Add(n);
                         queue.Enqueue(n);
                     }
-                    
                 }
             }
             return cost;
@@ -103,48 +102,16 @@ namespace PPATH
         // Get a list of prime numbers from 2 to sqrt(10000)
         static void SievePrimes(bool[] primes)
         {
-            // Prepare prime list for 0 to 100
-            var primesBefore100 = new bool[101];
-            for (var i = 0; i <= 100; i++)
-            {
-                primesBefore100[i] = true;  // Initialization
-            }
-
-            var counter = 2;
-            while (counter <= 100)
-            {
-                for (var i = counter * 2; i <= 100; i += counter)
-                {
-                    primesBefore100[i] = false;
-                }
-                counter = GetNextPrimeAfterCounter(primesBefore100, counter + 1);
-            }
-
-            // Primes for 1000 to 9999
             for (var i = 2; i <= 100; i++)
             {
-                if (primesBefore100[i])
+                if (primes[i])
                 {
-                    var primeBefore1000ForI = (1000 / i) * i;
-
-                    for (var p = primeBefore1000ForI; p < 10000; p += i)
+                    for (var j = i * 2; j < 1000; j += i)
                     {
-                        primes[p] = false;
+                        primes[j] = false;
                     }
                 }
             }
-        }
-
-        static int GetNextPrimeAfterCounter(bool[] primesBefore100, int counter)
-        {
-            for (var i = counter; i < 100; i++)
-            {
-                if (primesBefore100[i])
-                {
-                    return i;
-                }
-            }
-            return 9999;
         }
     }
 }
