@@ -43,14 +43,14 @@ namespace PPATH
             var visited = new HashSet<int>();
 
             queue.Enqueue(oldNumInt);
-            queue.Enqueue(-1);
+            queue.Enqueue(-1);  // Track current level of BFS
 
             while (queue.Count != 0)
             {
                 var current = queue.Dequeue();
                 if (current == -1)
                 {
-                    queue.Enqueue(-1);
+                    queue.Enqueue(-1);  // Enqueue a -1 to mark that we have finished traversing one level in BFS
                     cost++;
                     continue;
                 }
@@ -72,6 +72,7 @@ namespace PPATH
             return cost;
         }
 
+        // Gets the next available prime number that has only one digit difference
         private static IEnumerable<int> GetNeighbour(bool[] primes, int current)
         {
             for (var candidate = 1000; candidate < 10000; candidate++)
@@ -99,6 +100,7 @@ namespace PPATH
             return diffCount == 1;
         }
 
+        // Get a list of prime numbers from 2 to sqrt(10000)
         static void SievePrimes(bool[] primes)
         {
             // Prepare prime list for 0 to 100
