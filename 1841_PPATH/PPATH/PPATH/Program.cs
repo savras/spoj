@@ -17,38 +17,56 @@ namespace PPATH
                 var oldNum = inputSplit[0];
                 var newNum = inputSplit[1];
 
-                var primes = new bool[10000];
-                for (var p = 1000; p < 10000; p++)
+                var cost = 0;
+                if (oldNum != newNum)
                 {
-                    primes[p] = true;
-                }
+                    var primes = new bool[10000];
+                    for (var p = 1000; p < 10000; p++)
+                    {
+                        primes[p] = true;
+                    }
 
-                SievePrimes(primes);
-                var cost = Bfs(oldNum, newNum, primes);
+                    SievePrimes(primes);
+                    cost = Bfs(oldNum, newNum, primes);
+                }
+                
                 Console.WriteLine(cost);
             }
         }
 
         private static int Bfs(string oldNum, string newNum, bool[] primes)
         {
-            var cost = 0;
-
+            var cost = 1;
             var queue = new Queue<int>();
-
             var oldNumInt = int.Parse(oldNum);
+
+            var visited = new HashSet<int>();
+
             queue.Enqueue(oldNumInt);
+            queue.Enqueue(-1);
 
             while (queue.Count != 0)
             {
-                cost++;
                 var current = queue.Dequeue();
+                if (current == -1)
+                {
+                    queue.Enqueue(-1);
+                    cost++;
+                    continue;
+                }
                 foreach (var n in GetNeighbour(primes, current))
                 {
                     if (int.Parse(newNum) == n)
                     {
                         return cost;
-                    }   
-                    queue.Enqueue(n);
+                    }
+
+                    if (!visited.Contains(n))
+                    {
+                        visited.Add(n);
+                        queue.Enqueue(n);
+                    }
+                    
                 }
             }
             return cost;
