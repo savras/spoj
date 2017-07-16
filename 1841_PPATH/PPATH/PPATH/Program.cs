@@ -56,47 +56,54 @@ namespace PPATH
                 }
                 foreach (var n in GetNeighbour(primes, current))
                 {
-                    if (int.Parse(newNum) == n)
+                    if (n != -1)
                     {
-                        return cost;
-                    }
+                        if (int.Parse(newNum) == n)
+                        {
+                            return cost;
+                        }
 
-                    if (!visited.Contains(n))
-                    {
-                        visited.Add(n);
-                        queue.Enqueue(n);
+                        if (!visited.Contains(n))
+                        {
+                            visited.Add(n);
+                            queue.Enqueue(n);
+                        }
                     }
                 }
             }
             return cost;
         }
 
-        // Gets the next available prime number that has only one digit difference
-        private static IEnumerable<int> GetNeighbour(bool[] primes, int current)
+
+        // Increment the the digits in 'current' one by one and return it.
+        static IEnumerable<int> GetNeighbour(bool[] primes, int current)
         {
-            for (var candidate = 1000; candidate < 10000; candidate++)
+            for (var i = 1000; i > 0; i /= 10)
             {
-                if (primes[candidate] && candidate != current && IHasExactlyOneDigitDifferentFromCurrent(candidate, current))
+                var magnitude = i;
+                var baseValue = RemoveMagnitude(magnitude, current);
+                for (var j = 0; j <= 9; j++)
                 {
-                    yield return candidate;
+                    var candidatePrime = baseValue + (magnitude * j);
+                    if (candidatePrime >= 1000 && primes[candidatePrime] && candidatePrime != current)
+                    {
+                        yield return candidatePrime;
+                    }
                 }
             }
         }
 
-        private static bool IHasExactlyOneDigitDifferentFromCurrent(int candidate, int current )
+        static int RemoveMagnitude(int magnitude, int current)
         {
-            var diffCount = 0;
-            var iString = candidate.ToString();
-            var currentString = current.ToString();
+            // E.g. magnitude = 100:
+            var rightOfMagnitude = current% magnitude;      // 7912 % 100 = 12
+            var leftOfMagnitude = current/magnitude;        // 7912 / 100 = 79
+            var rightmostDigit = leftOfMagnitude%10;        //    79 % 10 = 9
 
-            for(var i = 0; i < 4; i++)
-            {
-                if (iString[i] != currentString[i])
-                {
-                    diffCount++;
-                }
-            }
-            return diffCount == 1;
+            // ((70 - 9) * 100) + 12 == 7012
+            var result = ((leftOfMagnitude - rightmostDigit)*magnitude) + rightOfMagnitude;
+
+            return result;
         }
 
         // Get a list of prime numbers from 2 to sqrt(10000)
@@ -106,7 +113,7 @@ namespace PPATH
             {
                 if (primes[i])
                 {
-                    for (var j = i * 2; j < 1000; j += i)
+                    for (var j = i * 2; j < 10000; j += i)
                     {
                         primes[j] = false;
                     }
