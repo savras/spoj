@@ -6,6 +6,17 @@ namespace BITMAP
 {
     class Program
     {
+        static void InitializeVisited(bool[,] visited, int n, int m)
+        {
+            for (var i = 0; i < n; i++)
+            {
+                for (var j = 0; j < m; j++)
+                {
+                    visited[i, j] = false;
+                }
+            }
+        }
+
         static void Main(string[] args)
         {
             var t = int.Parse(Console.ReadLine());
@@ -15,16 +26,15 @@ namespace BITMAP
             var m = int.Parse(lineSplit[1]);
 
             var arr = new int[n, m];
-            var visitedArr = new int[n, m];
+            var visitedArr = new bool[n, m];
             var onePositions = new List<Tuple<int, int>>();
 
             for (var i = 0; i < n; i++)
             {
                 var rowLine = Console.ReadLine();
-                var rowSplit = rowLine.Split(' ');
                 for (var j = 0; j < m; j++)
                 {
-                    var value = int.Parse(rowSplit[0]);
+                    var value = int.Parse(rowLine[j].ToString());
                     if (value == 1)
                     {
                         onePositions.Add(new Tuple<int, int>(i, j));
@@ -37,35 +47,58 @@ namespace BITMAP
                 }
             }
 
-            var hs = new Dictionary<int, int>();
-            // Solve DP
+            // Solve BFS
             foreach (var cell in onePositions)
             {
+                InitializeVisited(visitedArr, n, m);
                 var queue = new Queue<Tuple<int, int>>();
                 queue.Enqueue(new Tuple<int, int>(cell.Item1, cell.Item2));
                 queue.Enqueue(new Tuple<int, int>(-1, -1));
                 var cost = 0;
+
                 while(queue.Count > 0)
                 {
                     var item = queue.Dequeue();
                     if (item.Item1 == -1 && item.Item2 == -1)
                     {
                         queue.Enqueue(new Tuple<int, int>(-1, -1));
+                        if (queue.Peek().Item2 == -1 && queue.Peek().Item1 == -1)
+                        {
+                            break;
+                        }
+
                         cost++;
                         continue;
                     }
 
-                    var i = cell.Item1;
-                    var j = cell.Item2;
+                    var i = item.Item1;
+                    var j = item.Item2;
                     if (arr[i, j] != 0 && cost < arr[i, j])
                     {
                         arr[i, j] = cost;
                     }
+                    
 
-                    if (i > 0) { queue.Enqueue(new Tuple<int, int>(i - 1, j)); }
-                    if (i < m) { queue.Enqueue(new Tuple<int, int>(i + 1, j)); }
-                    if (j > 0) { queue.Enqueue(new Tuple<int, int>(i, j - 1)); }
-                    if (j < n) { queue.Enqueue(new Tuple<int, int>(i, j + 1)); }
+                    if (i > 0 && !visitedArr[i - 1, j])
+                    {
+                        queue.Enqueue(new Tuple<int, int>(i - 1, j));
+                        visitedArr[i - 1, j] = true;
+                    }
+                    if (i < n - 1 && !visitedArr[i + 1, j])
+                    {
+                        queue.Enqueue(new Tuple<int, int>(i + 1, j));
+                        visitedArr[i + 1, j] = true;
+                    }
+                    if (j > 0 && !visitedArr[i, j - 1])
+                    {
+                        queue.Enqueue(new Tuple<int, int>(i, j - 1));
+                        visitedArr[i, j - 1] = true;
+                    }
+                    if (j < m - 1 && !visitedArr[i, j + 1])
+                    {
+                        queue.Enqueue(new Tuple<int, int>(i, j + 1));
+                        visitedArr[i, j + 1] = true;
+                    }
                 }
             }
         }
