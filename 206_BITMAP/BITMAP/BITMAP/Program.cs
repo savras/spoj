@@ -56,6 +56,8 @@ namespace BITMAP
                     var queue = new Queue<Tuple<int, int>>();
                     queue.Enqueue(new Tuple<int, int>(cell.Item1, cell.Item2));
                     queue.Enqueue(new Tuple<int, int>(-1, -1));
+                    visitedArr[cell.Item1, cell.Item2] = true;
+
                     var cost = 0;
 
                     while (queue.Count > 0)
@@ -75,28 +77,25 @@ namespace BITMAP
 
                         var i = item.Item1;
                         var j = item.Item2;
-                        if (arr[i, j] != 0 && cost < arr[i, j])
-                        {
-                            arr[i, j] = cost;
-                        }
+                        
+                        arr[i, j] = cost;
 
-
-                        if (i > 0 && !visitedArr[i - 1, j])
+                        if (i > 0 && !visitedArr[i - 1, j] && arr[i - 1, j] != 0 && arr[i - 1, j] > cost)
                         {
                             queue.Enqueue(new Tuple<int, int>(i - 1, j));
                             visitedArr[i - 1, j] = true;
                         }
-                        if (i < n - 1 && !visitedArr[i + 1, j])
+                        if (i < n - 1 && !visitedArr[i + 1, j] && arr[i + 1, j] != 0 && arr[i + 1, j] > cost)
                         {
                             queue.Enqueue(new Tuple<int, int>(i + 1, j));
                             visitedArr[i + 1, j] = true;
                         }
-                        if (j > 0 && !visitedArr[i, j - 1])
+                        if (j > 0 && !visitedArr[i, j - 1] && arr[i, j - 1] != 0 && arr[i, j - 1] > cost)
                         {
                             queue.Enqueue(new Tuple<int, int>(i, j - 1));
                             visitedArr[i, j - 1] = true;
                         }
-                        if (j < m - 1 && !visitedArr[i, j + 1])
+                        if (j < m - 1 && !visitedArr[i, j + 1] && arr[i, j + 1] != 0 && arr[i, j + 1] > cost)
                         {
                             queue.Enqueue(new Tuple<int, int>(i, j + 1));
                             visitedArr[i, j + 1] = true;
