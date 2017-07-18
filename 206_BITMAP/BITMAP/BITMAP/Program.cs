@@ -49,10 +49,47 @@ namespace BITMAP
                     }
                 }
 
-                SolveBfs(onePositions, arr, visitedArr, n, m);
+                //SolveBfs(onePositions, arr, visitedArr, n, m);
+                //SolveRecursive(onePositions, arr, n, m);
+                SolveDp(onePositions, arr, n, m);
 
                 PrintResult(n, m, arr);
                 Console.ReadLine();
+            }
+        }
+
+        private static void SolveDp(List<Tuple<int, int>> onePositions, int[,] arr, int i, int i1)
+        {
+            throw new NotImplementedException();
+        }
+
+        private static void SolveRecursive(List<Tuple<int, int>> onePositions, int[,] arr, int n, int m)
+        {
+            foreach (var pos in onePositions)
+            {
+                Recurse(pos.Item1, pos.Item2, arr, n, m, 0);
+            }
+        }
+
+        private static void Recurse(int i, int j, int[,] arr, int n, int m, int cost)
+        {
+            arr[i, j] = cost;
+
+            if (i > 0 && arr[i - 1, j] != 0 && arr[i - 1, j] > cost)
+            {
+                Recurse(i - 1, j, arr, n, m, cost + 1);
+            }
+            if (i < n - 1 && arr[i + 1, j] != 0 && arr[i + 1, j] > cost)
+            {
+                Recurse(i + 1, j, arr, n, m, cost + 1);
+            }
+            if (j > 0 && arr[i, j - 1] != 0 && arr[i, j - 1] > cost)
+            {
+                Recurse(i, j - 1, arr, n, m, cost + 1);
+            }
+            if (j < m - 1 && arr[i, j + 1] != 0 && arr[i, j + 1] > cost)
+            {
+                Recurse(i, j + 1, arr, n, m, cost + 1);
             }
         }
 
