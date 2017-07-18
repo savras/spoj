@@ -88,6 +88,10 @@ int main() {
 			}
 			cout << endl;
 		}
+
+		string empty;
+		getline(cin, empty);
+		cin.ignore();
 	}
 	return 0;
 }
