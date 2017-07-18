@@ -28,7 +28,6 @@ namespace BITMAP
                 var m = int.Parse(lineSplit[1]);
 
                 var arr = new int[n, m];
-                var visitedArr = new bool[n, m];
                 var onePositions = new List<Tuple<int, int>>();
 
                 for (var i = 0; i < n; i++)
@@ -49,18 +48,11 @@ namespace BITMAP
                     }
                 }
 
-                //SolveBfs(onePositions, arr, visitedArr, n, m);
+                SolveBfs(onePositions, arr, n, m);
                 //SolveRecursive(onePositions, arr, n, m);
-                SolveDp(onePositions, arr, n, m);
 
                 PrintResult(n, m, arr);
-                Console.ReadLine();
             }
-        }
-
-        private static void SolveDp(List<Tuple<int, int>> onePositions, int[,] arr, int i, int i1)
-        {
-            throw new NotImplementedException();
         }
 
         private static void SolveRecursive(List<Tuple<int, int>> onePositions, int[,] arr, int n, int m)
@@ -75,6 +67,7 @@ namespace BITMAP
         {
             arr[i, j] = cost;
 
+            // Test if we can improve this by populating arr[diagonal] = cost + 2;
             if (i > 0 && arr[i - 1, j] != 0 && arr[i - 1, j] > cost)
             {
                 Recurse(i - 1, j, arr, n, m, cost + 1);
@@ -105,15 +98,13 @@ namespace BITMAP
             }
         }
 
-        private static void SolveBfs(List<Tuple<int, int>> onePositions, int[,] arr, bool[,] visitedArr, int n, int m)
+        private static void SolveBfs(List<Tuple<int, int>> onePositions, int[,] arr, int n, int m)
         {
             foreach (var cell in onePositions)
             {
-                InitializeVisited(visitedArr, n, m);
                 var queue = new Queue<Tuple<int, int>>();
                 queue.Enqueue(new Tuple<int, int>(cell.Item1, cell.Item2));
                 queue.Enqueue(new Tuple<int, int>(-1, -1));
-                visitedArr[cell.Item1, cell.Item2] = true;
 
                 var cost = 0;
 
@@ -137,25 +128,21 @@ namespace BITMAP
 
                     arr[i, j] = cost;
 
-                    if (i > 0 && !visitedArr[i - 1, j] && arr[i - 1, j] != 0 && arr[i - 1, j] > cost)
+                    if (i > 0 && arr[i - 1, j] != 0 && arr[i - 1, j] > cost)
                     {
                         queue.Enqueue(new Tuple<int, int>(i - 1, j));
-                        visitedArr[i - 1, j] = true;
                     }
-                    if (i < n - 1 && !visitedArr[i + 1, j] && arr[i + 1, j] != 0 && arr[i + 1, j] > cost)
+                    if (i < n - 1 && arr[i + 1, j] != 0 && arr[i + 1, j] > cost)
                     {
                         queue.Enqueue(new Tuple<int, int>(i + 1, j));
-                        visitedArr[i + 1, j] = true;
                     }
-                    if (j > 0 && !visitedArr[i, j - 1] && arr[i, j - 1] != 0 && arr[i, j - 1] > cost)
+                    if (j > 0 && arr[i, j - 1] != 0 && arr[i, j - 1] > cost)
                     {
                         queue.Enqueue(new Tuple<int, int>(i, j - 1));
-                        visitedArr[i, j - 1] = true;
                     }
-                    if (j < m - 1 && !visitedArr[i, j + 1] && arr[i, j + 1] != 0 && arr[i, j + 1] > cost)
+                    if (j < m - 1  && arr[i, j + 1] != 0 && arr[i, j + 1] > cost)
                     {
                         queue.Enqueue(new Tuple<int, int>(i, j + 1));
-                        visitedArr[i, j + 1] = true;
                     }
                 }
             }
