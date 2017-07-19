@@ -13,14 +13,27 @@ namespace BUGLIFE
             var b = int.Parse(inputSplit[0]);
             var interactions = int.Parse(inputSplit[1]);
 
-            for(var i = 0; i < t; i++)
+            for (var i = 0; i < t; i++)
             {
-                var result = SolveBasic(b, interactions);
+                // var result = SolveBasic(b, interactions);
+                var result = SolveBfs(b, interactions);
                 Console.WriteLine($"Scenario {i + 1}:");
                 Console.WriteLine(result ? "Suspicious  bugs found!" : "No suspicious bugs found!");
             }
         }
 
+        private static bool SolveBfs(int i, int interactions)
+        {
+            throw new NotImplementedException();
+        }
+
+        // DOES NOT WORK for the following input:
+        // 1     Graph looks like this:
+        // 4 4          3----4
+        // 1 2          |    |
+        // 3 4          1----2
+        // 2 4 
+        // 3 1 
         private static bool SolveBasic(int s, int interactions)
         {
             var isSuspicious = false;
@@ -41,14 +54,13 @@ namespace BUGLIFE
                     hs2.Add(b);
                 }
                 else if ((hs1.Contains(a) && hs1.Contains(b)) ||
-                         (hs2.Contains(a) && hs2.Contains(b)))
+                  (hs2.Contains(a) && hs2.Contains(b)))
                 {
                     isSuspicious = true;
                     break;
                 }
                 else
                 {
-
                     // a exists in hs1
                     if (hs1.Contains(a) || hs2.Contains(a))
                     {
