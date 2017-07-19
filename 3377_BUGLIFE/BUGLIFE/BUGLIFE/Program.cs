@@ -22,16 +22,48 @@ namespace BUGLIFE
             }
         }
 
-        private static bool SolveBfs(int i, int interactions)
+        private static bool SolveBfs(int bugCount, int interactions)
         {
-            throw new NotImplementedException();
+            var adjList = new List<int>[bugCount];
+
+            // Build Adj list
+            for (var i = 0; i < interactions; i++)
+            {
+                var line = Console.ReadLine();
+                var split = line.Split(' ');
+                var a = int.Parse(split[0]);
+                var b = int.Parse(split[1]);
+
+                adjList[a].Add(b);
+                adjList[b].Add(a);
+            }
+
+            var isSuspicious = false;
+            // Bfs
+            var visited = new HashSet<int>();
+            var q = new Queue<int>(0);
+
+            while (q.Count > 0)
+            {
+                var node = q.Dequeue();
+                foreach (var neighbour in adjList[node])
+                {
+                    if (!visited.Contains(neighbour))
+                    {
+                        visited.Add(neighbour);
+                        q.Enqueue(neighbour);
+                    }
+                }
+            }
+
+            return isSuspicious;
         }
 
         // DOES NOT WORK for the following input:
         // 1     Graph looks like this:
-        // 4 4          3----4
-        // 1 2          |    |
-        // 3 4          1----2
+        // 4 4   (white) 3----4 (red)
+        // 1 2           |    |
+        // 3 4     (red) 1----2 (white)
         // 2 4 
         // 3 1 
         private static bool SolveBasic(int s, int interactions)
