@@ -8,54 +8,79 @@ namespace BUGLIFE
         static void Main(string[] args)
         {
             var t = int.Parse(Console.ReadLine());
-            var inputLine = Console.ReadLine();
-            var inputSplit = inputLine.Split(' ');
-            var b = int.Parse(inputSplit[0]);
-            var interactions = int.Parse(inputSplit[1]);
 
             for (var i = 0; i < t; i++)
             {
+                var inputLine = Console.ReadLine();
+                var inputSplit = inputLine.Split(' ');
+                var b = int.Parse(inputSplit[0]);
+                var interactions = int.Parse(inputSplit[1]);
+
                 // var result = SolveBasic(b, interactions);
                 var result = SolveBfs(b, interactions);
-                Console.WriteLine($"Scenario {i + 1}:");
-                Console.WriteLine(result ? "Suspicious  bugs found!" : "No suspicious bugs found!");
+                Console.WriteLine($"Scenario #{i + 1}:");
+                Console.WriteLine(result ? "Suspicious bugs found!" : "No suspicious bugs found!");
             }
         }
 
         private static bool SolveBfs(int bugCount, int interactions)
         {
             var adjList = new List<int>[bugCount];
+            for(var i = 0; i < bugCount; i++)
+            {
+                adjList[i] = new List<int>();
+            }
 
             // Build Adj list
             for (var i = 0; i < interactions; i++)
             {
                 var line = Console.ReadLine();
                 var split = line.Split(' ');
-                var a = int.Parse(split[0]);
-                var b = int.Parse(split[1]);
+                var a = int.Parse(split[0]) - 1;
+                var b = int.Parse(split[1]) - 1;
 
                 adjList[a].Add(b);
                 adjList[b].Add(a);
             }
 
+            var colours = new[] { new HashSet<int>(), new HashSet<int>() };
+            var colourIndex = 0;
             var isSuspicious = false;
             // Bfs
-            var visited = new HashSet<int>();
-            var q = new Queue<int>(0);
+            var q = new Queue<int>();
+            q.Enqueue(0);
+            var visited = new HashSet<int> {0};
+            colours[colourIndex].Add(0);
+            q.Enqueue(-1);
 
-            while (q.Count > 0)
+            while (q.Count > 0 && !isSuspicious)
             {
                 var node = q.Dequeue();
+                if (node == -1)
+                {
+                    colourIndex *= -1;
+                    if (q.Peek() == -1)
+                    {
+                        break;  // Finished processing.
+                    }
+                    q.Enqueue(-1);
+                }
+
                 foreach (var neighbour in adjList[node])
                 {
                     if (!visited.Contains(neighbour))
                     {
                         visited.Add(neighbour);
                         q.Enqueue(neighbour);
+                        colours[colourIndex].Add(node);
+                        if (colours[colourIndex*-1].Contains(node))
+                        {
+                            isSuspicious = true;
+                            break;
+                        }
                     }
                 }
             }
-
             return isSuspicious;
         }
 
