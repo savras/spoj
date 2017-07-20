@@ -43,48 +43,68 @@ namespace BUGLIFE
                 adjList[b].Add(a);
             }
 
+            // Bfs
             var colours = new[] { new HashSet<int>(), new HashSet<int>() };
             var colourIndex = 1;
             var isSuspicious = false;
             var flip = -1;
-            // Bfs
+            
             var q = new Queue<int>();
-            q.Enqueue(0);
-            var visited = new HashSet<int> {0};
-            colours[0].Add(0);
-            q.Enqueue(-1);
 
-            while (q.Count > 0 && !isSuspicious)
+            var visited = new HashSet<int>();
+            var nextNode = GetNextVisited(visited, bugCount);
+            while (nextNode != -1)
             {
-                var node = q.Dequeue();
-                if (node == -1)
-                {
-                    q.Enqueue(-1);
-                    colourIndex += flip;
-                    flip *= -1;
-                    if (q.Peek() == -1)
-                    {
-                        break;  // Finished processing.
-                    }
-                    continue;
-                }
+                visited.Add(nextNode);
+                q.Enqueue(nextNode);
+                colours[0].Add(nextNode);
+                q.Enqueue(-1);
 
-                foreach (var neighbour in adjList[node])
+                while (q.Count > 0)
                 {
-                    if (!visited.Contains(neighbour))
+                    var node = q.Dequeue();
+                    if (node == -1)
                     {
-                        visited.Add(neighbour);
-                        q.Enqueue(neighbour);
+                        q.Enqueue(-1);
+                        colourIndex += flip;
+                        flip *= -1;
+                        if (q.Peek() == -1)
+                        {
+                            break;  // Finished processing.
+                        }
+                        continue;
                     }
-                    colours[colourIndex].Add(neighbour);
-                    if (colours[colourIndex + flip].Contains(neighbour))
+
+                    foreach (var neighbour in adjList[node])
                     {
-                        isSuspicious = true;
-                        break;
+                        if (!visited.Contains(neighbour))
+                        {
+                            visited.Add(neighbour);
+                            q.Enqueue(neighbour);
+                        }
+                        colours[colourIndex].Add(neighbour);
+                        if (colours[colourIndex + flip].Contains(neighbour))
+                        {
+                            isSuspicious = true;
+                        }
                     }
+                }
+                nextNode = GetNextVisited(visited, bugCount);
+            }
+            
+            return isSuspicious;
+        }
+
+        static int GetNextVisited(HashSet<int> visited, int bugCount)
+        {
+            for (var i = 0; i < bugCount; i++)
+            {
+                if (!visited.Contains(i))
+                {
+                    return i;
                 }
             }
-            return isSuspicious;
+            return -1;
         }
 
         // DOES NOT WORK for the following input:
