@@ -44,13 +44,14 @@ namespace BUGLIFE
             }
 
             var colours = new[] { new HashSet<int>(), new HashSet<int>() };
-            var colourIndex = 0;
+            var colourIndex = 1;
             var isSuspicious = false;
+            var flip = -1;
             // Bfs
             var q = new Queue<int>();
             q.Enqueue(0);
             var visited = new HashSet<int> {0};
-            colours[colourIndex].Add(0);
+            colours[0].Add(0);
             q.Enqueue(-1);
 
             while (q.Count > 0 && !isSuspicious)
@@ -58,12 +59,14 @@ namespace BUGLIFE
                 var node = q.Dequeue();
                 if (node == -1)
                 {
-                    colourIndex *= -1;
+                    q.Enqueue(-1);
+                    colourIndex += flip;
+                    flip *= -1;
                     if (q.Peek() == -1)
                     {
                         break;  // Finished processing.
                     }
-                    q.Enqueue(-1);
+                    continue;
                 }
 
                 foreach (var neighbour in adjList[node])
@@ -72,12 +75,12 @@ namespace BUGLIFE
                     {
                         visited.Add(neighbour);
                         q.Enqueue(neighbour);
-                        colours[colourIndex].Add(node);
-                        if (colours[colourIndex*-1].Contains(node))
-                        {
-                            isSuspicious = true;
-                            break;
-                        }
+                    }
+                    colours[colourIndex].Add(neighbour);
+                    if (colours[colourIndex + flip].Contains(neighbour))
+                    {
+                        isSuspicious = true;
+                        break;
                     }
                 }
             }
