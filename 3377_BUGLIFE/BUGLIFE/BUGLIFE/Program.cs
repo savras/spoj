@@ -45,30 +45,49 @@ namespace BUGLIFE
             }
 
             var colour = new bool?[bugCount];
-            var visited = new HashSet<int>();
             var q = new Queue<int>();
 
-            q.Enqueue(0);
-            colour[0] = true;
+            int c = 0;
+            var next = 0;
             var isSuspicious = false;
-            while (q.Count > 0 && !isSuspicious)
+
+            while (next != -1 && !isSuspicious)
             {
-                var node = q.Dequeue();
-                foreach (var neighbour in adjList[node])
+                q.Enqueue(next);
+                colour[next] = true;
+                while (q.Count > 0 && !isSuspicious)
                 {
-                    if (colour[neighbour] == null)
+                    var node = q.Dequeue();
+                    foreach (var neighbour in adjList[node])
                     {
-                        q.Enqueue(neighbour);
-                        visited.Add(neighbour);
-                        colour[neighbour] = !colour[node];
-                    }
-                    if (colour[node] == colour[neighbour])
-                    {
-                        isSuspicious = true;
+                        if (colour[neighbour] == null)
+                        {
+                            q.Enqueue(neighbour);
+                            colour[neighbour] = !colour[node];
+                        }
+                        if (colour[node] == colour[neighbour])
+                        {
+                            isSuspicious = true;
+                        }
                     }
                 }
+                next = GetNext(colour, bugCount, ref c);
             }
+
             return isSuspicious;
+        }
+
+        private static int GetNext(bool?[] colour, int bugCount, ref int c)
+        {
+            for (var i = c; i < bugCount; i++)
+            {
+                if (colour[i] == null)
+                {
+                    c = i;
+                    return i;
+                }
+            }
+            return -1;
         }
 
         // 1 
