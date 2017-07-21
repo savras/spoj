@@ -13,37 +13,39 @@ namespace BUGLIFE
             {
                 var inputLine = Console.ReadLine();
                 var inputSplit = inputLine.Split(' ');
-                var b = int.Parse(inputSplit[0]);
+                var bugCount = int.Parse(inputSplit[0]);
                 var interactions = int.Parse(inputSplit[1]);
-                
+
+                // Prepare adj List
+                var adjList = new List<int>[bugCount];
+                for (var j = 0; j < bugCount; j++)
+                {
+                    adjList[j] = new List<int>();
+                }
+
+                // Build Adj list
+                for (var j = 0; j < interactions; j++)
+                {
+                    var line = Console.ReadLine();
+                    var split = line.Split(' ');
+                    var a = int.Parse(split[0]) - 1;
+                    var b = int.Parse(split[1]) - 1;
+
+                    adjList[a].Add(b);
+                    adjList[b].Add(a);
+                }
+
                 // var result = SolveBasic(b, interactions);
                 // var result = SolveBfs(b, interactions);
-                var result = SolveBfsOptimized(b, interactions);
+                var result = SolveBfsOptimized(bugCount, adjList, interactions);
+
                 Console.WriteLine($"Scenario #{i + 1}:");
                 Console.WriteLine(result ? "Suspicious bugs found!" : "No suspicious bugs found!");
             }
         }
 
-        private static bool SolveBfsOptimized(int bugCount, int interactions)
+        private static bool SolveBfsOptimized(int bugCount, IReadOnlyList<List<int>> adjList, int interactions)
         {
-            var adjList = new List<int>[bugCount];
-            for (var i = 0; i < bugCount; i++)
-            {
-                adjList[i] = new List<int>();
-            }
-
-            // Build Adj list
-            for (var i = 0; i < interactions; i++)
-            {
-                var line = Console.ReadLine();
-                var split = line.Split(' ');
-                var a = int.Parse(split[0]) - 1;
-                var b = int.Parse(split[1]) - 1;
-
-                adjList[a].Add(b);
-                adjList[b].Add(a);
-            }
-
             var colour = new bool?[bugCount];
             var q = new Queue<int>();
 
@@ -90,6 +92,7 @@ namespace BUGLIFE
             return -1;
         }
 
+        #region Old Code
         // 1 
         // 6 4 
         // 1 2 
@@ -248,5 +251,6 @@ namespace BUGLIFE
 
             return isSuspicious;
         }
+        #endregion
     }
 }
