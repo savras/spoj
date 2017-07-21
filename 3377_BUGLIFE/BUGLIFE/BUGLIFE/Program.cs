@@ -23,6 +23,13 @@ namespace BUGLIFE
             }
         }
 
+        // 1 
+        // 6 4 
+        // 1 2 
+        // 2 3 
+        // 4 5 
+        // 5 6 
+        // No suspicious bugs found!
         private static bool SolveBfs(int bugCount, int interactions)
         {
             var adjList = new List<int>[bugCount];
@@ -45,22 +52,24 @@ namespace BUGLIFE
 
             // Bfs
             var colours = new[] { new HashSet<int>(), new HashSet<int>() };
-            var colourIndex = 1;
             var isSuspicious = false;
-            var flip = -1;
-            
-            var q = new Queue<int>();
 
+            var q = new Queue<int>();
             var visited = new HashSet<int>();
-            var nextNode = GetNextVisited(visited, bugCount);
-            while (nextNode != -1)
+
+            var nextNode = GetNextVisited(visited, bugCount); ;
+            while (nextNode != -1 && !isSuspicious)
             {
                 visited.Add(nextNode);
                 q.Enqueue(nextNode);
-                colours[0].Add(nextNode);
                 q.Enqueue(-1);
+                colours[0].Clear();
+                colours[1].Clear();
+                var colourIndex = 1;
+                var flip = -1;
+                colours[0].Add(nextNode);
 
-                while (q.Count > 0)
+                while (q.Count > 0 && !isSuspicious)
                 {
                     var node = q.Dequeue();
                     if (node == -1)
@@ -70,6 +79,7 @@ namespace BUGLIFE
                         flip *= -1;
                         if (q.Peek() == -1)
                         {
+                            q.Clear();
                             break;  // Finished processing.
                         }
                         continue;
@@ -86,6 +96,7 @@ namespace BUGLIFE
                         if (colours[colourIndex + flip].Contains(neighbour))
                         {
                             isSuspicious = true;
+                            break;
                         }
                     }
                 }
@@ -114,6 +125,7 @@ namespace BUGLIFE
         // 3 4     (red) 1----2 (white)
         // 2 4 
         // 3 1 
+        // No suspicious bugs found!
         private static bool SolveBasic(int s, int interactions)
         {
             var isSuspicious = false;
