@@ -15,12 +15,60 @@ namespace BUGLIFE
                 var inputSplit = inputLine.Split(' ');
                 var b = int.Parse(inputSplit[0]);
                 var interactions = int.Parse(inputSplit[1]);
-
+                
                 // var result = SolveBasic(b, interactions);
-                var result = SolveBfs(b, interactions);
+                // var result = SolveBfs(b, interactions);
+                var result = SolveBfsOptimized(b, interactions);
                 Console.WriteLine($"Scenario #{i + 1}:");
                 Console.WriteLine(result ? "Suspicious bugs found!" : "No suspicious bugs found!");
             }
+        }
+
+        private static bool SolveBfsOptimized(int bugCount, int interactions)
+        {
+            var adjList = new List<int>[bugCount];
+            for (var i = 0; i < bugCount; i++)
+            {
+                adjList[i] = new List<int>();
+            }
+
+            // Build Adj list
+            for (var i = 0; i < interactions; i++)
+            {
+                var line = Console.ReadLine();
+                var split = line.Split(' ');
+                var a = int.Parse(split[0]) - 1;
+                var b = int.Parse(split[1]) - 1;
+
+                adjList[a].Add(b);
+                adjList[b].Add(a);
+            }
+
+            var colour = new bool?[bugCount];
+            var visited = new HashSet<int>();
+            var q = new Queue<int>();
+
+            q.Enqueue(0);
+            colour[0] = true;
+            var isSuspicious = false;
+            while (q.Count > 0 && !isSuspicious)
+            {
+                var node = q.Dequeue();
+                foreach (var neighbour in adjList[node])
+                {
+                    if (colour[neighbour] == null)
+                    {
+                        q.Enqueue(neighbour);
+                        visited.Add(neighbour);
+                        colour[neighbour] = !colour[node];
+                    }
+                    if (colour[node] == colour[neighbour])
+                    {
+                        isSuspicious = true;
+                    }
+                }
+            }
+            return isSuspicious;
         }
 
         // 1 
