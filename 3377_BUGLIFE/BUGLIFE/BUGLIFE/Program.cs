@@ -52,9 +52,10 @@ namespace BUGLIFE
             int c = 0;
             var next = 0;
             var isSuspicious = false;
-
-            while (next != -1 && !isSuspicious)
+            var lastProcessedBugNumber = -1;
+            while (next != -1 && !isSuspicious && lastProcessedBugNumber < bugCount - 1)
             {
+                next = ++lastProcessedBugNumber;
                 q.Enqueue(next);
                 colour[next] = true;
                 while (q.Count > 0 && !isSuspicious)
@@ -64,6 +65,7 @@ namespace BUGLIFE
                     {
                         if (colour[neighbour] == null)
                         {
+                            lastProcessedBugNumber = Math.Max(neighbour, lastProcessedBugNumber);
                             q.Enqueue(neighbour);
                             colour[neighbour] = !colour[node];
                         }
@@ -73,7 +75,6 @@ namespace BUGLIFE
                         }
                     }
                 }
-                next = GetNext(colour, bugCount, ref c);
             }
 
             return isSuspicious;
