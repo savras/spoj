@@ -8,6 +8,11 @@ using std::endl;
 using std::string;
 using std::vector;
 
+// Invalid for strings like:
+// xxx30xxx or xx00xx or xx50xx.
+// This is because they cannot form a valid alphabet character.
+// e.g. xx00xx - A is '1', J is '10'. So say we have x100xx, this means that arr[3] ='0' and
+// we don't have an alphabet that is represented by the string '0'.
 bool validate(string input) {
 	bool isValid = true;
 
