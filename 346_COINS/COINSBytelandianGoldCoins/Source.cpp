@@ -12,21 +12,17 @@ using std::pair;
 using std::max;
 using std::min;
 
-//void bottomUpDP(int n, vector<long long>& arr) {
-//	int limit = min(n, 500000000);
-//
-//	long sum = 0;
-//	for (size_t i = arr.size(); i <= limit; i++) {
-//		long long d2 = i / 2;	// Don't need to be long long, but then can't use max(int, long)
-//		long long d3 = i / 3;
-//		long long d4 = i / 4;
-//
-//		sum = max(d2, arr[d2]) + max(d3, arr[d3]) + max(d4, arr[d4]);
-//		if (arr.size() <= i) {
-//			arr.push_back(sum);
-//		}
-//	}
-//}
+void bottomUpDP(int start, int end, vector<long long>& arr) {
+	long sum = 0;
+	for (size_t i = start; i <= end; i++) {
+		long long d2 = i / 2;
+		long long d3 = i / 3;
+		long long d4 = i / 4;
+
+		sum = max(arr[d2] + arr[d3] + arr[d4], (long long)i);
+		arr.push_back(sum);
+	}
+}
 
 long long getValue(int n, map<int, long long>& m) {
 	if (n == 0) { return 0; };
@@ -53,16 +49,32 @@ long long getValue(int n, map<int, long long>& m) {
 	return sum;
 }
 
-int main() {
+void solveDp() {
+	vector<long long> arr(0);
+	arr.push_back(0);	// arr[0]
+	arr.push_back(0);	// arr[1]
+
+	int t = 10, n;
+	int start = 2;
+	while (t--) {
+		cin >> n;		
+		bottomUpDP(start, n, arr);
+		cout << arr[n] << endl;
+		start = max(start, n + 1);
+	}
+}
+
+void solveRecursive() {
 	map<int, long long> m;
-	//vector<long long> arr(0);
-	//arr.push_back(0);
-	//arr.push_back(1);
 
 	int t = 10, n;
 	while (t--) {
 		cin >> n;	// n can be 1,000,000,000. Might cause summation to go past 2,147,xxx,xxx.
 		cout << getValue(n, m) << endl;
-		//cout << arr[n] << endl;
 	}
+}
+
+int main() {
+	solveRecursive();
+	//solveDp();
 }
