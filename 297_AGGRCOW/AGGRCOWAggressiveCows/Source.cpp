@@ -22,43 +22,56 @@ using std::vector;
 using std::sort;
 
 //O(N), where you have as many cows as you have stalls, and mid is very small.
+// Return true if we can increase the space between cows because we can place more cows than the number we need (totalCows),
+// or decrease it if we don't have enough space to place the cows for the given number (totalCows)
 bool predicate(const vector<int>& stalls, const int& mid, const int& totalCows) {
 	int cowCount = 1;	// Starting count. First cow is always on the left most of the search space.
 	int candidateDistance = stalls[mid] - stalls[0];		// Distance of stalls[mid] from 1st cow.
-	int basePosition = 0;
+	int lastCowPosition = 0;		// The last stall to the right where we have last placed a cow.
 	for (size_t i = 1; i < stalls.size(); i++) {
 
 		// Find out how many cows can fit in the barn for each stall having 'candidate distance'
-		if (stalls[i] - stalls[basePosition] >= candidateDistance) {
+		// E.g. try putting a cow every candidateDistance away from each other, then find out if we can 
+		// tweak (increase/decrease) the candidate distance
+		if (stalls[i] - stalls[lastCowPosition] >= candidateDistance) {
 			cowCount++;
-			basePosition = i;
+			lastCowPosition = i;
 		}
 
 		if (cowCount >= totalCows)
 		{
 			// We can fit more cows than we have so the distance is not optimal.
 			// We need to make the distance between each stall larger.
+			// We still try and increase the distance when cowCount == totalCows
+			// because the current candidateDistance may not be optimal,
+			// and we are in the 'Y' region (left side of the array, |Y|Y|....Y|N|N|N|), but 
+			// not necessarily the rightmost 'Y'. We want the rightmost 'Y'.
 			return true;
 		}
 	}
 	// Can't fit all the cows in the barn with the given stall distance.
 	// We need to make the distance between the stalls smaller.
+	// We are in the 'N' (right sight of the array, |Y|Y|....Y|N|N|N|).
+	// Again, we want the leftmost 'Y'.
 	return false;
 }
 
 // We will get an array like this |Y|Y|Y|Y|N|N|N|.
 // What we want is the value in index 3, which is the rightmost Y.
 // The rightmost Y represents the distance where all cows will be equally spaced apart (a.k.a maximum distance) 
-// O(log X), where X is the number of positions in the stalls.. isn't X == N? I don't understand the question.
+// Y & N are represented by our predicate, which keeps tweaking the distances until we get the rightmost Y.
+// Y == we can fit equal or greater number of cows in the stalls given the candidateDistance
+// N == we cannot fit enough cows given the candidateDistance to meet the given totalCows number
+// ToDo:: O(log X), where X is the number of positions in the stalls.. isn't X == N? I don't understand the question.
 int binary_search(const vector<int>& stalls, int start, int end, const int& totalCows) {
 	while (start < end) {
 		const int handleRoundUp = 1;
 		// Handle |YES|NO| situation where we will call binary_search with mid = x and end = x + 1 all the time.
 		// By doing this, we will always select the right side of the |YES|NO| as the mid instead of the left.
 		int mid = start + (end - start + handleRoundUp) / 2;
-		bool pResult = predicate(stalls, mid, totalCows);
+		bool canIncreaseCandidateDistance = predicate(stalls, mid, totalCows);
 
-		if (pResult) {
+		if (canIncreaseCandidateDistance) {
 			start = mid;
 		}
 		else {
