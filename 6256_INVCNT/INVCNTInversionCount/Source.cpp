@@ -128,6 +128,12 @@ long long getRunningSum(const vector<int>& arr, int index) {
 	return sum;
 }
 
+// Return index of where a value is in relation to the original array.
+// e.g. original array = {4, 2, 6, 5} and sorted = {2, 4, 5, 6}
+// calling binarySearch for the value 4 will return 0, callling for value will return 3.
+// We will end up with map = {1, 0, 3, 2}. E.g. value 2 in the original array is in position 1 (because map[0] == 1) of sorted array 
+// Notice that we also add one to the result because our BIT starts at index 1.
+// So we will finally end up with map = {2, 1, 4, 3}.
 int binarySearch(const vector<int>& sorted, const int& value, const int& start, const int &end) {
 	int result = -1;
 	if (start <= end) {		
