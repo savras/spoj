@@ -134,6 +134,10 @@ long long getRunningSum(const vector<int>& arr, int index) {
 // We will end up with map = {1, 0, 3, 2}. E.g. value 2 in the original array is in position 1 (because map[0] == 1) of sorted array 
 // Notice that we also add one to the result because our BIT starts at index 1.
 // So we will finally end up with map = {2, 1, 4, 3}.
+// Mapping is done so that we can ignore the large range of values (or negative integers) that we can potentially get 
+// with the input. With the map, we will always have values starting from 1 to n
+// Notice that the mapping ONLY helps make the data set smaller. It does not influence the main
+// logic of figuring out the inversion count.
 int binarySearch(const vector<int>& sorted, const int& value, const int& start, const int &end) {
 	int result = -1;
 	if (start <= end) {		
