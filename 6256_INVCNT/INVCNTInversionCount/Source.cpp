@@ -68,7 +68,7 @@ void mergesort(vector<int>& arr, const int& start, const int& end, long long & r
  // 2) AND result with index
  // 3) Add to index
 int getNext(int index) {
-	index += index & -index;
+	index += index & -index;	// Add l.s.b. of index to index. E.g. 0100 + 0100 = 1000. E.g. 0101 + 0001 = 0110
 	return index;
 }
 
@@ -77,8 +77,13 @@ int getNext(int index) {
 // 3) Subtract from index
 // OR...
 // 1) & index with index-1
-// a.k.a. flip l.s.b. bit with value 1
+// a.k.a. flip the l.s.b. bit with a value of 1
+// e.g. 1111 & 1110 = 1110
 int getParent(int index) {
+	// Note: index & -index gives you the l.s.b. of index. E.g. 0011 & 0101 = 0001.
+	// We then subtract that l.s.b. from index.
+	// E.g. 0011 - 0001 = 0010
+	// Doing index & (index - 1) essentially removes the l.s.b. of index.
 	return index & (index - 1);	// return index -= index & -index;
 }
 
