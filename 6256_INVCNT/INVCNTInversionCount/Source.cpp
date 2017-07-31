@@ -160,6 +160,29 @@ int getMappedValue(const int& value, const vector<int>& sorted) {
 	return binarySearch(sorted, value, 0, sorted.size() - 1);
 }
 
+// BIT solution.
+// Notice we can achive the same thing using a prefix array.
+// Starting from right to left, we simple look for values lower less than the value in the 
+// current index of the array that we are processing.
+
+// If we have a prefix array, parr = {0, 0, 0, 0} for initial data of arr = {3, 4, 1, 2}. 
+// Assume parr & arr are 1-based index arrays.
+
+// Starting from the right, we have the value 2 from arr[4].
+// Update sum += parr[2] => 0
+// Update parr[2]++, giving parr = {0, 1, 1, 1}
+
+// Now we process the value 1 from arr[3]. 
+// Update sum += parr[1] => 0
+// Update parr[1]++, giving parr = {1, 2, 2, 2}
+
+// Now, process value 4 from arr[2]
+// Update sum += parr[4] => 2
+// par[4]++, giving parr = {1, 1, 2, 3}
+
+// Process 3 from arr[1]
+// Update sum += parr[3] => 4
+// parr[3]++, giving parr = {1, 1, 3, 4}
 void binaryIndexTree(const vector<int>& arr, vector<int>& bit, long long& result) {
 	//createbinaryIndexedTree(arr, bit);
 	
