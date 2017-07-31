@@ -178,11 +178,14 @@ int getMappedValue(const int& value, const vector<int>& sorted) {
 
 // Now, process value 4 from arr[2]
 // Update sum += parr[4] => 2
-// par[4]++, giving parr = {1, 1, 2, 3}
+// par[4]++, giving parr = {1, 2, 2, 3}
 
 // Process 3 from arr[1]
 // Update sum += parr[3] => 4
-// parr[3]++, giving parr = {1, 1, 3, 4}
+// parr[3]++, giving parr = {1, 2, 3, 4}
+
+// Notice that by updating the prefix tree by +1 for the value that we encounter while processing from
+// right to left, the property of a prefix tree automatically gives us the inversion count.
 void binaryIndexTree(const vector<int>& arr, vector<int>& bit, long long& result) {
 	//createbinaryIndexedTree(arr, bit);
 	
