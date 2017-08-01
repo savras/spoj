@@ -35,7 +35,7 @@ int populateInitialTree(const vector<int>& arr, vector<int>& tree, const int& st
 	return tree[current];
 }
 
-void buildTree(vector<int>& arr, vector<int>& tree) {
+void buildSegmentTree(vector<int>& arr, vector<int>& tree) {
 	populateInitialTree(arr, tree, 0, arr.size() - 1, 0);
 }
 
@@ -89,7 +89,7 @@ int main() {
 		cin >> val;
 		arr.push_back(val);
 	}
-	buildTree(arr, tree);
+	buildSegmentTree(arr, tree);
 	cin >> m;
 	while (m--)
 	{
