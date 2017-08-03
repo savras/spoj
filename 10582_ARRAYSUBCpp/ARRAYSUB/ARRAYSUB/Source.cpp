@@ -1,3 +1,6 @@
+// Hints for Deque solution:
+// https://stackoverflow.com/questions/12239042/spoj-arraysub-on-complexity-approach
+// https://www.quora.com/How-can-I-solve-this-array-moving-window-max-problem-in-linear-time/answer/Akhilesh-Pandey-3
 #include<iostream>
 #include<vector>
 
@@ -6,6 +9,7 @@ using std::cout;
 using std::endl;
 using std::vector;
 
+// ToDo:: Solve using BIT and Deque
 int main() {
 	int n;
 	cin >> n;

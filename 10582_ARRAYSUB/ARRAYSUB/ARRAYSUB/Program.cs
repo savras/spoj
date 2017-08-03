@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿// Input issue: use RemoveEmptyEntries - https://msdn.microsoft.com/en-us/library/system.stringsplitoptions(v=vs.110).aspx
+using System;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ARRAYSUB
 {
