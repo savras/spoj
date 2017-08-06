@@ -5,11 +5,15 @@
 #include<iostream>
 #include<vector>
 #include<algorithm>
+#include<cmath>
 
 using std::cin;
 using std::cout;
 using std::endl;
 using std::vector;
+using std::ceil;
+using std::log2;
+using std::pow;
 using std::max;
 
 void solveBruteForce(const vector<int>&, int, int);
