@@ -6,6 +6,7 @@
 #include<vector>
 #include<algorithm>
 #include<cmath>
+#include<deque>
 
 using std::cin;
 using std::cout;
@@ -15,11 +16,13 @@ using std::ceil;
 using std::log2;
 using std::pow;
 using std::max;
+using std::deque;
 
 void solveBruteForce(const vector<int>&, int, int);
 void solveSegmentTree(const vector<int>&, int, int);
 void buildTree(const vector<int>&, vector<int>&, const int&, const int&, const int&);
 int solveST(const vector<int>&, const vector<int>&, const int&, const int&, const int&, const int&, const int&);
+void solveDeque(const vector<int>&, const int&, const int&);
 
 // ToDo:: Solve using BIT and Deque
 int main() {
@@ -36,12 +39,46 @@ int main() {
 	int k;
 	cin >> k;
 	
-	solveSegmentTree(arr, n, k);
-
-	//solveBIT(arr, n, k);
-	//solveDeque(arr, n, k);
+	solveDeque(arr, n, k);
+	//solveSegmentTree(arr, n, k);
 	//solveBruteForce(arr, n, k);
 	return 0;
+}
+
+// Idea is to make the the largest element in k-window accessible from front of deque.
+// Then, the back of the deque will have all values after the index of the largest value in the window.
+// While we process new elements when sliding the window, we clear the back of the deque of any values smaller than the new element being processed.
+// This way, we always have values in the deque in non-increasing order. Also notice that the values after the first element of the deque (from the front)
+// is significant in finding the largest element in the window.
+void solveDeque(const vector<int>& arr, const int& n, const int& k) {	
+	deque<int> d;
+
+	// Traverse the window and populate deque as per the description above.
+	// Initially, we are making the deque track the growing of the window from size 0 to size k.
+	for (size_t i = 0; i < k; i++) {
+		while (!d.empty() && arr[i] > d.back()) {
+			d.pop_back();
+		}
+		d.push_back(arr[i]);		
+	}
+	cout << d.front() << " ";
+	
+	// Now we slide the window.
+	for (size_t i = 1; i <= n - k; i++) {
+		// Remove old element
+		if (arr[i - 1] == d.front()) {
+			d.pop_front();
+		}
+
+		// Consider the new element.
+		int nextElementIndex = i + k - 1;
+		while (!d.empty() && arr[nextElementIndex] > d.back()) {
+			d.pop_back();
+		}
+		d.push_back(arr[nextElementIndex]);
+
+		cout << d.front() << " ";
+	}
 }
 
 void solveSegmentTree(const vector<int>& arr, int n, int k) {
