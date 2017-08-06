@@ -47,9 +47,11 @@ int main() {
 
 // Idea is to make the the largest element in k-window accessible from front of deque.
 // Then, the back of the deque will have all values after the index of the largest value in the window.
-// While we process new elements when sliding the window, we clear the back of the deque of any values smaller than the new element being processed.
+// While we process new elements when sliding the window, we clear the back of the deque of any value smaller than the new element being processed.
 // This way, we always have values in the deque in non-increasing order. Also notice that the values after the first element of the deque (from the front)
 // is significant in finding the largest element in the window.
+// Another thing to consider is that we don't pop the back of the deque if the new element considered is if the same value.
+// This way we know that if the element that has just moved out of the window is of the very same one as the value front of the deque (in the case we have duplicates).
 void solveDeque(const vector<int>& arr, const int& n, const int& k) {	
 	deque<int> d;
 
