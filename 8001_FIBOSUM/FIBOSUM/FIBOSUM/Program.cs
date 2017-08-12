@@ -1,11 +1,45 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace FIBOSUM
 {
     class Program
     {
         private static readonly int[,] F = { { 1, 1 }, { 1, 0 } };
+
+        static void DijkstraFibonacci(int n, int m)
+        {
+            var sum = 0.00;
+            for (var i = n; i <= m; i++)
+            {
+                sum += PerformDijkstra(n);
+            }
+            Console.WriteLine(sum % 1000000007);
+        }
+
+        static double PerformDijkstra(double n)
+        {
+            // Ripped from Geeksforgeek.
+            // Base cases
+            //if (n == 0)
+            //{ return 0;}
+            //if (n == 1 || n == 2)
+            //{ return (f[n] = 1);}
+
+            //// If fib(n) is already computed
+            //if (f[n])
+            //    return f[n];
+
+            //int k = (n & 1) ? (n + 1) / 2 : n / 2;
+
+            //// Applyting above formula [Note value n&1 is 1
+            //// if n is odd, else 0.
+            //f[n] = (n & 1) ? (fib(k) * fib(k) + fib(k - 1) * fib(k - 1))
+            //       : (2 * fib(k - 1) + fib(k)) * fib(k);
+
+            return 0.00; //return f[n];
+        }
 
         static void MatrixExponentiationOptimized(int n, int m)
         {
@@ -73,8 +107,8 @@ namespace FIBOSUM
                 var n = int.Parse(split[0]);
                 var m = int.Parse(split[1]);
 
-                MatrixExponentiationOptimized(n, m);
-                // Dijkstra Fibonacci 
+                //MatrixExponentiationOptimized(n, m);
+                DijkstraFibonacci(n, m);
             }
         }
     }
