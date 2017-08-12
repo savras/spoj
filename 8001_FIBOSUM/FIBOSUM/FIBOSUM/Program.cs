@@ -1,16 +1,19 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace FIBOSUM
 {
     class Program
     {
+        private static readonly int[,] F = { { 1, 1 }, { 1, 0 } };
 
         static void MatrixExponentiationOptimized(int n, int m)
         {
             ulong sum = 0;
+            var result = new[,] { { 1, 1 }, { 1, 0 } };
+            
             for (var i = n; i <= m; i++)
             {
-                var result = new[,] {{1, 1}, {1, 0}};
                 if (i == 0)
                 {
                     sum += 0;
@@ -20,8 +23,13 @@ namespace FIBOSUM
                     GetFibonacci(result, i);
                     sum += (ulong)result[0, 1]; // or result[1, 0];
                 }
+
+                result[0, 0] = 1;
+                result[0, 1] = 1;
+                result[1, 0] = 1;
+                result[1, 1] = 0;
             }
-            Console.WriteLine(sum);
+            Console.WriteLine(sum % 1000000007);
         }
 
         // O(log n)
@@ -33,8 +41,7 @@ namespace FIBOSUM
             }
 
             GetFibonacci(result, n/2);
-            var F = new[,] {{1, 1}, {1, 0}};
-            Multiply(result, result);
+            Multiply(result, result);   // This is what enables O(log n) solution.
 
             if (n%2 != 0)
             {
@@ -42,12 +49,12 @@ namespace FIBOSUM
             }
         }
 
-        static void Multiply(int[,] result, int[,] F)
+        static void Multiply(int[,] result, int[,] arr)
         {
-            var a = (F[0, 0]*result[0, 0]) + (F[0, 1]*result[1, 0]);
-            var b = (F[0, 0]*result[0, 1]) + (F[0, 1]*result[1, 1]);
-            var c = (F[1, 0]*result[0, 0]) + (F[1, 1]*result[1, 0]);
-            var d = (F[1, 0]*result[0, 1]) + (F[1, 1]*result[1, 1]);
+            var a = (arr[0, 0]*result[0, 0]) + (arr[0, 1]*result[1, 0]);
+            var b = (arr[0, 0]*result[0, 1]) + (arr[0, 1]*result[1, 1]);
+            var c = (arr[1, 0]*result[0, 0]) + (arr[1, 1]*result[1, 0]);
+            var d = (arr[1, 0]*result[0, 1]) + (arr[1, 1]*result[1, 1]);
 
             result[0, 0] = a;
             result[0, 1] = b;
