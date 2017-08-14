@@ -19,7 +19,7 @@ namespace MIXTURES
 
                 for (var j = 0; j < n; j++)
                 {
-                    for (var k = j; k >= 0; k++)
+                    for (var k = 0; k < n; k++)
                     {
                         mixture[j, k] = -1;
                     }
@@ -33,20 +33,24 @@ namespace MIXTURES
                         if (mixture[j - 1, k] == -1 || mixture[j, k + 1] == -1)
                         {
                             mixture[j, k] = (chemicals[j] + chemicals[k])%100;
+                            smokeAmount = chemicals[j] * chemicals[k];
                         }
                         else
                         {
-                            var mixtureTop = (mixture[j - 1, k] + chemicals[j])%100;
-                            var mixtureRight = (mixture[j, k + 1] + chemicals[k])%100;
-                            if (mixtureTop + chemicals[j] <= mixtureRight + chemicals[k])
+                            var mixtureTop = mixture[j - 1, k];
+                            var mixtureRight = mixture[j, k + 1];
+
+                            var topPlusCurrent = (mixtureTop + chemicals[j])%100;
+                            var rightPlusCurrent = (mixtureRight + chemicals[k])%100;
+                            if (topPlusCurrent <= rightPlusCurrent)
                             {
-                                mixture[j, k] = mixtureTop + chemicals[j];
-                                smokeAmount = mixture[j, k] * chemicals[j];
+                                mixture[j, k] = topPlusCurrent;
+                                smokeAmount = (mixtureTop * chemicals[j]) + smoke[j - 1, k];
                             }
                             else
                             {
-                                mixture[j, k] = mixtureRight + chemicals[k];
-                                smokeAmount = mixture[j, k] * chemicals[k];
+                                mixture[j, k] = rightPlusCurrent;
+                                smokeAmount = (mixtureRight * chemicals[k]) + smoke[j, k - 1]; 
                             }
                         }
 
@@ -54,7 +58,7 @@ namespace MIXTURES
                     }
                 }
 
-                Console.WriteLine(smoke[0, n-1]);
+                Console.WriteLine(smoke[n-1, 0]);
             }
         }
     }
