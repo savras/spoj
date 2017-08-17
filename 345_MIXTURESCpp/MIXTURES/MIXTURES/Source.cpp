@@ -45,7 +45,7 @@ int main() {
 					if (mixture[row - 1][column] == -1 || mixture[row][column + 1] == -1)
 					{
 						mixture[row][column] = (chemicals[row] + chemicals[column]) % 100;
-						smokeAmount = chemicals[row] * chemicals[column];
+						smoke[row][column] = chemicals[row] * chemicals[column];
 					}
 					else
 					{
@@ -63,13 +63,11 @@ int main() {
 							mixture[row][column] = moveLeftValue;
 						}
 
-						smokeAmount = min(
+						smoke[row][column] = min(
 							(mixtureTop * chemicals[row]) + smoke[row - 1][column],
 							(mixtureRight * chemicals[column]) + smoke[row][column + 1]
 						);
-					}
-
-					smoke[row][column] = smokeAmount;
+					}					
 				}
 			}
 			cout << smoke[n - 1][0] << endl;
