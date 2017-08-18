@@ -32,7 +32,7 @@ int main() {
 		}
 		else {
 			vector<vector<int>> mixture(n, vector<int>(n, -1));
-			vector<vector<int>> smoke(n, vector<int>(n, -1));
+			vector<vector<long long>> smoke(n, vector<long long>(n, -1));
 
 			// Fill memoSum and memoMultiplication diagonally.
 			for (size_t j = 1; j < n; j++)
@@ -52,21 +52,22 @@ int main() {
 						int mixtureTop = mixture[row - 1][column];
 						int mixtureRight = mixture[row][column + 1];
 
-						int moveDownValue = (mixtureTop + chemicals[row]) % 100;
-						int moveLeftValue = (mixtureRight + chemicals[column]) % 100;
-						if (moveDownValue <= moveLeftValue)
+						int moveDownMixtureValue = (mixtureTop + chemicals[row]) % 100;
+						int moveLeftMixtureValue = (mixtureRight + chemicals[column]) % 100;
+
+						long long smokeFromMovingDown = mixtureTop * chemicals[row];
+						long long smokeFromMovingLeft = mixtureRight * chemicals[column];
+
+						if (smokeFromMovingDown <= smokeFromMovingLeft)
 						{
-							mixture[row][column] = moveDownValue;
+							mixture[row][column] = moveDownMixtureValue;
+							smoke[row][column] = smokeFromMovingDown + smoke[row - 1][column];
 						}
 						else
 						{
-							mixture[row][column] = moveLeftValue;
+							mixture[row][column] = moveLeftMixtureValue;
+							smoke[row][column] = smokeFromMovingLeft + smoke[row][column + 1];
 						}
-
-						smoke[row][column] = min(
-							(mixtureTop * chemicals[row]) + smoke[row - 1][column],
-							(mixtureRight * chemicals[column]) + smoke[row][column + 1]
-						);
 					}					
 				}
 			}
