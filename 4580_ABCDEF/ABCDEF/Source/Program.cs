@@ -4,6 +4,7 @@
 // Then, for each LFS (or each RHS), count the number of values that are equal on the other side.
 // O(n^3) for permutation of 3 numbers out of n with repetition (n * n * n).
 
+// Update: Looks like the brute force method is the way to go but its implementation can be optimized.
 
 using System;
 using System.Collections.Generic;
