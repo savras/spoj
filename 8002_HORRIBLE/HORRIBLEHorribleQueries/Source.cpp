@@ -152,7 +152,7 @@ int main() {
 		cin >> n;
 		
 		int height = (int)(ceil(log2(n)));										
-		long long treeSize = 2 * (int)pow(2, height) - 1;
+		long long treeSize = 2 * (int)pow(2, height) - 1;	// Via log identity, h = log n,  2 ^ h = n, where n is the number of nodes in a full binary tree
 
 		vector<long long> arr(treeSize);
 		vector<long long> lazy(treeSize);
