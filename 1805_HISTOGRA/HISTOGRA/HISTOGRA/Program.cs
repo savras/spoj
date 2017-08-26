@@ -38,7 +38,7 @@ namespace HISTOGRA
                 int i;
                 for (i = 1; i < histogram[0]; i++)
                 {
-                    if (startIndexStack.Count == 0 || histogram[i] >= heightStack.Peek())
+                    if (startIndexStack.Count == 0 || histogram[i] > heightStack.Peek())
                     {
                         startIndexStack.Push(i);
                         heightStack.Push(histogram[i]);
@@ -54,7 +54,8 @@ namespace HISTOGRA
                     }
                 }
 
-                while (heightStack.Count > 0 && heightStack.Peek() > histogram[i])
+                i++;
+                while (heightStack.Count > 0)
                 {
                     maxArea = Math.Max(maxArea, heightStack.Peek() * (i - startIndexStack.Peek()));
                     startIndexStack.Pop();
