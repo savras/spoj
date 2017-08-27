@@ -25,15 +25,16 @@ namespace HISTOGRA
         static void Main(string[] args)
         {
             var line = string.Empty;
-            do
+            line = Console.ReadLine();
+
+            while (line.Length > 1)
             {
-                line = Console.ReadLine();
                 var split = line.Split(' ');
                 var histogram = Array.ConvertAll(split, int.Parse);
 
                 var startIndexStack = new Stack<int>();
                 var heightStack = new Stack<int>();
-                var maxArea = 0;
+                ulong maxArea = 0;
 
                 int i;
                 for (i = 1; i < histogram[0]; i++)
@@ -47,7 +48,7 @@ namespace HISTOGRA
                     {
                         while (heightStack.Count > 0 && heightStack.Peek() > histogram[i])
                         {
-                            maxArea = Math.Max(maxArea, heightStack.Peek() * (i - startIndexStack.Peek()));
+                            maxArea = Math.Max(maxArea, (ulong)heightStack.Peek() * (ulong)(i - startIndexStack.Peek()));
                             startIndexStack.Pop();
                             heightStack.Pop();
                         }
@@ -57,13 +58,15 @@ namespace HISTOGRA
                 i++;
                 while (heightStack.Count > 0)
                 {
-                    maxArea = Math.Max(maxArea, heightStack.Peek() * (i - startIndexStack.Peek()));
+                    maxArea = Math.Max(maxArea, (ulong)heightStack.Peek() * (ulong)(i - startIndexStack.Peek()));
                     startIndexStack.Pop();
                     heightStack.Pop();
                 }
 
                 Console.WriteLine(maxArea);
-            } while (line.Length > 1);
+
+                line = Console.ReadLine();
+            }
         }
     }
 }
