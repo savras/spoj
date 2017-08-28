@@ -60,8 +60,19 @@ int main()
 					startIndexStack.pop();
 					heightStack.pop();
 				}
+
+				if (startIndexStack.size() == 0) {
+					startIndexStack.push(0);
+				}
+				else {
+					startIndexStack.push(i);
+				}
+
+				heightStack.push(hist[i]);
 			}
 		}
+
+
 		while (heightStack.size() > 0)
 		{
 			maxArea = max(maxArea, (long long)heightStack.top() * (long long)(i - startIndexStack.top()));
