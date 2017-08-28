@@ -56,18 +56,17 @@ int main()
 			{
 				while (heightStack.size() > 0 && heightStack.top() > hist[i])
 				{
-					maxArea = max(maxArea, (long long) heightStack.top() * (long long)(i - startIndexStack.top()));
+					int heightTop = heightStack.top();
+					int startIndexTop = startIndexStack.top();
+
 					startIndexStack.pop();
 					heightStack.pop();
+
+					int width = startIndexStack.size() == 0 ? i : i - startIndexStack.top() - 1;
+					maxArea = max(maxArea, (long long)heightTop * (long long)width);					
 				}
 
-				if (startIndexStack.size() == 0) {
-					startIndexStack.push(0);
-				}
-				else {
-					startIndexStack.push(i);
-				}
-
+				startIndexStack.push(i);
 				heightStack.push(hist[i]);
 			}
 		}
@@ -75,9 +74,14 @@ int main()
 
 		while (heightStack.size() > 0)
 		{
-			maxArea = max(maxArea, (long long)heightStack.top() * (long long)(i - startIndexStack.top()));
+			int heightTop = heightStack.top();
+			int startIndexTop = startIndexStack.top();
+
 			startIndexStack.pop();
 			heightStack.pop();
+
+			int width = startIndexStack.size() == 0 ? i : i - startIndexStack.top() - 1;
+			maxArea = max(maxArea, (long long)heightTop * (long long)width);
 		}
 
 		cout << maxArea << endl;
