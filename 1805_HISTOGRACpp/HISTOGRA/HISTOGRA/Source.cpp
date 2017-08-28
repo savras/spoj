@@ -15,6 +15,7 @@
 *		the width of the evaluated rectangle is.
 *
 * We need to do this for each item in the height stack that is larger than the height currently being assessed.
+* Test case: 7 6 2 5 4 5 1 6
 */
 #include <iostream>
 #include <vector>
@@ -41,48 +42,41 @@ int main()
 		}
 
 		stack<int> startIndexStack;
-		stack<int> heightStack;
 
 		long long maxArea = 0;
 
 		int i;
 		for (i = 0; i < t; i++)
 		{
-			if (startIndexStack.size() == 0 || hist[i] > heightStack.top())
+			if (startIndexStack.size() == 0 || hist[i] > hist[startIndexStack.top()])
 			{
 				startIndexStack.push(i);
-				heightStack.push(hist[i]);
 			}
 			else
 			{
-				while (heightStack.size() > 0 && heightStack.top() > hist[i])
+				while (startIndexStack.size() > 0 && hist[startIndexStack.top()] > hist[i])
 				{
-					int heightTop = heightStack.top();
 					int startIndexTop = startIndexStack.top();
 
 					startIndexStack.pop();
-					heightStack.pop();
 
 					int width = startIndexStack.size() == 0 ? i : i - startIndexStack.top() - 1;
-					maxArea = max(maxArea, (long long)heightTop * (long long)width);					
+					maxArea = max(maxArea, (long long)hist[startIndexTop] * (long long)width);
 				}
 
 				startIndexStack.push(i);
-				heightStack.push(hist[i]);
 			}
 		}
 
 
-		while (heightStack.size() > 0)
+		while (startIndexStack.size() > 0)
 		{
-			int heightTop = heightStack.top();
 			int startIndexTop = startIndexStack.top();
 
 			startIndexStack.pop();
-			heightStack.pop();
 
 			int width = startIndexStack.size() == 0 ? i : i - startIndexStack.top() - 1;
-			maxArea = max(maxArea, (long long)heightTop * (long long)width);
+			maxArea = max(maxArea, (long long)hist[startIndexTop] * (long long)width);
 		}
 
 		cout << maxArea << endl;
