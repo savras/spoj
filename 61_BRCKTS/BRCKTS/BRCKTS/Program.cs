@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿/* Solution: '(' represents +1, ')' represents -1. 
+ *           Use prefix array concept and check that the value at every index is positive, and 
+ *           the value in the last index is 0.
+ */
 namespace BRCKTS
 {
     class Program
