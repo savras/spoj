@@ -19,30 +19,51 @@ namespace BRCKTS
 
         static void Main(string[] args)
         {
-            var n = int.Parse(Console.ReadLine());
-            var brackets = Console.ReadLine();
-            var m = int.Parse(Console.ReadLine());
-
-            // Number of leaf nodes in a full tree is 2^h, where h is height of the tree.
-            // Therefore, 2^h = n. Via log identity, h = log n.
-            var height = (int)Math.Ceiling(Math.Log(n, 2));
-            var leafNodes = (int) Math.Pow(2, height);
-            var size =  (leafNodes * 2) - 1;    // Number of leaves in level before leaf nodes in full tree is just the no. of leaf notes - 1.
-            var tree = new int[size];
-
-            BuildIntervalTree(brackets, tree, 0, n - 1, 0);
-
-            for (var i = 0; i < m; i++)
+            for (var t = 1; t <= 10; t++)
             {
-                var operation = int.Parse(Console.ReadLine());
-                if (operation == 0)
+                //Console.WriteLine($"Test: {t}");
+                Console.WriteLine("Test {0}:", t);
+
+                var n = int.Parse(Console.ReadLine());
+                var brackets = Console.ReadLine();
+                var m = int.Parse(Console.ReadLine());
+
+                // Number of leaf nodes in a full tree is 2^h, where h is height of the tree.
+                // Therefore, 2^h = n. Via log identity, h = log n.
+                var height = (int) Math.Ceiling(Math.Log(n, 2));
+                var leafNodes = (int) Math.Pow(2, height);
+                var size = (leafNodes*2) - 1; // Number of leaves in level before leaf nodes in full tree is just the no. of leaf notes - 1.
+                var tree = new int[size];
+
+                if (n%2 == 0)
                 {
-                    CheckTree();
+                    BuildIntervalTree(brackets, tree, 0, n - 1, 0);
+
+                    for (var i = 0; i < m; i++)
+                    {
+                        var operation = int.Parse(Console.ReadLine());
+                        if (operation == 0)
+                        {
+                            CheckTree();
+                        }
+                        else
+                        {
+                            UpdateTree(operation - 1, tree, 0, n - 1, 0);
+                        }
+                    }
                 }
                 else
                 {
-                    UpdateTree(operation - 1, tree, 0, n - 1, 0);
-                } 
+                    // Will never be valid for odd number of brackets.
+                    for (var i = 0; i < m; i++)
+                    {
+                        var operation = int.Parse(Console.ReadLine());
+                        if (operation == 0)
+                        {
+                            Console.WriteLine("NO");
+                        }
+                    }
+                }
             }
         }
 
