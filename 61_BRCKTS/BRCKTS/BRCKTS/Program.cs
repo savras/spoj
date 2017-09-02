@@ -2,15 +2,20 @@
  *           ')' represents -1. 
  *           Use prefix array concept and check that the value at every index is positive, and 
  *           the value in the last index is 0.
+ *           Best implementation of this concept is using a segment tree where for every update we only need to
+ *           check the values in thee node that we update up to the root have the following properties:
+ *           Non-root nodes have values >= 0, and root node has value == 0. This yields O(n log n) for initial
+ *           build of tree + log n updates/checks.
  */
 
 using System;
+using System.Collections.Generic;
 
 namespace BRCKTS
 {
     class Program
     {
-        private static bool isValid = false;
+        private static bool isValid = true;
 
         static void Main(string[] args)
         {
@@ -36,19 +41,46 @@ namespace BRCKTS
                 }
                 else
                 {
-                    UpdateTree(operation - 1, tree);
+                    UpdateTree(operation - 1, tree, 0, n - 1, 0);
+                    if (tree[0] != 0)
+                    {
+                        isValid = false;
+                    }
                 }
             }
         }
 
         static void CheckTree()
         {
+            // ToDo:: Cater for initial check as well.
             Console.WriteLine(isValid ? "YES" : "NO");
         }
 
-        static void UpdateTree(int index, int[] tree)
+        static int UpdateTree(int index, int[] tree, int bracketLow, int bracketHigh, int current)
         {
-            
+            if (bracketLow >= bracketHigh)
+            {
+                tree[current] *= -1;
+                return tree[current] * 2;
+            }
+
+            int updatedValue;
+            var mid = bracketLow + (bracketHigh - bracketLow)/2;
+            if(index >= bracketLow && index <= mid)
+            {
+                updatedValue = UpdateTree(index, tree, bracketLow, mid, (2 * current) + 1);
+            }
+            else
+            {
+                updatedValue = UpdateTree(index, tree, mid + 1, bracketHigh, (2 * current) + 2);
+            }
+
+            tree[current] += updatedValue;  // Need to also remove the old value of the inversed bracket.
+            if (tree[current] < 0 && isValid)
+            {
+                isValid = false;
+            }
+            return updatedValue;
         }
 
         static int  BuildIntervalTree(string brackets, int[] tree, int low, int high, int current)
