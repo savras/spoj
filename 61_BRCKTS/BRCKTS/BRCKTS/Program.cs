@@ -42,17 +42,12 @@ namespace BRCKTS
                 else
                 {
                     UpdateTree(operation - 1, tree, 0, n - 1, 0);
-                    if (tree[0] != 0)
-                    {
-                        isValid = false;
-                    }
-                }
+                } 
             }
         }
 
         static void CheckTree()
         {
-            // ToDo:: Cater for initial check as well.
             Console.WriteLine(isValid ? "YES" : "NO");
         }
 
@@ -76,10 +71,8 @@ namespace BRCKTS
             }
 
             tree[current] += updatedValue;  // Need to also remove the old value of the inversed bracket.
-            if (tree[current] < 0 && isValid)
-            {
-                isValid = false;
-            }
+
+            CheckValidity(tree, current);
             return updatedValue;
         }
 
@@ -96,7 +89,29 @@ namespace BRCKTS
             var leftValue = BuildIntervalTree(brackets, tree, low, mid, (2 * current) + 1);
             var rightValue = BuildIntervalTree(brackets, tree, mid + 1, high, (2 * current) + 2);
             tree[current] = leftValue + rightValue;
+
+            CheckValidity(tree, current);
+
             return tree[current];
+        }
+
+        private static void CheckValidity(int[] tree, int current)
+        {
+            if (current == 0)
+            {
+                isValid = tree[current] == 0;
+            }
+            else
+            {
+                if (tree[current] < 0 && isValid)
+                {
+                    isValid = false;
+                }
+                if (tree[current] >= 0 && !isValid)
+                {
+                    isValid = true;
+                }
+            }
         }
     }
 }
