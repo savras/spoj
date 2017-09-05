@@ -3,12 +3,20 @@
 
 using std::unordered_set;
 
-int main() {
-	unordered_set<int> us;
+void solveXor(const int& n) {
+	int val;
+	scanf("%d", &val);
+	for (size_t i = 1; i < n; i++)
+	{
+		int nextVal;
+		scanf("%d", &nextVal);
+		val ^= nextVal;
+	}
+	printf("%d", val);
+}
 
-	int n;
-	scanf("%d", &n);
-	
+void solveMap(const int& n) {
+	unordered_set<int> us;
 	int val;
 	int sum = 0;
 	for (size_t i = 0; i < n; i++) {
@@ -24,5 +32,14 @@ int main() {
 	}
 
 	printf("%d", sum);
+}
+
+int main() {
+	
+	int n;
+	scanf("%d", &n);
+	solveXor(n);
+	//solveMap(n);
+
 	return 0;
 }
