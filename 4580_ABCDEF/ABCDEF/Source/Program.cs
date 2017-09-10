@@ -1,6 +1,7 @@
-﻿// Formula: ((a * b + c)/ d) - e = f                // O(n^5)
+﻿// Question: Find all possible values of a, b, c, d, e, f, (with repetition) that satisfies the formula.
+// Formula: ((a * b + c)/ d) - e = f                // O(n^5)
 // Can be rewritten as: (a * b) + c = d * (f + e)     // O(n^3)
-// Brute force, get permutation of all possible values in S for both  sides of the formula.
+// Brute force, get permutation of all possible values in S for both sides of the formula.
 // Then, for each LFS (or each RHS), count the number of values that are equal on the other side.
 // O(n^3) for permutation of 3 numbers out of n with repetition (n * n * n).
 
