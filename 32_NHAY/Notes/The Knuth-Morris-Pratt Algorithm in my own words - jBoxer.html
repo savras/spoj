@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<!-- saved from url=(0086)http://jakeboxer.com/blog/2009/12/13/the-knuth-morris-pratt-algorithm-in-my-own-words/ -->
+<html class="js video maskImage placeholder" lang="en"><!--<![endif]--><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  
+  <title>The Knuth-Morris-Pratt Algorithm in my own words - jBoxer</title>
+  <meta name="author" content="Jake Boxer">
+
+  
+  <meta name="description" content="For the past few days, I’ve been reading various explanations of the Knuth-Morris-Pratt string searching algorithms. For some reason, none of...">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width,minimum-scale=1,maximum-scale=1">
+
+  
+  <link rel="canonical" href="http://jakeboxer.github.com/blog/2009/12/13/the-knuth-morris-pratt-algorithm-in-my-own-words/">
+  <link href="http://jakeboxer.com/favicon.png" rel="icon">
+  <link href="./The Knuth-Morris-Pratt Algorithm in my own words - jBoxer_files/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="./The Knuth-Morris-Pratt Algorithm in my own words - jBoxer_files/cb=gapi.loaded_1" async=""></script><script src="./The Knuth-Morris-Pratt Algorithm in my own words - jBoxer_files/cb=gapi.loaded_0" async=""></script><script type="text/javascript" async="" src="./The Knuth-Morris-Pratt Algorithm in my own words - jBoxer_files/ga.js.download"></script><script type="text/javascript" async="" src="./The Knuth-Morris-Pratt Algorithm in my own words - jBoxer_files/plusone.js.download" gapi_processed="true"></script><script src="./The Knuth-Morris-Pratt Algorithm in my own words - jBoxer_files/modernizr-2.0.js.download"></script>
+  <script src="./The Knuth-Morris-Pratt Algorithm in my own words - jBoxer_files/ender.js.download"></script>
+  <script src="./The Knuth-Morris-Pratt Algorithm in my own words - jBoxer_files/octopress.js.download" type="text/javascript"></script>
+  <link href="http://jakeboxer.com/atom.xml" rel="alternate" title="jBoxer" type="application/atom+xml">
+  <!--Fonts from Google's Web font directory at http://google.com/webfonts -->
+<link href="./The Knuth-Morris-Pratt Algorithm in my own words - jBoxer_files/css" rel="stylesheet" type="text/css">
+<link href="./The Knuth-Morris-Pratt Algorithm in my own words - jBoxer_files/css(1)" rel="stylesheet" type="text/css">
+
+<script type="text/javascript" async="" src="./The Knuth-Morris-Pratt Algorithm in my own words - jBoxer_files/embed.js.download"></script><script type="text/javascript" async="" src="./The Knuth-Morris-Pratt Algorithm in my own words - jBoxer_files/widgets.js.download"></script><script type="text/javascript" src="./The Knuth-Morris-Pratt Algorithm in my own words - jBoxer_files/jake_boxer.json" async=""></script><script type="text/javascript" charset="utf-8" async="" src="./The Knuth-Morris-Pratt Algorithm in my own words - jBoxer_files/button.ebb7267483d1d2c7b640fda9d827cc8f.js.download"></script><link rel="preload" as="style" href="https://c.disquscdn.com/next/embed/styles/lounge.83b5b8f9aa16033ab1cb9cb54bf59140.css"><link rel="preload" as="script" href="https://c.disquscdn.com/next/embed/common.bundle.f676c84aeac20fb55187512d1a7172ca.js"><link rel="preload" as="script" href="https://c.disquscdn.com/next/embed/lounge.bundle.c3b01cf842b6ec529b05642151f61352.js"><link rel="preload" as="script" href="https://disqus.com/next/config.js"></head>
+
+<body>
+  <header role="banner"><hgroup>
+  <h1><a href="http://jakeboxer.com/">jBoxer</a></h1>
+  
+    <h2>I change the directions of small pieces of metal for a living.</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="http://jakeboxer.com/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+<form action="http://jakeboxer.com/blog/2009/12/13/the-knuth-morris-pratt-algorithm-in-my-own-words/" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:jakeboxer.github.com">
+    <input class="search" type="text" name="q" results="0" placeholder="Search">
+  </fieldset><fieldset class="mobile-nav"><select><option value="">Navigate…</option><option value="http://jakeboxer.com/">• Blog</option><option value="http://jakeboxer.com/blog/archives">• Archives</option></select></fieldset>
+</form>
+<ul role="main-navigation" class="main-navigation">
+  <li><a href="http://jakeboxer.com/">Blog</a></li>
+  <li><a href="http://jakeboxer.com/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">The Knuth-Morris-Pratt Algorithm in my own words</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+  
+
+
+
+<time datetime="2009-12-13T20:00:00-08:00" pubdate="" data-updated="true">Dec 13<span>th</span>, 2009</time>
+        
+         | <a href="http://jakeboxer.com/blog/2009/12/13/the-knuth-morris-pratt-algorithm-in-my-own-words/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>For the past few days, I’ve been reading various explanations of <a href="http://en.wikipedia.org/wiki/Knuth-Morris-Pratt_algorithm">the Knuth-Morris-Pratt string searching algorithms</a>. For some reason, none of the explanations were doing it for me. I kept banging my head against a brick wall once I started reading “the prefix of the suffix of the prefix of the…”.</p>
+
+<p>Finally, after reading the same paragraph of <a href="http://www.amazon.com/Introduction-Algorithms-Third-Thomas-Cormen/dp/0262033844/">CLRS</a> over and over for about 30 minutes, I decided to sit down, do a bunch of examples, and diagram them out. I now understand the algorithm, and can explain it. For those who think like me, here it is in my own words. As a side note, I’m not going to explain why it’s more efficient than na”ive string matching; that’s explained perfectly well in a <a href="http://en.wikipedia.org/wiki/Knuth-Morris-Pratt_algorithm">multitude</a> <a href="http://www.ics.uci.edu/~eppstein/161/960227.html">of</a> <a href="http://www.personal.kent.edu/~rmuhamma/Algorithms/MyAlgorithms/StringMatch/kuthMP.htm">places</a>. I’m going to explain exactly how it works, as my brain understands it.</p>
+
+<h2>The Partial Match Table</h2>
+
+<p>The key to KMP, of course, is the partial match table. The main obstacle between me and understanding KMP was the fact that I didn’t quite fully grasp what the values in the partial match table really meant. I will now try to explain them in the simplest words possible.</p>
+
+<p>Here’s the partial match table for the pattern “abababca”:</p>
+
+<figure class="code"><div class="highlight"><table><tbody><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">char:  | a | b | a | b | a | b | c | a |
+</span><span class="line">index: | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 
+</span><span class="line">value: | 0 | 0 | 1 | 2 | 3 | 4 | 0 | 1 |</span></code></pre></td></tr></tbody></table></div></figure>
+
+
+<p>If I have an eight-character pattern (let’s say “abababca” for the duration of this example), my partial match table will have eight cells. If I’m looking at the eighth and last cell in the table, I’m interested in the entire pattern (“abababca”). If I’m looking at the seventh cell in the table, I’m only interested in the first seven characters in the pattern (“abababc”); the eighth one (“a”) is irrelevant, and can go fall off a building or something.  If I’m looking at the sixth cell of the in the table… you get the idea. Notice that I haven’t talked about what each cell <em>means</em> yet, but just what it’s referring to.</p>
+
+<p>Now, in order to talk about the meaning, we need to know about <strong>proper prefixes</strong> and <strong>proper suffixes</strong>.</p>
+
+<p><strong>Proper prefix</strong>: All the characters in a string, with one or more cut off the end. “S”, “Sn”, “Sna”, and “Snap” are all the proper prefixes of “Snape”.</p>
+
+<p><strong>Proper suffix</strong>: All the characters in a string, with one or more cut off the beginning. “agrid”, “grid”, “rid”, “id”, and “d” are all proper suffixes of “Hagrid”.</p>
+
+<p>With this in mind, I can now give the one-sentence meaning of the values in the partial match table:</p>
+
+<p><strong>The length of the longest proper prefix in the (sub)pattern that matches a proper suffix in the same (sub)pattern.</strong></p>
+
+<p>Let’s examine what I mean by that. Say we’re looking in the third cell. As you’ll remember from above, this means we’re only interested in the first three characters (“aba”). In “aba”, there are two proper prefixes (“a” and “ab”) and two proper suffixes (“a” and “ba”). The proper prefix “ab” does not match either of the two proper suffixes. However, the proper prefix “a” matches the proper suffix “a”. Thus, <strong>the length of the longest proper prefix that matches a proper suffix</strong>, in this case, is 1.</p>
+
+<p>Let’s try it for cell four. Here, we’re interested in the first four characters (“abab”). We have three proper prefixes (“a”, “ab”, and “aba”) and three proper suffixes (“b”, “ab”, and “bab”). This time, “ab” is in both, and is two characters long, so cell four gets value 2.</p>
+
+<p>Just because it’s an interesting example, let’s also try it for cell five, which concerns “ababa”. We have four proper prefixes (“a”, “ab”, “aba”, and “abab”) and four proper suffixes (“a”, “ba”, “aba”, and “baba”). Now, we have two matches: “a” and “aba” are both proper prefixes and proper suffixes. Since “aba” is longer than “a”, it wins, and cell five gets value 3.</p>
+
+<p>Let’s skip ahead to cell seven (the second-to-last cell), which is concerned with the pattern “abababc”. Even without enumerating all the proper prefixes and suffixes, it should be obvious that there aren’t going to be any matches; all the suffixes will end with the letter “c”, and none of the prefixes will. Since there are no matches, cell seven gets 0.</p>
+
+<p>Finally, let’s look at cell eight, which is concerned with the entire pattern (“abababca”). Since they both start and end with “a”, we know the value will be at least 1. However, that’s where it ends; at lengths two and up, all the suffixes contain a c, while only the last prefix (“abababc”) does. This seven-character prefix does not match the seven-character suffix (“bababca”), so cell eight gets 1.</p>
+
+<h2>How to use the Partial Match Table</h2>
+
+<p>We can use the values in the partial match table to skip ahead (rather than redoing unnecessary old comparisons) when we find partial matches. The formula works like this:</p>
+
+<p><em>If a partial match of length <strong>partial_match_length</strong> is found and <code>table[partial_match_length] &gt; 1</code>, we may skip ahead <code>partial_match_length - table[partial_match_length - 1]</code> characters.</em></p>
+
+<p>Let’s say we’re matching the pattern “abababca” against the text “bacbababaabcbab”. Here’s our partial match table again for easy reference:</p>
+
+<figure class="code"><div class="highlight"><table><tbody><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">char:  | a | b | a | b | a | b | c | a |
+</span><span class="line">index: | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 
+</span><span class="line">value: | 0 | 0 | 1 | 2 | 3 | 4 | 0 | 1 |</span></code></pre></td></tr></tbody></table></div></figure>
+
+
+<p>The first time we get a partial match is here:</p>
+
+<figure class="code"><div class="highlight"><table><tbody><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">bacbababaabcbab
+</span><span class="line"> |
+</span><span class="line"> abababca</span></code></pre></td></tr></tbody></table></div></figure>
+
+
+<p>This is a partial_match_length of 1. The value at <code>table[partial_match_length - 1]</code> (or <code>table[0]</code>) is 0, so we don’t get to skip ahead any. The next partial match we get is here:</p>
+
+<figure class="code"><div class="highlight"><table><tbody><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">bacbababaabcbab
+</span><span class="line">    |||||
+</span><span class="line">    abababca</span></code></pre></td></tr></tbody></table></div></figure>
+
+
+<p>This is a partial_match_length of 5. The value at <code>table[partial_match_length - 1]</code> (or <code>table[4]</code>) is 3. That means we get to skip ahead <code>partial_match_length - table[partial_match_length - 1]</code> (or <code>5 - table[4]</code> or <code>5 - 3</code> or <code>2</code>) characters:</p>
+
+<figure class="code"><div class="highlight"><table><tbody><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">// x denotes a skip
+</span><span class="line">
+</span><span class="line">bacbababaabcbab
+</span><span class="line">    xx|||
+</span><span class="line">      abababca</span></code></pre></td></tr></tbody></table></div></figure>
+
+
+<p>This is a partial_match_length of 3. The value at <code>table[partial_match_length - 1]</code> (or <code>table[2]</code>) is 1. That means we get to skip ahead <code>partial_match_length - table[partial_match_length - 1]</code> (or <code>3 - table[2]</code> or <code>3 - 1</code> or <code>2</code>) characters:</p>
+
+<figure class="code"><div class="highlight"><table><tbody><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">// x denotes a skip
+</span><span class="line">
+</span><span class="line">bacbababaabcbab
+</span><span class="line">      xx|
+</span><span class="line">        abababca</span></code></pre></td></tr></tbody></table></div></figure>
+
+
+<p>At this point, our pattern is longer than the remaining characters in the text, so we know there’s no match.</p>
+
+<h2>Conclusion</h2>
+
+<p>So there you have it. Like I promised before, it’s no exhaustive explanation or formal proof of KMP; it’s a walk through my brain, with the parts I found confusing spelled out in extreme detail. If you have any questions or notice something I messed up, please leave a comment; maybe we’ll all learn something.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Jake Boxer</span></span>
+
+      
+
+
+
+
+
+  
+
+
+
+<time datetime="2009-12-13T20:00:00-08:00" pubdate="" data-updated="true">Dec 13<span>th</span>, 2009</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <iframe id="twitter-widget-1" scrolling="no" frameborder="0" allowtransparency="true" class="twitter-share-button twitter-share-button-rendered twitter-tweet-button" title="Twitter Tweet Button" src="./The Knuth-Morris-Pratt Algorithm in my own words - jBoxer_files/tweet_button.0e55a364e448deca530e9a13f68e1486.en.html" style="position: static; visibility: visible; width: 61px; height: 20px;" data-url="http://jakeboxer.github.com/blog/2009/12/13/the-knuth-morris-pratt-algorithm-in-my-own-words/"></iframe>
+  
+  
+  <div id="___plusone_0" style="text-indent: 0px; margin: 0px; padding: 0px; background: transparent; border-style: none; float: none; line-height: normal; font-size: 1px; vertical-align: baseline; display: inline-block; width: 32px; height: 20px;"><iframe ng-non-bindable="" frameborder="0" hspace="0" marginheight="0" marginwidth="0" scrolling="no" style="position: static; top: 0px; width: 32px; margin: 0px; border-style: none; left: 0px; visibility: visible; height: 20px;" tabindex="0" vspace="0" width="100%" id="I0_1505318223896" name="I0_1505318223896" src="./The Knuth-Morris-Pratt Algorithm in my own words - jBoxer_files/fastbutton.html" data-gapiattached="true" title="G+"></iframe></div>
+  
+</div>
+
+    
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><iframe id="dsq-app6049" name="dsq-app6049" allowtransparency="true" frameborder="0" scrolling="no" tabindex="0" title="Disqus" width="100%" src="./The Knuth-Morris-Pratt Algorithm in my own words - jBoxer_files/saved_resource.html" style="width: 1px !important; min-width: 100% !important; border: none !important; overflow: hidden !important; height: 0px !important;"></iframe><div dir="ltr" style="overflow: hidden;"><div style="height: 52px; width: 54px; margin: 0px auto; overflow: hidden; position: relative; background: url(&quot;https://c.disquscdn.com/next/embed/assets/img/loader-bg.173909e4737a7481df14d5492b5eeb48.png&quot;) no-repeat; box-sizing: border-box;"><div style="box-sizing: border-box; width: 26px; height: 26px; position: absolute; top: 13px; left: 15px; border-width: 3px; border-style: solid; border-color: rgba(51, 54, 58, 0.4) transparent; border-radius: 13px; transform-origin: 50% 50% 0px; transition: transform 700s linear; transform: rotate(360000deg);"></div></div><p align="center">Disqus seems to be taking longer than usual. <a href="http://jakeboxer.com/blog/2009/12/13/the-knuth-morris-pratt-algorithm-in-my-own-words/#" onclick="DISQUS.reset({reload: true}); return false;">Reload</a>?</p></div></div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section class="odd">
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="http://jakeboxer.com/blog/2012/09/02/why-eating-sushi-is-a-stressful-experience-for-me/">Why eating sushi is a stressful experience for me</a>
+      </li>
+    
+      <li class="post">
+        <a href="http://jakeboxer.com/blog/2012/07/09/converting-to-the-new-rspec-2-dot-11-expectation-syntax/">Converting to the new RSpec 2.11 expectation syntax</a>
+      </li>
+    
+      <li class="post">
+        <a href="http://jakeboxer.com/blog/2012/03/15/changing-a-rails-3-project-name/">Changing a Rails 3 project name</a>
+      </li>
+    
+      <li class="post">
+        <a href="http://jakeboxer.com/blog/2011/11/16/bostinnovations-seth-priebatsch-article-is-childish-garbage/">BostInnovation's Seth Priebatsch Article is Childish Garbage</a>
+      </li>
+    
+      <li class="post">
+        <a href="http://jakeboxer.com/blog/2011/11/06/bashs-ps1-syntax-the-inspiration-for-brainfuck/">Bash's PS1 Syntax: The Inspiration for Brainfuck?</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+<section class="even">
+  <h1>Latest Tweets</h1>
+  <ul id="tweets">
+    <li class="loading">Status updating...</li>
+  </ul>
+  <script type="text/javascript">
+    $.domReady(function(){
+      getTwitterFeed("jake_boxer", 4, false);
+    });
+  </script>
+  <script src="./The Knuth-Morris-Pratt Algorithm in my own words - jBoxer_files/twitter.js.download" type="text/javascript"> </script>
+  
+    <iframe id="twitter-widget-0" scrolling="no" frameborder="0" allowtransparency="true" class="twitter-follow-button twitter-follow-button-rendered" title="Twitter Follow Button" src="./The Knuth-Morris-Pratt Algorithm in my own words - jBoxer_files/follow_button.0e55a364e448deca530e9a13f68e1486.en.html" style="position: static; visibility: visible; width: 131px; height: 20px;" data-screen-name="jake_boxer"></iframe>
+  
+</section>
+
+
+
+  
+</aside>
+
+
+    <span class="toggle-sidebar"></span></div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright © 2012 - Jake Boxer -
+  <span class="credit">Powered by <a href="http://octopress.org/">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+    (function () {
+      var disqus_shortname = 'jboxer';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://jakeboxer.github.com/blog/2009/12/13/the-knuth-morris-pratt-algorithm-in-my-own-words/';
+        var disqus_url = 'http://jakeboxer.github.com/blog/2009/12/13/the-knuth-morris-pratt-algorithm-in-my-own-words/';
+        var disqus_script = 'embed.js'
+      
+
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-9253249-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+<iframe name="oauth2relay587919769" id="oauth2relay587919769" src="./The Knuth-Morris-Pratt Algorithm in my own words - jBoxer_files/postmessageRelay.html" tabindex="-1" aria-hidden="true" style="width: 1px; height: 1px; position: absolute; top: -100px;"></iframe><iframe style="display: none;" src="./The Knuth-Morris-Pratt Algorithm in my own words - jBoxer_files/saved_resource(1).html"></iframe><iframe id="rufous-sandbox" scrolling="no" frameborder="0" allowtransparency="true" allowfullscreen="true" style="position: absolute; visibility: hidden; display: none; width: 0px; height: 0px; padding: 0px; border: none;" title="Twitter analytics iframe" src="./The Knuth-Morris-Pratt Algorithm in my own words - jBoxer_files/saved_resource(2).html"></iframe></body></html>
