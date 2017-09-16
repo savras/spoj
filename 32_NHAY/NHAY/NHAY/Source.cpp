@@ -17,25 +17,32 @@ using std::endl;
 using std::string;
 using std::vector;
 
-void buildDsa(string needle, vector<int>& dsa) {
-	dsa[0] = 0;
+void buildDfa(string needle, vector<int>& dfa) {
+	dfa[0] = 0;
 
 	int i = 0;	// Longest prefix.
-	for (size_t j = 1; j < dsa.size(); j++) {
+	for (size_t j = 1; j < dfa.size(); j++) {
 		while (i > 0 && needle[i] != needle[j]) {	// ToDo:: Don't understand reason behind this.
-			i = dsa[i];
+			i = dfa[i-1];
 		}
 
 		if (needle[i] == needle[j]) {
 			i++;
 		}
-		dsa[j] == i;
+		dfa[j] = i;
 	}
 }
 
-void performKmp(string needle, string haystack, const vector<int>& dsa)
+void performKmp(string needle, string haystack, const vector<int>& dfa)
 {
-
+	int i = 0;
+	int j = 0;
+	for (size_t j = 0; j < needle.size() && i <= haystack.size() - needle.size(); j++) {
+		if (haystack[i] != needle[j]) {
+			i += j;
+			j = dfa[j] - 1;
+		}
+	}
 }
 
 int main() {
@@ -48,9 +55,9 @@ int main() {
 	string haystack;	// Read large string. haystrack pointer i keeps going forward so it doesn't matter.
 	cin >> haystack;
 
-	vector<int> dsa(n);
-	buildDsa(needle, dsa);
-	performKmp(needle, haystack, dsa);
+	vector<int> dfa(n);
+	buildDfa(needle, dfa);
+	performKmp(needle, haystack, dfa);
 
 	return 0;
 }
