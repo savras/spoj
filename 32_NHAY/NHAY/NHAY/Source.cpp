@@ -15,6 +15,7 @@ using std::cin;
 using std::cout;
 using std::endl;
 using std::string;
+using std::flush;
 using std::vector;
 
 void buildDfa(string needle, vector<int>& dfa) {
@@ -33,7 +34,7 @@ void buildDfa(string needle, vector<int>& dfa) {
 	}
 }
 
-void performKmp(string needle, string haystack, const vector<int>& dfa)
+void performKmp(string needle, string haystack, const vector<int>& dfa, vector<int>& result)
 {
 	int i = 0;
 	int jStart = 0;
@@ -57,7 +58,7 @@ void performKmp(string needle, string haystack, const vector<int>& dfa)
 
 		// Found a needle. Print its starting index.
 		if (j >= needle.size()) {
-			cout << i << endl;			
+			result.push_back(i);
 			i++;
 			j = 0;
 			jStart = j;
@@ -66,18 +67,36 @@ void performKmp(string needle, string haystack, const vector<int>& dfa)
 }
 
 int main() {
-	int n;
-	cin >> n;
+	string line;
+	std::getline(std::cin, line);
+	while (line != "") {
+		int n = stoi(line);
 
-	string needle;
-	cin >> needle;
+		string needle;
+		cin >> needle;		
 
-	string haystack;	// Read large string. haystrack pointer i keeps going forward so it doesn't matter.
-	cin >> haystack;
+		string haystack;	// Read large string. haystrack pointer i keeps going forward so it doesn't matter.
+		cin >> haystack;
+		cin.ignore();
 
-	vector<int> dfa(n);
-	buildDfa(needle, dfa);
-	performKmp(needle, haystack, dfa);
+		vector<int> dfa(n);
+		buildDfa(needle, dfa);
+
+		vector<int> result;
+		performKmp(needle, haystack, dfa, result);
+
+		if (result.size() > 0) {
+			for (size_t i = 0; i < result.size(); i++) {
+				cout << result[i] << endl;
+			}
+		}
+		else {
+			cout << endl;
+		}
+		
+
+		std::getline(std::cin, line);
+	}
 
 	return 0;
 }
