@@ -36,11 +36,32 @@ void buildDfa(string needle, vector<int>& dfa) {
 void performKmp(string needle, string haystack, const vector<int>& dfa)
 {
 	int i = 0;
+	int jStart = 0;
+
 	int j = 0;
-	for (size_t j = 0; j < needle.size() && i <= haystack.size() - needle.size(); j++) {
-		if (haystack[i] != needle[j]) {
-			i += j;
-			j = dfa[j] - 1;
+	while (j < needle.size() && i < haystack.size()) {
+		int runningI = i + j - jStart;
+		if (needle[j] != haystack[runningI]) {
+			if (j == 0) {
+				i++;
+			}
+			else {
+				j = dfa[j];
+				i = runningI;
+				jStart = j;
+			}
+		}
+		else {
+			j++;
+		}
+
+		// Found a needle. Print its starting index.
+		if (j == needle.size()) {
+			cout << i << endl;
+			i = runningI;
+			i++;
+			j = 0;
+			jStart = j;
 		}
 	}
 }
