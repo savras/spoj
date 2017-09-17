@@ -56,9 +56,8 @@ void performKmp(string needle, string haystack, const vector<int>& dfa)
 		}
 
 		// Found a needle. Print its starting index.
-		if (j == needle.size()) {
-			cout << i << endl;
-			i = runningI;
+		if (j >= needle.size()) {
+			cout << i << endl;			
 			i++;
 			j = 0;
 			jStart = j;
