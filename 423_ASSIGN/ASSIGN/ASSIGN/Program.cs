@@ -19,7 +19,7 @@ namespace ASSIGN
             for (var i = 0; i < t; i++)
             {
                 // Track the students and the subjects that they are interested in
-                var dict = new Dictionary<int, HashSet<int>>();
+                var dict = new Dictionary<ulong, HashSet<ulong>>();
                 var n = int.Parse(Console.ReadLine());
 
                 for (var j = 0; j < n; j++)
@@ -27,24 +27,24 @@ namespace ASSIGN
                     var line = Console.ReadLine();
                     var split = line.Split(' ');
 
-                    var likedSubjects = new HashSet<int>(); ;
+                    var likedSubjects = new HashSet<ulong>(); ;
                     for (var k = 0; k < n; k++)
                     {
-                        var value = int.Parse(split[k]);
+                        var value = ulong.Parse(split[k]);
                         if (value == 1)
                         {
-                            likedSubjects.Add(k);
+                            likedSubjects.Add((ulong) k);
                         }
                     }
-                    dict.Add(j, likedSubjects);
+                    dict.Add((ulong)j, likedSubjects);
                 }
 
-                var result = SolveRecursive(dict, 0, new List<int>());
+                var result = SolveRecursive(dict, 0, new List<ulong>());
                 Console.WriteLine(result);
             }
         }
 
-        private static ulong SolveRecursive(Dictionary<int, HashSet<int>> dict, int current, List<int> chosen)
+        private static ulong SolveRecursive(Dictionary<ulong, HashSet<ulong>> dict, ulong current, List<ulong> chosen)
         {
             ulong sum = 0;
 
@@ -53,7 +53,7 @@ namespace ASSIGN
                 return 1;
             }
 
-            if (current >= dict.Count)
+            if (current >= (ulong)dict.Count)
             {
                 return 0;
             }
