@@ -3,6 +3,9 @@
  * Not that top down backtrackking gives the same result for each student below the current,
  * thus, we recurse and memoize the number of combinations for each result below the current student.
  * Extend this to DP.
+ * Can't figure out the Bitmask method so I referred to these: 
+ * https://discuss.codechef.com/questions/49669/assign-spoj-redynamic-programming-with-bitmask
+ * https://discuss.codechef.com/questions/49559/dynamic-programming-bit-masking
  */
 
 using System;
