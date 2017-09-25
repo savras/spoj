@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using Microsoft.Win32;
 
 namespace LASTDIG
 {
@@ -18,7 +17,10 @@ namespace LASTDIG
                 var baseNo = int.Parse(split[0]);
                 var power = int.Parse(split[1]);
 
-
+                if (baseNo == 0)
+                {
+                    Console.WriteLine(0);
+                }
                 if (power == 0)
                 {
                     Console.WriteLine(1);
@@ -37,6 +39,7 @@ namespace LASTDIG
             {
                 // My limited tests show that the last numbers repeat themselves at most circularly every 4 times
                 // E.g. 3^1 == 3, e^2 == 9, 3^3 == 7, 3^4 == 1, and the list repeats 3->9->7->1.
+                // Other base numbers are less so 4 should be enough to cover the full repetition.
                 dictionary.Add(baseNo, new List<int>());
                 for (var i = 1; i <= 4; i++)
                 {
