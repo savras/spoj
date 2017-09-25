@@ -79,12 +79,12 @@ namespace ASSIGN
                         if (currentSubjectPreference == 0) { continue; }
 
                         // If the preference is NOT available to be chosen, continue
-                        if (((m >> (n - k - 1)) & 1) == 0) { continue; }
+                        if (((m >> (n - k - 1)) & 1) == 0) { continue; }    // We check if bit at k is set or not
 
 
                         // If k is this student's favourite, then the result can be gotten from the result stored 
                         // for the next student down's dp array.
-                        dp[m] += dp[~(1 << n - k - 1) & m];  // get dp for index with k's position set to 0 in m.
+                        dp[m] += dp[~(1 << n - k - 1) & m];  // get dp for index with k's bit position set to 0 in m.
                     }
                 }
 
