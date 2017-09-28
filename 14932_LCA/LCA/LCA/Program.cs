@@ -19,30 +19,34 @@ namespace LCA
                     var line = Console.ReadLine();
                     var split = line.Split(' ');
 
-                    adjList[j] = new List<int>();
+                    adjList.Add(new List<int>());
 
                     var length = split.Length;
                     for (var k = 1; k < length; k++)
                     {
-                        adjList[j].Add(int.Parse(split[k]) - 1);    // Offset to 0 since root is 0 in our implementation
+                        adjList[j].Add(int.Parse(split[k]) - 1); // Offset to 0 since root is 0 in our implementation
                     }
                 }
 
-                var queries = Console.ReadLine();
-                var querySplit = queries.Split(' ');
 
-                var v1 = int.Parse(querySplit[0]);
-                var v2 = int.Parse(querySplit[1]);
+                var q = int.Parse(Console.ReadLine());
+                for (var j = 0; j < q; j++)
+                {
+                    var queryLine = Console.ReadLine();
+                    var querySplit = queryLine.Split(' ');
+                    var v1 = int.Parse(querySplit[0]) - 1;
+                    var v2 = int.Parse(querySplit[1]) - 1;
 
-                // DFS recursive
-                var visited1 = new List<int>();
-                Dfs(adjList, visited1, 0, v1);
+                    // DFS recursive
+                    var visited1 = new List<int>();
+                    Dfs(adjList, visited1, 0, v1);
 
-                var visited2 = new List<int>();
-                Dfs(adjList, visited2, 0, v2);
+                    var visited2 = new List<int>();
+                    Dfs(adjList, visited2, 0, v2);
 
-                var lca = GetLca(visited1, visited2);
-                Console.WriteLine(lca);
+                    var lca = GetLca(visited1, visited2);
+                    Console.WriteLine(lca + 1);
+                }
             }
         }
 
@@ -51,15 +55,14 @@ namespace LCA
             var l1Len = path1.Count - 1;
             var l2Len = path2.Count - 1;
 
+            var indexToCompare = Math.Min(l1Len, l2Len);
 
-            while (path1[l1Len] != path2[l2Len])
+            while (path1[indexToCompare] != path2[indexToCompare])
             {
-                l1Len--;
-                l2Len--;
+                indexToCompare--;
             }
 
-            return path1[l1Len];
-
+            return path1[indexToCompare];
         }
 
         private static bool Dfs(IReadOnlyList<List<int>> adjList, List<int> visited, int current, int value)
@@ -77,10 +80,16 @@ namespace LCA
                 foreach (var neighbour in adjList[current])
                 {
                     found = Dfs(adjList, visited, neighbour, value);
+
+                    if (found)
+                    {
+                        break;
+                    }
                 }
+
                 if (!found)
                 {
-                    visited.Remove(visited.Count - 1);
+                    visited.RemoveAt(visited.Count - 1);
                 }
             }
             return found;
