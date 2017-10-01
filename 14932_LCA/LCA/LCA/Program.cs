@@ -1,6 +1,14 @@
-﻿using System;
+﻿/* First naive implementation is to use DFS and get the path taken to find both nodes,
+ * then iterate through them to find the first common node.
+ * 
+ * Other solutions:
+ *      Heavy Light Decomposition
+ *      Range Minimum Query (Segment Tree)
+ *      Sparse tree.
+ *  Similar questions: LCASQ, TALCA (https://www.codechef.com/problems/TALCA)
+ */
+using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace LCA
 {
