@@ -38,13 +38,14 @@ namespace LCA
 
                 // Method 1 in TopCoder tutorial using square root of sections
                 // Preprocess list and build P array.
-                var p = new int[n];
-                var t = new int[n];
-                var height = GetTreeHeight(adjList, 0, 0);
+                var section = new int[n];
+                var parent = new int[n];
+                var level = new int[n];
+                var height = GetTreeHeightAndBuildParent(adjList, parent, level, 0, 0);
 
                 var sqrtHeight = (int) Math.Sqrt(height);
-                BuildT(adjList, sqrtHeight, t);
-                DfsBuildP(adjList, p, t, sqrtHeight, 0, 0, 0);
+                
+                DfsBuildP(adjList, section, parent, level, sqrtHeight, 0, 0, 0);
 
                 var q = int.Parse(Console.ReadLine());
                 for (var j = 0; j < q; j++)
@@ -67,13 +68,9 @@ namespace LCA
             }
         }
 
-        private static void BuildT(List<List<int>> adjList, int sqrtHeight, int[] ints)
+        private static int GetTreeHeightAndBuildParent(List<List<int>> adjList, int[] parent, int[] level, int currentNode, int height)
         {
-            throw new NotImplementedException();
-        }
-
-        private static int GetTreeHeight(List<List<int>> adjList, int currentNode, int height)
-        {
+            level[currentNode] = height;
             if (!adjList[currentNode].Any())
             {
                 return height;
@@ -82,35 +79,38 @@ namespace LCA
             var maxHeight = height;
             foreach (var neighbour in adjList[currentNode])
             {
-                maxHeight = Math.Max(maxHeight, GetTreeHeight(adjList, neighbour, height + 1));
+                parent[neighbour] = currentNode;
+                maxHeight = Math.Max(maxHeight, GetTreeHeightAndBuildParent(adjList, parent, level, neighbour, height + 1));
             }
 
             return maxHeight;
         }
 
-        // t contains the parent node for currentNode
-        // p contains the last node of either parent or grand parent section.
-        private static void DfsBuildP(List<List<int>> adjList, int[] p, int[] t, int sqrtHeight, int parentOfSection, int currentNode, int currentLevel)
+        // parent contains the parent node for currentNode
+        // section contains the last node of the previous section
+        // level contains the level the current node is in the tree
+        private static void DfsBuildP(List<List<int>> adjList, int[] section, int[] parent, int[] level, int sqrtHeight, int parentOfSection, int currentNode, int currentLevel)
         {
             // Node is in first section
-            if (t[currentNode] < sqrtHeight)
+            if (level[currentNode] < sqrtHeight)
             {
-                p[currentNode] = 0;
+                section[currentNode] = 0;
             }
-            // Node is at the beginning of some section
-            // Set to ancestor node that is the last of the previous section
-            else if (t[currentNode] % sqrtHeight == 0)
+            // Node is at the beginning of some non-first section
+            // Set to ancestor node that is the last of the previous section (basically its parent)
+            else if (level[currentNode] % sqrtHeight == 0)
             {
+                section[currentNode] = parent[currentNode];
             }
             // Set to the ancestor node that is the last of the previous two sections
             else
             {
-                //p[currentNode] = p[t[currentNode]];
+                section[currentNode] = section[parent[currentNode]]; // We are building top down so this works.
             }
             
             foreach (var neighbour in adjList[currentNode])
             {
-                DfsBuildP(adjList, p, t, sqrtHeight, parentOfSection, neighbour, currentLevel + 1);
+                DfsBuildP(adjList, section, parent, level, sqrtHeight, parentOfSection, neighbour, currentLevel + 1);
             }
         }
 
