@@ -45,7 +45,7 @@ namespace LCA
 
                 var sqrtHeight = (int) Math.Sqrt(height);
                 
-                DfsBuildP(adjList, section, parent, level, sqrtHeight, 0, 0, 0);
+                DfsBuildSectionArray(adjList, section, parent, level, sqrtHeight, 0, 0, 0);
 
                 var q = int.Parse(Console.ReadLine());
                 for (var j = 0; j < q; j++)
@@ -89,7 +89,7 @@ namespace LCA
         // parent contains the parent node for currentNode
         // section contains the last node of the previous section
         // level contains the level the current node is in the tree
-        private static void DfsBuildP(List<List<int>> adjList, int[] section, int[] parent, int[] level, int sqrtHeight, int parentOfSection, int currentNode, int currentLevel)
+        private static void DfsBuildSectionArray(List<List<int>> adjList, int[] section, int[] parent, int[] level, int sqrtHeight, int parentOfSection, int currentNode, int currentLevel)
         {
             // Node is in first section
             if (level[currentNode] < sqrtHeight)
@@ -110,7 +110,7 @@ namespace LCA
             
             foreach (var neighbour in adjList[currentNode])
             {
-                DfsBuildP(adjList, section, parent, level, sqrtHeight, parentOfSection, neighbour, currentLevel + 1);
+                DfsBuildSectionArray(adjList, section, parent, level, sqrtHeight, parentOfSection, neighbour, currentLevel + 1);
             }
         }
 
