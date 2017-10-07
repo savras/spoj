@@ -55,7 +55,12 @@ namespace LCA
                     var v1 = int.Parse(querySplit[0]) - 1;
                     var v2 = int.Parse(querySplit[1]) - 1;
 
-                    // DFS recursive
+                    /* Find matching values in p for both v1 and v2, slowly going upwards for the section[node] with the larger value */
+                    var result = FindCommonParent(parent, section, v1, v2);
+
+                    Console.WriteLine(result);
+
+                    /* DFS recursive */
                     //var visited1 = new List<int>();
                     //Dfs(adjList, visited1, 0, v1);
                     //
@@ -66,6 +71,26 @@ namespace LCA
                     //Console.WriteLine(lca + 1);
                 }
             }
+        }
+
+        private static int FindCommonParent(int[] parent, int[] section, int v1, int v2)
+        {
+            var sectionV1 = section[v1];
+            var sectionV2 = section[v2];
+
+            while (sectionV2 != sectionV1)
+            {
+                if (sectionV1 > sectionV2)
+                {
+                    sectionV1 = section[parent[sectionV1]];
+                }
+                else
+                {
+                    sectionV2 = section[parent[sectionV2]];
+                }
+            }
+
+            return sectionV1;   // Both sectionV1 and sectionv2 will be the same
         }
 
         private static int GetTreeHeightAndBuildParent(List<List<int>> adjList, int[] parent, int[] level, int currentNode, int height)
