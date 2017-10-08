@@ -59,7 +59,7 @@ namespace LCA
                     var v2 = int.Parse(querySplit[1]) - 1;
 
                     /* Find matching values in p for both v1 and v2, slowly going upwards for the section[node] with the larger value */
-                    var result = FindCommonParent(parent, section, v1, v2);
+                    var result = FindCommonParent(parent, section, level, v1, v2);
 
                     Console.WriteLine(result + 1);
 
@@ -75,25 +75,50 @@ namespace LCA
                 }
             }
         }
-
-        private static int FindCommonParent(int[] parent, int[] section, int v1, int v2)
+        
+        private static int FindCommonParent(int[] parent, int[] section, int[] level, int v1, int v2)
         {
-            var sectionV1 = section[v1];
-            var sectionV2 = section[v2];
-
-            while (sectionV2 != sectionV1)
+            // Move to the same section for both v1 and v2.
+            // We need to move to the same section and not just match the common section[] for v1 and v2 because 
+            // there can be another level above one of the nodes that is in the same section. 
+            // E.g. the following will give LCA == 5 if we just match the common section[] for v1 & v2 (wrong method)
+            /* LCA for v1 = 12 & v2 = 11:
+             * with section[11] == 5 & section[12] == 10.
+             * 
+             *    section 0         5
+             *                       \
+             *    section 1           6
+             *                       / \
+             *                     10   11 <-- v1
+             *                    /
+             *    section 2      12 <-- v2
+             */
+            while (section[v1] != section[v2])
             {
-                if (sectionV1 > sectionV2)
+                if (level[v1] > level[v2])
                 {
-                    sectionV1 = section[parent[sectionV1]];
+                    v1 = section[v1];
                 }
                 else
                 {
-                    sectionV2 = section[parent[sectionV2]];
+                    v2 = section[v2];
                 }
             }
 
-            return sectionV1;   // Both sectionV1 and sectionv2 will be the same
+            // Now find common parent
+            while (v1 != v2)
+            {
+                if (level[v1] > level[v2])
+                {
+                    v1 = parent[v1];
+                }
+                else
+                {
+                    v2 = parent[v2];
+                }
+            }
+
+            return v1;
         }
 
         private static int GetTreeHeightAndBuildParent(List<List<int>> adjList, int[] parent, int[] level, int currentNode, int height)
@@ -120,7 +145,7 @@ namespace LCA
         private static void DfsBuildSectionArray(List<List<int>> adjList, int[] section, int[] parent, int[] level, int sqrtHeight, int parentOfSection, int currentNode, int currentLevel)
         {
             // Node is in first section
-            if (level[currentNode] < sqrtHeight)
+            if (level[currentNode] == 0 || level[currentNode] < sqrtHeight)
             {
                 section[currentNode] = 0;
             }
