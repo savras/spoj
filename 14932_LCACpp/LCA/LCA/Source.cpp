@@ -58,7 +58,7 @@ int GetTreeHeightAndBuildParent(const vector<vector<int>>& adjList, vector<int>&
 
 void DfsBuildSectionArray(const vector<vector<int>>& adjList, vector<int>& section, const vector<int>& parent, const vector<int>& level, int sqrtHeight, int parentOfSection, int currentNode, int currentLevel)
 {
-	if (level[currentNode] < sqrtHeight)
+	if (level[currentNode] == 0 || level[currentNode] < sqrtHeight)
 	{
 		section[currentNode] = 0;
 	}
@@ -135,5 +135,5 @@ int main() {
 			cout << result + 1 << endl;
 		}
 	}
-	return 1;
+	return 0;
 }
