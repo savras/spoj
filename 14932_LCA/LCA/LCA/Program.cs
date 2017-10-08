@@ -5,6 +5,7 @@
  *      Heavy Light Decomposition/ Range Minimum Query (Segment Tree)
  *      Sparse tree.
  *  Similar questions: LCASQ, TALCA (https://www.codechef.com/problems/TALCA)
+ *  Complexity: <preprocessing, query> => <O(n), O(sqrt(H))>
  */
 using System;
 using System.Collections.Generic;
@@ -38,6 +39,7 @@ namespace LCA
 
                 // Method 1 in TopCoder tutorial using square root of sections
                 // Preprocess list and build P array.
+                // O(n)
                 var section = new int[n];
                 var parent = new int[n];
                 var level = new int[n];
@@ -47,6 +49,7 @@ namespace LCA
                 
                 DfsBuildSectionArray(adjList, section, parent, level, sqrtHeight, 0, 0, 0);
 
+                // Query O(sqrt(n)) because number of times section[] traverses is equal number of sections => sqrt(h)
                 var q = int.Parse(Console.ReadLine());
                 for (var j = 0; j < q; j++)
                 {
@@ -58,7 +61,7 @@ namespace LCA
                     /* Find matching values in p for both v1 and v2, slowly going upwards for the section[node] with the larger value */
                     var result = FindCommonParent(parent, section, v1, v2);
 
-                    Console.WriteLine(result);
+                    Console.WriteLine(result + 1);
 
                     /* DFS recursive */
                     //var visited1 = new List<int>();
@@ -130,7 +133,7 @@ namespace LCA
             // Set to the ancestor node that is the last of the previous two sections
             else
             {
-                section[currentNode] = section[parent[currentNode]]; // We are building top down so this works.
+                section[currentNode] = section[parent[currentNode]]; // We are building top down so this works. The tree only goes downwards.
             }
             
             foreach (var neighbour in adjList[currentNode])
