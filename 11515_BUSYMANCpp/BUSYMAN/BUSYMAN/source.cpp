@@ -17,14 +17,6 @@ using std::pair;
 using std::vector;
 using std::make_pair;
 
-bool thisPairDoesNotEndTheSameTime(int endTime, vector<pair<int, int>> pairs, int i) {
-	return pairs[i].first > endTime;
-}
-
-bool startTimeForThisPairIsGreaterOrEqualToEndTime(int endTime, vector<pair<int, int>> pairs, int i) {
-	return pairs[i].second >= endTime;
-}
-
 int main() {
 	int t;
 	cin >> t;
@@ -43,13 +35,12 @@ int main() {
 
 		std::sort(pairs.begin(), pairs.end());	// Sort end time in ascending order
 
-		int endTimeForCurrentTask = pairs[0].first;
+		int endTime = pairs[0].first;
 		int count = 1;
 		for (size_t i = 1; i < n; i++) {
-			if (startTimeForThisPairIsGreaterOrEqualToEndTime(endTimeForCurrentTask, pairs, i) && 
-				thisPairDoesNotEndTheSameTime(endTimeForCurrentTask, pairs, i)) {
+			if (pairs[i].second >= endTime) {
 				count++;
-				int endTimeForCurrentTask = pairs[i].first;
+				endTime = pairs[i].first;
 			}
 		}
 		cout << count;
