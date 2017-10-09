@@ -43,7 +43,7 @@ int main() {
 				endTime = pairs[i].first;
 			}
 		}
-		cout << count;
+		cout << count<< endl;
 	}	
 
 	return 0;
