@@ -11,22 +11,19 @@ using std::max;
 int Travel(int h, int a, bool canGoToAir, vector<vector<int>>& cache)
 {
 	if (h <= 0 || a <= 0) {
-		return 0;
+		return -1;
 	}
 
 	if (cache[h][a] >= 0) {
 		return cache[h][a];
 	}
 
-	cache[h][a] = 0;
 	if (canGoToAir)	{
 		cache[h][a] = Travel(h + 3, a + 2, false, cache) + 1;
 	}
 	else {
-		if ((h > 5 && a > 10) || h > 20 && a > 5) {
-			// Note that air path can be combined with this and return + 2 step instead.
-			cache[h][a] = max(Travel(h - 5, a - 10, true, cache), Travel(h - 20, a + 5, true, cache)) + 1;
-		}
+		// Note that air path can be combined with this and return + 2 step instead.
+		cache[h][a] = max(Travel(h - 5, a - 10, true, cache), Travel(h - 20, a + 5, true, cache)) + 1;
 	}
 
 	return cache[h][a];
